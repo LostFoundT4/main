@@ -3,4 +3,4 @@
 *.pyc
 *.iml
 #idea folder
-.idea/
+.idea/.DS_Store
