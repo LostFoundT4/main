@@ -1,18 +1,34 @@
 # CS203 Django Application
 
-**Installation Steps**
-1) Ensure Python has been installed on your local system before proceeding.
-2) Ensure pip3 has been installed on your local systsm before proceeding any further.
+
+**Installation Steps for Local Virtual environment**
+1) Ensure [Python](https://www.python.org/downloads/) has been installed on your local system before proceeding.
+
+2) Ensure [pip3](https://cloudzy.com/blog/pip-upgrade/) has been installed on your local systsm before proceeding any further. 
+
 3) Create a new directory on your system so that it is easier to locate the files when developing the application.
-4) Open a cmd/terminal on your local system and type the following command to create an isolated development environment on your system.
-  "python -m venv [Any name will do, ie.: Application_Main]". Doing this step would create a directory named "Application_Main" in my case, but the name will differ.
-5) Next step would be to execute this command
-  "[Application_Main Or Whatever name you specified in the previous step]\Scripts\activate.bat" --  For Windows
-  "source [Application_Main Or Whatever name you specified in the previous step]/bin/activate" -- For Mac/Linux
-6) Before proceeding look for the (venv) sign on your command line before proceeding.
-7) Once the steps have been completed, type the following commands to install the needed dependencies on your system from the "requirements.txt".
-   "pip install -r requirements.txt". 
-   Once the installation is complete you can proceed to run the application
+
+4) Open a cmd/terminal on your local system and type the following command to create an isolated development environment on your system. Doing this step would create a directory named ".venv".
+    ```bash
+    python -m venv .venv
+    ```
+
+5) Next step would be to execute this command,
+   For Windows:
+     ```bash
+     .venv\Scripts\activate.bat
+      ```
+    For Mac/Linux:
+    ```bash
+    source .venv/bin/activate
+    ```
+6) Before proceeding look for the (.venv) sign on your command line before proceeding.
+
+7) Once the steps have been completed, type the following commands to install the needed dependencies on your system from the "requirements.txt". Once the installation is complete you can proceed to run the application
+    ```bash
+   pip install -r requirements.txt
+    ```
+
 
 **Running The Application**
 1) Type the following commands to run the server as needed:

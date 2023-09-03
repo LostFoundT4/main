@@ -1,8 +1,10 @@
-
 *.xml
 *.pyc
 *.iml
+**/__pycache__/
 #idea folder
 .idea/
 .DS_Store
 *.sqlite3
+#virtual environment file
+.venv
