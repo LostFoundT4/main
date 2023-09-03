@@ -1,6 +1,6 @@
 # CS203 Django Application
 
-Installation Steps****
+**Installation Steps**
 1) Ensure Python has been installed on your local system before proceeding.
 2) Ensure pip3 has been installed on your local systsm before proceeding any further.
 3) Create a new directory on your system so that it is easier to locate the files when developing the application.
