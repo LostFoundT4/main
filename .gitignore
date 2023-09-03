@@ -2,3 +2,5 @@
 *.xml
 *.pyc
 *.iml
+#idea folder
+.idea/
