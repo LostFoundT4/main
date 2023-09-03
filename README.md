@@ -6,14 +6,16 @@
 
 2) Ensure [pip3](https://cloudzy.com/blog/pip-upgrade/) has been installed on your local systsm before proceeding any further. 
 
-3) Create a new directory on your system so that it is easier to locate the files when developing the application.
+3) Ensure [npm](https://kinsta.com/blog/how-to-install-node-js/)has been installed on your local systsm before proceeding any further. 
 
-4) Open a cmd/terminal on your local system and type the following command to create an isolated development environment on your system. Doing this step would create a directory named ".venv".
+4) Create a new directory on your system so that it is easier to locate the files when developing the application.
+
+5) Open a cmd/terminal on your local system and type the following command to create an isolated development environment on your system. Doing this step would create a directory named ".venv".
     ```bash
     python -m venv .venv
     ```
 
-5) Next step would be to execute this command,
+6) Next step would be to execute this command,
    For Windows:
      ```bash
      .venv\Scripts\activate.bat
@@ -22,13 +24,17 @@
     ```bash
     source .venv/bin/activate
     ```
-6) Before proceeding look for the (.venv) sign on your command line before proceeding.
+7) Before proceeding look for the (.venv) sign on your command line before proceeding.
 
-7) Once the steps have been completed, type the following commands to install the needed dependencies on your system from the "requirements.txt". Once the installation is complete you can proceed to run the application
+8) Once the steps have been completed, type the following commands to install the needed dependencies on your system from the "requirements.txt". Once the installation is complete you can proceed to run the application
     ```bash
    pip install -r requirements.txt
     ```
 
+9) Navigate into the `frontend` folder and run the command. This ensure frontend dependencies are installed.
+  ```bash
+  npm install
+  ```
 
 **Running The Application**
 1) Type the following commands to run the server as needed:
