@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-wb6120-+q+v7k4flhc*mcv1b!53(1*g(1(fq6pz41a1_(2+4*j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['cs203-lostandfound-app-dev.us-east-1.elasticbeanstalk.com', '127.0.0.1']
+ALLOWED_HOSTS = ['cs203-lostandfound-app-dev.us-east-1.elasticbeanstalk.com', '127.0.0.1', '172.31.39.65']
 
 
 # Application definition
