@@ -45,6 +45,7 @@ jobs:
           application_name: CS203-lostandfound-app
           environment_name: CS203-lostandfound-app-dev
 
+          version_label: CS203-lostandfound-app
           region: "us-east-1"
-          version_label: ${{ github.sha }}
-          deployment_package: deploy-2.zip
+          deployment_package: deploy.zip
+          se_existing_version_if_available: true
