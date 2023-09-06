@@ -36,6 +36,11 @@
   npm install
   ```
 
+10) In a seperate commandline , in the same folder, run the command to update `bundle.js` which will run webpack with babel.
+  ```bash
+  npm run dev
+  ```
+
 **Running The Application**
 1) Type the following commands to run the server as needed:
     "python manage.py runserver 8080".
