@@ -40,7 +40,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'base_functions',
-    'frontend'
+    'frontend',
+    'reporting'
 ]
 
 MIDDLEWARE = [
