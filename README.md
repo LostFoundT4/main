@@ -41,6 +41,12 @@
   npm run dev
   ```
 
+**Database setup**
+1) Type the following commands to activate the models and create the models tables in database (sqlite3).
+  ```bash
+  python manage.py migrate
+  ```
+
 **Running The Application**
 1) Type the following commands to run the server as needed:
     "python manage.py runserver 8080".
