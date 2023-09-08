@@ -5,15 +5,15 @@ from django.contrib.auth.models import User
 # Create your models here.
 class ReportInfo(models.Model):
     reportInfoID = models.AutoField(primary_key=True)
-    ticketID = models.ForeignKey(Ticket, related_name='ticket', verbose_name="ticketID", on_delete=models.SET_DEFAULT, default=None)
-    itemID = models.ForeignKey(Item, related_name='item', verbose_name="itemID", on_delete=models.SET_DEFAULT, default=None)
-    locationID = models.ForeignKey(to='Location', related_name='location', verbose_name="locationID", on_delete=models.SET_DEFAULT, default=None)
+    ticket = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    location = models.ForeignKey(to='Location', on_delete=models.CASCADE)
     description = models.CharField(max_length=300)
 
 class Status(models.Model):
     statusID = models.AutoField(primary_key=True)
-    userID = models.ForeignKey(User, related_name='user', verbose_name="id", on_delete=models.SET_DEFAULT, default=None)
-    ticketID = models.ForeignKey(Ticket, related_name='tickets', verbose_name="ticketID", on_delete=models.SET_DEFAULT, default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    ticket = models.ForeignKey(Ticket,on_delete=models.CASCADE)
     type = models.CharField(max_length=200)
     endorsedUserID = models.IntegerField(blank=True, null=True)
 
