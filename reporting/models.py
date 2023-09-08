@@ -7,7 +7,7 @@ class ReportInfo(models.Model):
     reportInfoID = models.AutoField(primary_key=True)
     ticketID = models.ForeignKey(Ticket, related_name='ticket', verbose_name="ticketID", on_delete=models.SET_DEFAULT, default=None)
     itemID = models.ForeignKey(Item, related_name='item', verbose_name="itemID", on_delete=models.SET_DEFAULT, default=None)
-    locationID = models.ForeignKey(to='Location', verbose_name="locationID", on_delete=models.SET_DEFAULT, default=None)
+    locationID = models.ForeignKey(to='Location', related_name='location', verbose_name="locationID", on_delete=models.SET_DEFAULT, default=None)
     description = models.CharField(max_length=300)
 
 class Status(models.Model):

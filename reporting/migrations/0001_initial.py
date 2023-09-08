@@ -71,6 +71,7 @@ class Migration(migrations.Migration):
                     models.ForeignKey(
                         default=None,
                         on_delete=django.db.models.deletion.SET_DEFAULT,
+                        related_name="location",
                         to="reporting.location",
                         verbose_name="locationID",
                     ),
