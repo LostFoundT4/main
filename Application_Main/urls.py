@@ -16,9 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from base_functions import views
 
 urlpatterns = [
     path("base/", include("base_functions.urls")),
     path('admin/', admin.site.urls),
-    path('frontend/', include("frontend.urls"))
+    path('frontend/', include("frontend.urls")),
+    path('tickets/', views.ticket_list),
+    path('tickets/<int:id>', views.ticket_detail),
+    path('items/', views.item_list),
+    path('items/<int:id>', views.item_detail)
 ]
