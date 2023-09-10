@@ -21,15 +21,17 @@ export default function SignIn() {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
         console.log({
-            email: data.get("email"),
+            username: data.get("username"),
             password: data.get("password"),
             text: "hello"
         });
-        fetch('http://127.0.0.1:8080/accounts/login', {  // Enter your IP address here
+        fetch('http://127.0.0.1:8080/api/auth/login', {  // Enter your IP address here
 
             method: 'POST',
-            mode: 'cors',
-            body: JSON.stringify({"email": data.get("email"), "password": data.get("password")}) // body data type must match "Content-Type" header
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({"username": data.get("username"), "password": data.get("password")}) // body data type must match "Content-Type" header
         })
     };
 
@@ -79,10 +81,10 @@ export default function SignIn() {
                             margin="normal"
                             required
                             fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
+                            id="username"
+                            label="Username"
+                            name="username"
+                            autoComplete="username"
                             autoFocus
                         />
                         <TextField
