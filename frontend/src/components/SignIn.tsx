@@ -25,6 +25,12 @@ export default function SignIn() {
             password: data.get("password"),
             text: "hello"
         });
+        fetch('http://127.0.0.1:8080/accounts/login', {  // Enter your IP address here
+
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify({"email": data.get("email"), "password": data.get("password")}) // body data type must match "Content-Type" header
+        })
     };
 
     return (
