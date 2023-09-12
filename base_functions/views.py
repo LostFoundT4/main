@@ -81,6 +81,7 @@ def item_detail(request, id, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 def index(request):
+    print("Called")
     return HttpResponse("Hello, world. You're at the polls indexes:p")
 
 def hello2(request):
