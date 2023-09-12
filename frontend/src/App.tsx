@@ -17,8 +17,8 @@ export const App = () => {
         <Router>
             <Routes>
                 <Route path="frontend/" element={<LandingPage />}></Route>
-                <Route path="frontend/sign-in" element={<SignIn />}></Route>
-                <Route path="frontend/sign-up" element={<SignUp />}></Route>
+                <Route path="frontend/sign-in" element={<SignInSide />}></Route>
+                <Route path="frontend/sign-up" element={<SignUpSide />}></Route>
                 <Route path="frontend/profile-page" element={<ProfilePage />}></Route>
             </Routes>
         </Router>
