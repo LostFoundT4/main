@@ -31,7 +31,7 @@ class LoginAPI(generics.GenericAPIView):
         #    "user": UserSerializer(user, context=self.get_serializer_context()).data,
         #    "token": token
         #})
-        return redirect("/frontend")
+        return redirect("/frontend/")
 
 # Get User API
 class UserAPI(generics.RetrieveAPIView):
