@@ -23,7 +23,7 @@ export default function SignIn() {
         console.log({
             username: data.get("username"),
             password: data.get("password"),
-            text: "hello"
+            text: "hellos"
         });
         fetch('http://127.0.0.1:8080/api/auth/login', {  // Enter your IP address here
 

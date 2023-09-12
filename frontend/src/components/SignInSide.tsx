@@ -26,6 +26,14 @@ export default function SignInSide() {
             email: data.get("email"),
             password: data.get("password"),
         });
+        fetch('http://127.0.0.1:8080/api/auth/login', {  // Enter your IP address here
+
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({"username": data.get("username"), "password": data.get("password")}) // body data type must match "Content-Type" header
+        })
     };
 
     return (
@@ -105,10 +113,10 @@ export default function SignInSide() {
                                 margin="normal"
                                 required
                                 fullWidth
-                                id="email"
-                                label="Email Address"
-                                name="email"
-                                autoComplete="email"
+                                id="username"
+                                label="Username"
+                                name="username"
+                                autoComplete="username"
                                 autoFocus
                             />
                             <TextField
