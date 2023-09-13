@@ -19,6 +19,7 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import '../css/index.css'
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -62,34 +63,39 @@ export default function SignUpSide() {
             <Grid container component="main" sx={{ height: "100vh" }}>
                 <CssBaseline />
                 <Grid
+                    className="sign-in-container"
                     item
                     xs={12}
                     sm={8}
                     md={7} // Increase the md value to allocate more space
                     sx={{
-                        bgcolor: "background.paper",
+                        bgcolor: "#E9E9E9",
                         pt: 8,
                         pb: 6,
                     }}
                 >
                     <Container maxWidth="sm">
                         <Typography
+                            className = "sign-in-h1"
                             component="h1"
                             variant="h3"
-                            align="center"
+                            align="left"
                             color="text.primary"
                             gutterBottom
                         >
-                            Welcome to <br /> SMU Lost and Found
-                        </Typography>
+                        Welcome!
+                    </Typography>
+                    <div className="sign-in-logo-container">
+                    <img className="sign-in-logo" src="https://res.cloudinary.com/dcaux54kw/image/upload/v1694597637/logo.png"></img>
+                        </div>
                         <Typography
+                            className = "sign-in-h2"
                             variant="h5"
                             align="center"
-                            color="text.secondary"
+                            color="text.primary"
                             paragraph
                         >
-                            Lost something? Find it here! <br />
-                            Found something? Upload it here!
+                            Lost something? Found something?<br/>Let us know and we'll look around.
                         </Typography>
                         <Stack
                             sx={{ pt: 1 }}
@@ -108,6 +114,7 @@ export default function SignUpSide() {
                     component={Paper}
                     elevation={6}
                     square
+                    className="sign-in-container2"
                 >
                     <Box
                         sx={{
@@ -118,10 +125,10 @@ export default function SignUpSide() {
                             alignItems: "center",
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: "primary.main" }}>
+                        <Avatar sx={{ m: 1, bgcolor: "#222" }}>
                             <PersonAddAltOutlinedIcon />
                         </Avatar>
-                        <Typography component="h1" variant="h5">
+                        <Typography className="sign-in-h3" component="h1" variant="h5">
                             Sign up
                         </Typography>
                         <Box
@@ -129,6 +136,7 @@ export default function SignUpSide() {
                             noValidate
                             onSubmit={handleSubmit}
                             sx={{ mt: 3 }}
+                            className="sign-in-box"
                         >
                             <Grid container spacing={2}>
                                 <Grid item xs={12}>
@@ -219,13 +227,14 @@ export default function SignUpSide() {
                                 fullWidth
                                 variant="contained"
                                 sx={{ mt: 3, mb: 2 }}
+                                className="sign-in-button"
                             >
-                                Sign Up
+                                Sign Up Now
                             </Button>
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
-                                    <Link href="sign-in" variant="body2">
-                                        Already have an account? Sign in
+                                    <Link href="sign-in" variant="body2" className="sign-in-link">
+                                        Already have an account? Log in
                                     </Link>
                                 </Grid>
                             </Grid>
