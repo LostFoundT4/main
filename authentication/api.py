@@ -1,8 +1,9 @@
 from django.shortcuts import redirect
-from rest_framework import generics, permissions
+from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from knox.models import AuthToken
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
+
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -24,14 +25,16 @@ class LoginAPI(generics.GenericAPIView):
     def post(self, request, *args, **kwargs):
         print("Hello")
         serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data
-        _, token = AuthToken.objects.create(user)
-        #return Response({
-        #    "user": UserSerializer(user, context=self.get_serializer_context()).data,
-        #    "token": token
-        #})
-        return redirect("/frontend/")
+        if serializer.is_valid(raise_exception=True):
+            user = serializer.validated_data
+            _, token = AuthToken.objects.create(user)
+            #return Response({
+            #    "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            #    "token": token
+            #})
+            return Response(user, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_401_UNAUTHORIZED)
 
 # Get User API
 class UserAPI(generics.RetrieveAPIView):
