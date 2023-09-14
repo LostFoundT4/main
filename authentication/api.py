@@ -32,7 +32,8 @@ class LoginAPI(generics.GenericAPIView):
             #    "user": UserSerializer(user, context=self.get_serializer_context()).data,
             #    "token": token
             #})
-            return Response(user, status=status.HTTP_200_OK)
+            print(token)
+            return Response(UserSerializer(user, context=self.get_serializer_context()).data, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 
@@ -43,5 +44,12 @@ class UserAPI(generics.RetrieveAPIView):
     ]
     serializer_class = UserSerializer
 
+
+
     def get_object(self):
-        return self.request.user
+        user = self.request.user
+        token = AuthToken.objects.get(user)
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": token
+        })
