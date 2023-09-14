@@ -43,12 +43,9 @@ INSTALLED_APPS = [
     'base_functions',
     'frontend',
     'reporting',
-<<<<<<< HEAD
     'cloudinary',
     'cloudinary_storage'
-=======
     'knox',
->>>>>>> development-A
 ]
 
 REST_FRAMEWORK = {
