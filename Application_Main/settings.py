@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'frontend',
     'reporting',
     'cloudinary',
-    'cloudinary_storage'
+    'cloudinary_storage',
     'knox',
 ]
 
