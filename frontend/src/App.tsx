@@ -5,8 +5,6 @@ import {
     Link,
     redirect,
 } from "react-router-dom";
-import SignIn from "./components/SignIn";
-import SignUp from "./components/SignUp";
 import LandingPage from "./components/LandingPage";
 import SignInSide from "./components/SignInSide";
 import SignUpSide from "./components/SignUpSide";
