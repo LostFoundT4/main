@@ -1,5 +1,4 @@
-import * as React from "react";
-import { useState, useEffect } from "react";
+import {useState , useRef , useEffect} from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -11,6 +10,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
@@ -20,60 +20,35 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import '../css/index.css'
+import { useNavigate } from "react-router-dom";
+import AxiosInstance from "../axios/axiosInstance";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
-    const [email, setEmail] = useState("");
-    const [showPassword, setShowPassword] = useState(false);
-    const [emailError, setEmailError] = useState(false);
+    let navigate = useNavigate()
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const [usr,setUsr] = useState("")
+    const [pwd,setPwd] = useState("")
+    const[isCorrectCred,setisCorrectCred] = useState(true)
+
+    useEffect(() =>{
+        setisCorrectCred(true)
+    },[usr,pwd])
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
         const data = new FormData(event.currentTarget);
-        console.log({
-            username: data.get("username"),
-            password: data.get("password"),
-            text: "hello",
-        });
-        fetch("http://127.0.0.1:8080/api/auth/login", {
-            // Enter your IP address here
-
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-                username: data.get("username"),
-                password: data.get("password"),
-            }), // body data type must match "Content-Type" header
-        });
-
-        // Check if the email ends with "@smu.edu.sg"
-        if (!email.endsWith("@smu.edu.sg")) {
-            setEmailError(true);
-            return; // Do not proceed with form submission
-        }
-
-        // If email is valid, proceed with form submission
-        setEmailError(false);
-        console.log({
-            email: data.get("school-email"),
-            password: data.get("password"),
-        });
-    };
-
-    // Handle changes to the email input field
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newEmail = event.target.value;
-        setEmail(newEmail);
-        setEmailError(!newEmail.endsWith("@smu.edu.sg")); // Validate as the user types
-    };
-
-    const handleTogglePasswordVisibility = () => {
-        setShowPassword((prevShowPassword) => !prevShowPassword);
-    };
+        AxiosInstance.post('/api/auth/login',{
+            "username":data.get("username"),
+            "password":data.get("password")},
+            ).then((response)=> {navigate("/frontend/profile-page")}
+            ).catch((error) => {
+                setisCorrectCred(false)
+            })
+    }
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -153,61 +128,35 @@ export default function SignInSide() {
                             noValidate
                             onSubmit={handleSubmit}
                             sx={{ mt: 1 }}
-                            className="sign-in-box"
                         >
-                            <Grid container spacing={1} >
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        name="school-email"
-                                        label="School Email"
-                                        type="email" // Use "email" type for email input
-                                        id="school-email"
-                                        autoComplete="school-email"
-                                        value={email}
-                                        onChange={handleEmailChange}
-                                        error={emailError} // Set error prop based on validation
-                                        helperText={
-                                            emailError
-                                                ? 'Does not end with "@smu.edu.sg"'
-                                                : ""
-                                        }
-                                    />
-                                </Grid>
-                                <Grid item xs={12}>
-                                    <TextField
-                                        required
-                                        fullWidth
-                                        name="password"
-                                        label="Password"
-                                        type={
-                                            showPassword ? "text" : "password"
-                                        }
-                                        id="password"
-                                        autoComplete="new-password"
-                                        InputProps={{
-                                            endAdornment: (
-                                                <InputAdornment position="end">
-                                                    <IconButton
-                                                        aria-label="toggle password visibility"
-                                                        onClick={
-                                                            handleTogglePasswordVisibility
-                                                        }
-                                                        edge="end"
-                                                    >
-                                                        {showPassword ? (
-                                                            <VisibilityOff />
-                                                        ) : (
-                                                            <Visibility />
-                                                        )}
-                                                    </IconButton>
-                                                </InputAdornment>
-                                            ),
-                                        }}
-                                    />
-                                </Grid>
-                            </Grid>
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="username"
+                                label="Username"
+                                name="username"
+                                autoComplete="username"
+                                autoFocus
+                                error = {isCorrectCred ? false : true }
+                                onChange={(e) => setUsr(e.target.value)}
+                                value={usr}
+                                helperText= {isCorrectCred ? "" : "Incorrect Username/Password"}
+                            />
+                            <TextField
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                error = {isCorrectCred ? false : true }
+                                onChange={(e) => setPwd(e.target.value)}
+                                value={pwd}
+                                helperText= {isCorrectCred ? "" : "Incorrect Username/Password"}
+                            />
                             <FormControlLabel
                                 control={
                                     <Checkbox
@@ -217,7 +166,6 @@ export default function SignInSide() {
                                 }
                                 label="Remember me"
                             />
-
                             <Button
                                 type="submit"
                                 fullWidth

@@ -11,6 +11,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
@@ -42,10 +43,17 @@ export default function SignUpSide() {
         setEmailError(false);
         const data = new FormData(event.currentTarget);
         console.log({
-            email: data.get("school-email"),
-            password: data.get("password"),
+            email: data.get("school-email")
         });
-    };
+    }
+        // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        //     event.preventDefault();
+        //     const data = new FormData(event.currentTarget);
+        //     console.log({
+        //         email: data.get("email"),
+        //         password: data.get("password"),
+        //     });
+    
 
     // Handle changes to the email input field
     const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -105,7 +113,6 @@ export default function SignUpSide() {
                         ></Stack>
                     </Container>
                 </Grid>
-
                 <Grid
                     item
                     xs={12}
@@ -245,3 +252,4 @@ export default function SignUpSide() {
         </ThemeProvider>
     );
 }
+

@@ -19,10 +19,15 @@ from django.urls import path, include
 from base_functions import views as base_views
 from reporting import views as reporting_views
 
+
 urlpatterns = [
+    path('accounts/', include('django.contrib.auth.urls')),
     path("base/", include("base_functions.urls")),
     path('admin/', admin.site.urls),
     path('frontend/', include("frontend.urls")),
+
+    #Authentication APIs Here
+    path('', include('authentication.urls')),
 
     # CRUD for base_functions
     path('tickets/', base_views.ticket_list),
