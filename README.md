@@ -4,9 +4,9 @@
 **Installation Steps for Local Virtual environment**
 1) Ensure [Python](https://www.python.org/downloads/) has been installed on your local system before proceeding.
 
-2) Ensure [pip3](https://cloudzy.com/blog/pip-upgrade/) has been installed on your local systsm before proceeding any further. 
+2) Ensure [pip3](https://cloudzy.com/blog/pip-upgrade/) has been installed on your local system before proceeding any further. 
 
-3) Ensure [npm](https://kinsta.com/blog/how-to-install-node-js/)has been installed on your local systsm before proceeding any further. 
+3) Ensure [npm](https://kinsta.com/blog/how-to-install-node-js/) has been installed on your local system before proceeding any further. 
 
 4) Create a new directory on your system so that it is easier to locate the files when developing the application.
 
@@ -24,9 +24,9 @@
     ```bash
     source .venv/bin/activate
     ```
-7) Before proceeding look for the (.venv) sign on your command line before proceeding.
+7) Before proceeding, make sure there is the (.venv) sign on your command line.
 
-8) Once the steps have been completed, type the following commands to install the needed dependencies on your system from the "requirements.txt". Once the installation is complete you can proceed to run the application
+8) Once the steps have been completed, type the following commands to install the needed dependencies on your system from the "requirements.txt". Once the installation is complete you can proceed to run the application.
     ```bash
    pip install -r requirements.txt
     ```
@@ -36,7 +36,7 @@
   npm install
   ```
 
-10) In a seperate commandline , in the same folder, run the command to update `bundle.js` which will run webpack with babel.
+10) In a separate command line, in the same folder, run the command to update `bundle.js` which will run webpack with babel. You do not need to be in (.venv).
   ```bash
   npm run dev
   ```
