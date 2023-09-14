@@ -1,4 +1,4 @@
-import * as React from "react";
+import {useState , useRef , useEffect} from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -14,27 +14,35 @@ import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
 import Container from "@mui/material/Container";
+import { useNavigate } from "react-router-dom";
+import AxiosInstance from "../axios/axiosInstance";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get("email"),
-            password: data.get("password"),
-        });
-        fetch('http://127.0.0.1:8080/api/auth/login', {  // Enter your IP address here
+    let navigate = useNavigate()
 
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({"username": data.get("username"), "password": data.get("password")}) // body data type must match "Content-Type" header
-        })
-    };
+    const [usr,setUsr] = useState("")
+    const [pwd,setPwd] = useState("")
+    const[isCorrectCred,setisCorrectCred] = useState(true)
+
+    useEffect(() =>{
+        setisCorrectCred(true)
+    },[usr,pwd])
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+
+        const data = new FormData(event.currentTarget);
+        AxiosInstance.post('/api/auth/login',{
+            "username":data.get("username"),
+            "password":data.get("password")},
+            ).then((response)=> {navigate("/frontend/profile-page")}
+            ).catch((error) => {
+                setisCorrectCred(false)
+            })
+    }
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -118,6 +126,10 @@ export default function SignInSide() {
                                 name="username"
                                 autoComplete="username"
                                 autoFocus
+                                error = {isCorrectCred ? false : true }
+                                onChange={(e) => setUsr(e.target.value)}
+                                value={usr}
+                                helperText= {isCorrectCred ? "" : "Incorrect Username/Password"}
                             />
                             <TextField
                                 margin="normal"
@@ -128,6 +140,10 @@ export default function SignInSide() {
                                 type="password"
                                 id="password"
                                 autoComplete="current-password"
+                                error = {isCorrectCred ? false : true }
+                                onChange={(e) => setPwd(e.target.value)}
+                                value={pwd}
+                                helperText= {isCorrectCred ? "" : "Incorrect Username/Password"}
                             />
                             <FormControlLabel
                                 control={
