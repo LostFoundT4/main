@@ -44,12 +44,5 @@ class UserAPI(generics.RetrieveAPIView):
     ]
     serializer_class = UserSerializer
 
-
-
     def get_object(self):
-        user = self.request.user
-        token = AuthToken.objects.get(user)
-        return Response({
-            "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": token
-        })
+        return self.request.user
