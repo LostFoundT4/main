@@ -9,8 +9,10 @@
 #virtual environment file
 .venv
 #frontend file
-frontend/node_modules
+frontend/node_modules/*
+node_modules
 # Elastic Beanstalk Files
-.elasticbeanstalk/*
+.elasticbeanstalk/
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
+node_modules
