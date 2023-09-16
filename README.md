@@ -56,10 +56,14 @@
     <img width="1047" alt="image" src="https://github.com/LostFoundT4/main/assets/116057891/d6f83cf2-9046-49f4-a8c2-fa75841ffebf">
 
 **Temporary Notes (Frontend)**
-1) If you run into an error relating to axios (page does not render), try running
+1) If you run into an error relating to axios (edit-profile page does not render), try running
 ```npm install axios```
 then
 ```npm run dev``` in a separate terminal to ensure that all necessary packages are installed.
+2) If you run into an error relating to recharts (especially for the dashboard), try running 
+```npm install recharts```
+then
+```npm run dev``` in a separate terminal.
 
 
 
