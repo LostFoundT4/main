@@ -9,6 +9,8 @@ import LandingPage from "./components/LandingPage";
 import SignInSide from "./components/SignInSide";
 import SignUpSide from "./components/SignUpSide";
 import Home from "./components/Home";
+import Profile from "./components/ProfilePage";
+
 
 export const App = () => {
     return (
@@ -17,6 +19,7 @@ export const App = () => {
                 <Route path="frontend/sign-in" element={<SignInSide />}></Route>
                 <Route path="frontend/sign-up" element={<SignUpSide />}></Route>
                 <Route path="frontend/home" element={<Home />}></Route>
+                <Route path="frontend/profile-page" element = {<Profile />}></Route>
             </Routes>
         </Router>
     );
