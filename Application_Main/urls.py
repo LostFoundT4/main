@@ -16,8 +16,30 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from base_functions import views as base_views
+from reporting import views as reporting_views
+
 
 urlpatterns = [
+    path('accounts/', include('django.contrib.auth.urls')),
     path("base/", include("base_functions.urls")),
     path('admin/', admin.site.urls),
+    path('frontend/', include("frontend.urls")),
+
+    #Authentication APIs Here
+    path('', include('authentication.urls')),
+
+    # CRUD for base_functions
+    path('tickets/', base_views.ticket_list),
+    path('tickets/<int:id>', base_views.ticket_detail),
+    path('items/', base_views.item_list),
+    path('items/<int:id>', base_views.item_detail),
+
+    # CRUD for reporting
+    path('locations/', reporting_views.location_list),
+    path('locations/<int:id>', reporting_views.location_detail),
+    path('reportInfos/', reporting_views.reportInfo_list),
+    path('reportInfos/<int:id>', reporting_views.reportInfo_detail),
+    path('status/', reporting_views.status_list),
+    path('status/<int:id>', reporting_views.status_detail)
 ]
