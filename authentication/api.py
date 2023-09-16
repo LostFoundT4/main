@@ -4,7 +4,8 @@ from rest_framework.response import Response
 from knox.models import AuthToken
 from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
 # from rest_framework.renderers import JSONRenderer
-
+from knox.settings import CONSTANTS
+from knox.auth import TokenAuthentication
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -45,4 +46,8 @@ class UserAPI(generics.RetrieveAPIView):
     serializer_class = UserSerializer
 
     def get_object(self):
+        token = self.request.META.get('HTTP_AUTHORIZATION')
+        objs = AuthToken.objects.filter(token_key=token[6:CONSTANTS.TOKEN_KEY_LENGTH+6])
+        #print(self.xrequest.user.email)
+        #print(self.request.user.is_authenticated)
         return self.request.user
