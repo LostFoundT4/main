@@ -1,5 +1,5 @@
-import * as React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -20,47 +20,78 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import AxiosInstance from "../axios/axiosInstance";
 import '../css/index.css'
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignUpSide() {
-    const [email, setEmail] = React.useState("");
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [emailError, setEmailError] = React.useState(false);
+
+    let navigate = useNavigate();
+
+    const [email, setEmail] = useState("");
+    const [pwd,setPwd] = useState("");
+    const [usr,setUsr] = useState("");
+    const [phoneNo,setPhoneNo] = useState("");
+    const [tele,setTele] = useState("");
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const [emailError, setEmailError] = useState(false);
+    const [passwordError, setPasswordError] = useState(false);
+
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[^@]*smu\.edu\.sg$/;
+
+    useEffect(()=>{
+        setEmailError(false)
+    },[email])
+
+    useEffect(()=>{
+        setPasswordError(false)
+    },[pwd])
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         // Check if the email ends with "@smu.edu.sg"
-        if (!email.endsWith(".smu.edu.sg")) {
+        if (!emailRegex.test(email)) {
             setEmailError(true);
             return; // Do not proceed with form submission
         }
-
+        if (pwd.length < 8) {
+            setPasswordError(true);
+            return; // Do not proceed with form submission
+        }
         // If email is valid, proceed with form submission
         setEmailError(false);
-        const data = new FormData(event.currentTarget);
-        console.log({
-            email: data.get("school-email")
-        });
+        setPasswordError(false);
+        AxiosInstance.post('/api/auth/register',{
+            "username": usr,
+            "password": pwd,
+            "email":email
+            },
+            ).then((response)=> {navigate("/frontend/sign-in")}
+            ).catch((error) => {
+                console.log("Account cannot be created");
+            })
+        // console.log(usr + pwd + email + phoneNo + tele);
     }
-        // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-        //     event.preventDefault();
-        //     const data = new FormData(event.currentTarget);
-        //     console.log({
-        //         email: data.get("email"),
-        //         password: data.get("password"),
-        //     });
     
-
+    
     // Handle changes to the email input field
-    const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newEmail = event.target.value;
-        setEmail(newEmail);
-        setEmailError(!newEmail.endsWith("@smu.edu.sg")); // Validate as the user types
-    };
+    // const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     const newEmail = event.target.value;
+    //     setEmail(newEmail);
+    //     setEmailError(!emailRegex.test(email)); // Validate as the user types
+    // };
+
+    // const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //     const newPassword = event.target.value;
+    //     setPwd(newPassword);
+    //     setPasswordError(pwd.length < 8); // Validate for 8 character length password
+    // };
+
+
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -156,13 +187,14 @@ export default function SignUpSide() {
                                         id="school-email"
                                         autoComplete="school-email"
                                         value={email}
-                                        onChange={handleEmailChange}
+                                        onChange={(e) => setEmail(e.target.value)}
                                         error={emailError} // Set error prop based on validation
                                         helperText={
                                             emailError
                                                 ? 'Does not end with "@smu.edu.sg"'
                                                 : ""
                                         }
+                                        
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -195,6 +227,14 @@ export default function SignUpSide() {
                                                 </InputAdornment>
                                             ),
                                         }}
+                                        onChange={(e) => setPwd(e.target.value)}
+                                        value={pwd}
+                                        error={passwordError} // Set error prop based on validation
+                                        helperText={
+                                            passwordError
+                                                ? 'Your password must contain at least 8 characters.'
+                                                : ""
+                                        }
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -206,6 +246,8 @@ export default function SignUpSide() {
                                         type="username"
                                         id="username"
                                         autoComplete="username"
+                                        onChange={(e) => setUsr(e.target.value)}
+                                        value={usr}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -216,6 +258,8 @@ export default function SignUpSide() {
                                         type="phone-number"
                                         id="phone-number"
                                         autoComplete="phone-number"
+                                        onChange={(e) => setPhoneNo(e.target.value)}
+                                        value={phoneNo}
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -226,6 +270,8 @@ export default function SignUpSide() {
                                         type="telegram-handle"
                                         id="telegram-handle"
                                         autoComplete="telegram-handle"
+                                        onChange={(e) => setTele(e.target.value)}
+                                        value={tele}
                                     />
                                 </Grid>
                             </Grid>
