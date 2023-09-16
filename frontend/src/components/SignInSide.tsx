@@ -32,6 +32,7 @@ export default function SignInSide() {
     const [usr,setUsr] = useState("")
     const [pwd,setPwd] = useState("")
     const[isCorrectCred,setisCorrectCred] = useState(true)
+    const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() =>{
         setisCorrectCred(true)
@@ -44,11 +45,15 @@ export default function SignInSide() {
         AxiosInstance.post('/api/auth/login',{
             "username":data.get("username"),
             "password":data.get("password")},
-            ).then((response)=> {navigate("/frontend/profile-page")}
+            ).then((response)=> {navigate("/frontend/home")}
             ).catch((error) => {
                 setisCorrectCred(false)
             })
     }
+
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword((prevShowPassword) => !prevShowPassword);
+    };
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -149,13 +154,34 @@ export default function SignInSide() {
                                 fullWidth
                                 name="password"
                                 label="Password"
-                                type="password"
+                                type={
+                                    showPassword ? "text" : "password"
+                                    }
                                 id="password"
                                 autoComplete="current-password"
                                 error = {isCorrectCred ? false : true }
                                 onChange={(e) => setPwd(e.target.value)}
                                 value={pwd}
                                 helperText= {isCorrectCred ? "" : "Incorrect Username/Password"}
+                                InputProps={{
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                aria-label="toggle password visibility"
+                                                onClick={
+                                                    handleTogglePasswordVisibility
+                                                }
+                                                edge="end"
+                                            >
+                                                {showPassword ? (
+                                                    <VisibilityOff />
+                                                ) : (
+                                                    <Visibility />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    ),
+                                }}
                             />
                             <FormControlLabel
                                 control={

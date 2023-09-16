@@ -24,9 +24,9 @@
     ```bash
     source .venv/bin/activate
     ```
-7) Before proceeding look for the (.venv) sign on your command line before proceeding.
+7) Before proceeding, make sure there is the (.venv) sign on your command line.
 
-8) Once the steps have been completed, type the following commands to install the needed dependencies on your system from the "requirements.txt". Once the installation is complete you can proceed to run the application
+8) Once the steps have been completed, type the following commands to install the needed dependencies on your system from the "requirements.txt". Once the installation is complete you can proceed to run the application.
     ```bash
    pip install -r requirements.txt
     ```
@@ -36,7 +36,7 @@
   npm install
   ```
 
-10) In a seperate commandline , in the same folder, run the command to update `bundle.js` which will run webpack with babel.
+10) In a separate command line, in the same folder, run the command to update `bundle.js` which will run webpack with babel. You do not need to be in (.venv).
   ```bash
   npm run dev
   ```
@@ -54,23 +54,3 @@
     <img width="1217" alt="image" src="https://github.com/LostFoundT4/main/assets/116057891/fce55caf-ba34-42d5-a56d-20beaf54f256">
 2) Navigating to the website at 127.0.0.1:8080 and you should see the following:
     <img width="1047" alt="image" src="https://github.com/LostFoundT4/main/assets/116057891/d6f83cf2-9046-49f4-a8c2-fa75841ffebf">
-
-**Temporary Notes (Frontend)**
-1) If you run into an error relating to axios (edit-profile page does not render), try running
-```npm install axios```
-then
-```npm run dev``` in a separate terminal to ensure that all necessary packages are installed.
-2) If you run into an error relating to recharts (especially for the dashboard), try running 
-```npm install recharts```
-then
-```npm run dev``` in a separate terminal.
-
-
-
-
-
-
-
-
-
-     
