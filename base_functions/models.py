@@ -12,5 +12,5 @@ class Item (models.Model):
     ticketID = models.ForeignKey(Ticket, related_name='items', verbose_name="ticketID", on_delete=models.SET_DEFAULT, default=None)
     itemName = models.CharField(max_length=200)
     category = models.CharField(max_length=200)
-    imageURL = models.CharField(max_length=300, null=True, blank=True)
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
     found_dateTime = models.DateTimeField(default=timezone.now)

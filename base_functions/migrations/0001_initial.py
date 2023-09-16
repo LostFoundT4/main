@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
                 ("itemID", models.AutoField(primary_key=True, serialize=False)),
                 ("itemName", models.CharField(max_length=200)),
                 ("category", models.CharField(max_length=200)),
-                ("imageURL", models.CharField(blank=True, max_length=300, null=True)),
+                ("image", models.ImageField(blank=True, null=True, upload_to="images/")),
                 (
                     "found_dateTime",
                     models.DateTimeField(default=django.utils.timezone.now),
