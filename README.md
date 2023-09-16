@@ -4,9 +4,9 @@
 **Installation Steps for Local Virtual environment**
 1) Ensure [Python](https://www.python.org/downloads/) has been installed on your local system before proceeding.
 
-2) Ensure [pip3](https://cloudzy.com/blog/pip-upgrade/) has been installed on your local systsm before proceeding any further. 
+2) Ensure [pip3](https://cloudzy.com/blog/pip-upgrade/) has been installed on your local system before proceeding any further. 
 
-3) Ensure [npm](https://kinsta.com/blog/how-to-install-node-js/)has been installed on your local systsm before proceeding any further. 
+3) Ensure [npm](https://kinsta.com/blog/how-to-install-node-js/) has been installed on your local system before proceeding any further. 
 
 4) Create a new directory on your system so that it is easier to locate the files when developing the application.
 
