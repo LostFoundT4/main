@@ -19,7 +19,6 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import '../css/index.css'
 import { useNavigate } from "react-router-dom";
 import AxiosInstance from "../axios/axiosInstance";
 
@@ -66,7 +65,7 @@ export default function SignInSide() {
                     sm={8}
                     md={7} // Increase the md value to allocate more space
                     sx={{
-                        bgcolor: "#E9E9E9",
+                        bgcolor: "#21222c",
                         pt: 8,
                         pb: 6,
                     }}
@@ -80,16 +79,16 @@ export default function SignInSide() {
                             color="text.primary"
                             gutterBottom
                         >
-                            Welcome!
+                            WELCOME !
                         </Typography>
                         <div className="sign-in-logo-container">
-                        <img className="sign-in-logo" src="https://res.cloudinary.com/dcaux54kw/image/upload/v1694597637/logo.png"></img>
+                        <img className="sign-in-logo" src="https://res.cloudinary.com/dcaux54kw/image/upload/v1694597637/glogo.png"></img>
                         </div>
                         <Typography
                             className = "sign-in-h2"
                             variant="h5"
                             align="center"
-                            color="text.primary"
+                            color="#fff"
                             paragraph
                         >
                             Lost something? Found something?<br/>Let us know and we'll look around.
@@ -122,11 +121,11 @@ export default function SignInSide() {
                             alignItems: "center",
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: "#222" }}>
-                            <LoginOutlinedIcon />
+                        <Avatar sx={{ m: 1, bgcolor: "#21222c" }}>
+                            <LoginOutlinedIcon sx={{color: '#ffffff'}}/>
                         </Avatar>
                         <Typography className="sign-in-h3" component="h1" variant="h5">
-                            Log in
+                            Log In
                         </Typography>
                         <Box
                             component="form"

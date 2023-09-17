@@ -162,8 +162,7 @@ function Tickets({ ticketTypeFilter }: { ticketTypeFilter: string }) {
                         <CardMedia
                             component="div"
                             sx={{
-                                // 16:9
-                                pt: "56.25%",
+                                pt: "80%",
                             }}
                             image={reportInfo.item.image}
                         />
@@ -280,7 +279,7 @@ export default function Home() {
         <ThemeProvider theme={defaultTheme}>
             <Box sx={{ display: "flex" }}>
                 <CssBaseline />
-                <AppBar position="absolute" open={open}>
+                <AppBar position="absolute" open={open} style={{ background: '#21222c' }}>
                     <Toolbar
                         sx={{
                             pr: "24px", // keep right padding when drawer closed
@@ -298,25 +297,17 @@ export default function Home() {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <Typography
-                            component="h1"
-                            variant="h6"
-                            color="inherit"
-                            noWrap
-                            sx={{ flexGrow: 1 }}
-                        ></Typography>
 
                         <TextField
-                            fullWidth
                             id="filled-basic"
                             label="Search"
                             variant="filled"
                             InputProps={{
                                 style: {
-                                    backgroundColor: "rgba(255, 255, 255, 1.0)",
+                                    backgroundColor: "#fff",
                                 },
                                 endAdornment: (
-                                    <InputAdornment position="end">
+                                    <InputAdornment position="start">
                                         <SearchIcon />
                                     </InputAdornment>
                                 ),
@@ -324,9 +315,10 @@ export default function Home() {
                         />
                     </Toolbar>
                 </AppBar>
-                <Drawer variant="permanent" open={open}>
+                <Drawer variant="permanent" open={open} >
                     <Toolbar
                         sx={{
+                            bgColor: '#21222c',
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "flex-end",
@@ -347,17 +339,14 @@ export default function Home() {
                 <Box
                     component="main"
                     sx={{
-                        backgroundColor: (theme) =>
-                            theme.palette.mode === "light"
-                                ? theme.palette.grey[100]
-                                : theme.palette.grey[900],
+                        bgColor: "#28b280",
                         flexGrow: 1,
                         height: "100vh",
                         overflow: "auto",
                     }}
                 >
                     <Toolbar />
-                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+                    <Container maxWidth="lg" sx={{ mt: 4, mb: 4}}>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
                                 <Paper
@@ -370,11 +359,11 @@ export default function Home() {
                                         position: "relative",
                                     }}
                                 >
-                                    <BasicTabs />
+                                    <BasicTabs />   
                                     <Button
                                         href="./add-new-item" // Todo: change href
                                         variant="contained"
-                                        color="primary"
+                                        className="add-item-button"
                                         style={{
                                             position: "absolute",
                                             top: "16px", // Adjust the top value as needed
