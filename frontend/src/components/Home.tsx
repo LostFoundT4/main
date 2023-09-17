@@ -49,7 +49,30 @@ interface Item {
     itemID: number;
     itemName: string;
     category: string;
+    image: string;
     ticketID: number;
+}
+
+interface ReportInfo {  
+    reportInfoID: number;
+    description: string;
+    ticket: {
+        ticketID: number;
+        ticketType: string;
+        created_dateTime: string;
+    }
+    location: {
+        locationID: number;
+        building: string;
+        room: string;
+    }
+    item: {
+        itemID: number;
+        itemName: string;
+        category: string;
+        image: string;
+        ticketID: number;
+    }
 }
 
 function CustomTabPanel(props: TabPanelProps) {
@@ -80,7 +103,7 @@ function a11yProps(index: number) {
 }
 
 function BasicTabs() {
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(0);    
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
@@ -99,36 +122,36 @@ function BasicTabs() {
                 </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
-                <Tickets ticketIDFilter={1} />
+                <Tickets ticketTypeFilter={"Lost"} />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                <Tickets ticketIDFilter={2} />
+                <Tickets ticketTypeFilter={"Found"} />
             </CustomTabPanel>
         </Box>
     );
 }
 
-function Tickets({ ticketIDFilter }: { ticketIDFilter: number }) {
-    const [items, setItems] = useState<Item[]>([]); // Provide the type as Item[]
+function Tickets({ ticketTypeFilter }: { ticketTypeFilter: string }) {
+    const [reportInfos, setItems] = useState<ReportInfo[]>([]); // Provide the type as Item[]
 
     useEffect(() => {
-        AxiosInstance.get("/items")
+        AxiosInstance.get("/reportInfos")
             .then((response) => {
-                // Filter items based on the provided ticketIDFilter
+                // Filter items based on the provided ticketTypeFilter
                 const filteredItems = response.data.filter(
-                    (item: Item) => item.ticketID === ticketIDFilter
+                    (reportInfo: ReportInfo) => reportInfo.ticket.ticketType === ticketTypeFilter
                 );
                 setItems(filteredItems);
             })
             .catch((error) => {
                 console.error("Error fetching items:", error);
             });
-    }, [ticketIDFilter]); // Re-fetch data when ticketIDFilter changes
+    }, [ticketTypeFilter]); // Re-fetch data when ticketTypeFilter changes
 
     return (
         <Grid container spacing={4}>
-            {items.map((item) => (
-                <Grid item key={item.itemID} xs={12} sm={6} md={4}>
+            {reportInfos.map((reportInfo) => (
+                <Grid item key={reportInfo.reportInfoID} xs={12} sm={6} md={4}>
                     <Card
                         sx={{
                             height: "100%",
@@ -142,17 +165,17 @@ function Tickets({ ticketIDFilter }: { ticketIDFilter: number }) {
                                 // 16:9
                                 pt: "56.25%",
                             }}
-                            image="https://source.unsplash.com/random?wallpapers"
+                            image={reportInfo.item.image}
                         />
                         <CardContent sx={{ flexGrow: 1 }}>
                             <Typography
                                 gutterBottom
                                 variant="h5"
-                                component="h2"
+                                component="h3"
                             >
-                                {item.itemName}
+                                {reportInfo.item.itemName}
                             </Typography>
-                            <Typography>{item.category}</Typography>
+                            <Typography>{reportInfo.item.category}</Typography>
                         </CardContent>
                         <CardActions>
                             <Button size="small" href="./view-item">
