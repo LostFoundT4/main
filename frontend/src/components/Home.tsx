@@ -171,10 +171,12 @@ function Tickets({ ticketTypeFilter }: { ticketTypeFilter: string }) {
                                 gutterBottom
                                 variant="h5"
                                 component="h3"
+                                className="item-name"
                             >
                                 {reportInfo.item.itemName}
                             </Typography>
-                            <Typography>{reportInfo.item.category}</Typography>
+                            <Typography className="item-category">{reportInfo.item.category}</Typography>
+                            <Typography  className="item-description">{reportInfo.description}</Typography>
                         </CardContent>
                         <CardActions>
                             <Button size="small" href="./view-item">
@@ -370,7 +372,7 @@ export default function Home() {
                                             right: "16px", // Adjust the right value as needed
                                         }}
                                     >
-                                        Add New Item
+                                        Add Item
                                     </Button>
                                 </Paper>
                             </Grid>
