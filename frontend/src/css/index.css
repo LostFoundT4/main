@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css?family=Lexend+Deca");
 
-/* Colour palette :#000, #21222c, #09D670 , #28b280, #272833*/
+/* Colour palette :#000, #21222c, #6cf3c3*/
 html,
 body,
 div,
@@ -148,18 +148,19 @@ video {
 .sign-in-button {
   background-color: #21222c !important;
   padding: 20px !important;
-  font-weight: lighter !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.04ch !important;
   transition: 0.4s ease-in-out !important;
 }
 
 .sign-in-button:hover {
-  background-color: #09d670 !important;
+  background-color: #6cf3c3 !important;
   color: #21222c !important;
 }
 
 /* Home Page */
 .css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
-  color: #78f5ca !important;
+  color: #6cf3c3 !important;
   letter-spacing: -0.04ch !important;
   font-weight: 800 !important;
 }
@@ -171,7 +172,7 @@ video {
 }
 
 .css-1aquho2-MuiTabs-indicator {
-  background-color: #78f5ca !important;
+  background-color: #6cf3c3 !important;
 }
 
 .css-f6cijq {
@@ -184,27 +185,37 @@ video {
 
 .add-item-button {
   background-color: #21222c !important;
-  padding: 15px !important;
+  padding: 20px !important;
   font-weight: lighter !important;
   transition: 0.4s ease-in-out !important;
-  border-width: 2px !important;
-  border-style: solid !important;
-  border-image: linear-gradient(to right, #92f7fe, #09d670) 1 !important;
+  border-radius: 10px!important;
 }
-
+.add-item-button::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 10px; 
+  padding: 3px; 
+  background:linear-gradient(45deg, #92f7fe, #09d670); 
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude; 
+}
 .add-item-button:hover {
-  background-color: #09d670 !important;
+  background-color: #6cf3c3 !important;
   color: #21222c !important;
 }
 
 .css-16vq84g-MuiPaper-root-MuiCard-root{
   background-color:#ffffff17 !important; ;
-  border-radius: 25px !important;
+  border-radius: 15px !important;
   color: white !important;
 }
 
 .css-1knaqv7-MuiButtonBase-root-MuiButton-root{
-  color: #78f5ca !important;
+  color: #6cf3c3 !important;
   letter-spacing: -0.04ch !important;
   font-weight: 800 !important;
 }
