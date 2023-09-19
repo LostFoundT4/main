@@ -10,10 +10,11 @@ class LocationSerializer(serializers.ModelSerializer):
 class ReportSerializer(serializers.ModelSerializer):
     ticket = TicketSerializer()
     location = LocationSerializer()
+    item = ItemSerializer()
 
     class Meta:
         model = ReportInfo
-        fields = ['reportInfoID', 'description', 'ticket', 'location']
+        fields = ['reportInfoID', 'description', 'ticket', 'location', 'item']
 
 
 class StatusSerializer(serializers.ModelSerializer):

@@ -21,7 +21,6 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AxiosInstance from "../axios/axiosInstance";
-import '../css/index.css'
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -108,7 +107,7 @@ export default function SignUpSide() {
                     sm={8}
                     md={7} // Increase the md value to allocate more space
                     sx={{
-                        bgcolor: "#E9E9E9",
+                        bgcolor: "#21222c",
                         pt: 8,
                         pb: 6,
                     }}
@@ -122,16 +121,16 @@ export default function SignUpSide() {
                             color="text.primary"
                             gutterBottom
                         >
-                        Welcome!
+                        WELCOME !
                     </Typography>
                     <div className="sign-in-logo-container">
-                    <img className="sign-in-logo" src="https://res.cloudinary.com/dcaux54kw/image/upload/v1694597637/logo.png"></img>
+                    <img className="sign-in-logo" src="https://res.cloudinary.com/dcaux54kw/image/upload/v1694597637/glogo.png"></img>
                         </div>
                         <Typography
                             className = "sign-in-h2"
                             variant="h5"
                             align="center"
-                            color="text.primary"
+                            color="#fff"
                             paragraph
                         >
                             Lost something? Found something?<br/>Let us know and we'll look around.
@@ -163,8 +162,8 @@ export default function SignUpSide() {
                             alignItems: "center",
                         }}
                     >
-                        <Avatar sx={{ m: 1, bgcolor: "#222" }}>
-                            <PersonAddAltOutlinedIcon />
+                        <Avatar sx={{ m: 1, bgcolor: "#21222c" }}>
+                            <PersonAddAltOutlinedIcon sx={{color: '#ffffff'}}/>
                         </Avatar>
                         <Typography className="sign-in-h3" component="h1" variant="h5">
                             Sign up
