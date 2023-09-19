@@ -1,81 +1,283 @@
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-    font-family: 'Helvetica Neue' !important;
-	vertical-align: baseline;
+@import url("https://fonts.googleapis.com/css?family=Lexend+Deca");
+
+/* Colour palette :#000, #21222c, #6cf3c3, #a5adb1*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  font-family: "Lexend Deca", "Montserrat" !important;
+  vertical-align: baseline;
+  font-weight: 800 !important;
+  letter-spacing: -0.04ch !important;
+  /* color: #000 !important; */
 }
 
 /* Sign In Page */
 .sign-in-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    padding: var(--pad-large-modal);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding-top: 8% !important;
+  padding-bottom: 5% !important;
 }
 
 .sign-in-h1 {
-    font-size: 24px !important;
+  font-size: 24px !important;
+  color: #a5adb1 !important;
 }
-.sign-in-logo-container{
-    width: 100%;
+
+.sign-in-logo-container {
+  width: 100%;
 }
+
 .sign-in-logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    position: relative;
-    max-width: 200px;
-    margin-bottom: 35%;
-    margin-top: 30%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  position: relative;
+  max-width: 300px;
+  margin-bottom: 30%;
+  margin-top: 25%;
 }
 
 .sign-in-h2 {
-    display: flex;
-    justify-content: left;
-    align-items: center;
-    font-weight: 300 !important;
-    font-size: 18px !important;
-    text-align: left !important;
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  font-weight: 800 !important;
+  font-size: 18px !important;
+  color: #a5adb1 !important;
+  text-align: left !important;
 }
 
 .sign-in-container2 {
-    padding-top: 64px !important;
-    padding-bottom: 48px !important;
+  padding-top: 5% !important;
 }
 
 .sign-in-box {
-    margin-top: 50px !important;
-}
-
-.sign-in-h3 {
-    font-weight: 500 !important;
+  margin-top: 50px !important;
 }
 
 .sign-in-link {
-    color: #222 !important;
+  color: #222 !important;
 }
 
 .sign-in-button {
-    background-color: #222 !important;
-    padding: 20px !important;
-    font-weight: lighter !important;
+  background-color: #21222c !important;
+  padding: 20px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.04ch !important;
+  transition: 0.4s ease-in-out !important;
 }
 
-/*  */
+.sign-in-button:hover {
+  background-color: #6cf3c3 !important;
+  color: #21222c !important;
+}
+
+/* Home Page */
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root.Mui-selected {
+  color: #6cf3c3 !important;
+  letter-spacing: -0.04ch !important;
+  font-weight: 800 !important;
+}
+
+.css-1b008ma-MuiDivider-root{
+  border-color: #ffffff17 !important;
+}
+
+.css-1h9z7r5-MuiButtonBase-root-MuiTab-root {
+  letter-spacing: -0.04ch !important;
+  font-weight: 800 !important;
+  text-transform: inherit !important; 
+  font-size: 15px !important;
+  color: white !important;    
+  font-family: "Lexend Deca", "Montserrat" !important;
+}
+
+.css-1aquho2-MuiTabs-indicator {
+  background-color: #6cf3c3 !important;
+}
+
+.css-f6cijq {
+  background-color: #21222c !important;
+}
+
+.css-1v32fr3-MuiPaper-root {
+  background-color: #21222c !important;
+}
+
+.add-item-button {
+  background-color: #21222c !important;
+  font-size: 14px !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.04ch !important;
+  padding: 15px 25px!important;
+  transition: 0.4s ease-in-out !important;
+  border-radius: 7px!important;
+}
+.add-item-button::before{
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 7px; 
+  padding: 3px; 
+  background:linear-gradient(45deg, #92f7fe, #09d670); 
+  -webkit-mask: 
+     linear-gradient(#fff 0 0) content-box, 
+     linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+          mask-composite: exclude; 
+}
+.add-item-button:hover {
+  background-color: #6cf3c3 !important;
+  color: #21222c !important;
+}
+
+.css-16vq84g-MuiPaper-root-MuiCard-root{
+  background-color:#ffffff17 !important; ;
+  border-radius: 15px !important;
+  color: white !important;
+}
+
+.css-1knaqv7-MuiButtonBase-root-MuiButton-root{
+  color: #6cf3c3 !important;
+  letter-spacing: -0.04ch !important;
+  font-weight: 800 !important;
+}
+
+.css-cvumne-MuiDrawer-docked .MuiDrawer-paper{
+  background-color: #21222c !important;
+  color: #fff !important;
+}
+
+.css-aq1gdx-MuiDrawer-docked .MuiDrawer-paper{
+  background-color: #21222c !important;
+  color: #fff !important;
+}
+
+.css-i4bv87-MuiSvgIcon-root{
+  color: #fff !important;
+}
+
+.css-16vq84g-MuiPaper-root-MuiCard-root{
+  transition: 0.4s ease-in-out !important;
+}
+
+.css-16vq84g-MuiPaper-root-MuiCard-root:hover {
+  transform: scale(1.03);
+  box-shadow: 0px 10px 20px 2px rgba(0, 0, 0, 0.25);
+}
+
+.item-name{
+  font-size: 17px !important;
+}
+
+.item-category{
+  background-color: #2dd197 !important;
+  padding: 7px 15px !important;
+  margin-bottom: 5px !important;
+  width: fit-content !important;
+  cursor: default;
+  font-size: 13px !important;
+}
+
+.item-description{
+  font-size: 15px !important;
+  color:#6cf3c3 !important;
+  background-color: #21222c !important;
+  padding: 7px 15px !important;
+  width: fit-content !important;
+  font-weight: 300 !important;
+  transition: 0.4s ease-in-out !important;
+  cursor: default;
+}
+
+.item-description:hover{
+  color: #21222c !important;
+  background-color: #2dd197 !important;
+}
