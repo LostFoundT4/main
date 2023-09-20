@@ -10,7 +10,10 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
+import Typography from "@mui/material/Typography";
+import InputAdornment from "@mui/material/InputAdornment";
+import TextField from "@mui/material/TextField";
+import SearchIcon from "@mui/icons-material/Search";
 import {
     mainListItems,
     secondaryListItems,
@@ -104,6 +107,8 @@ export default function AppDrawer() {
                         >
                             <MenuIcon />
                         </IconButton>
+                        <img className="drawer-logo" src="https://res.cloudinary.com/dcaux54kw/image/upload/v1694597637/glogo.png"></img>
+                        <Typography className="drawer-h1">Connect and Reunite: Share Your Findings with People.</Typography>
                     </Toolbar>
                 </AppBar>
                 <Drawer variant="permanent" open={open} >
@@ -117,16 +122,16 @@ export default function AppDrawer() {
                         }}
                     >
                         <IconButton onClick={toggleDrawer}>
-                            <ChevronLeftIcon />
+                            <ChevronLeftIcon className="side-nav-chevronlefticon"/>
                         </IconButton>
                     </Toolbar>
                     <Divider />
-                    <List component="nav">
+                    <List component="nav" className="side-nav">
                         {mainListItems}
                         <Divider sx={{ my: 1 }} />
                         {secondaryListItems}
                     </List>
-                </Drawer>
+                </Drawer> 
                 <Box
                     component="main"
                     sx={{

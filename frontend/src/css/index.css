@@ -198,13 +198,13 @@ video {
   letter-spacing: -0.04ch !important;
   padding: 15px 25px!important;
   transition: 0.4s ease-in-out !important;
-  border-radius: 7px!important;
+  border-radius: 50px!important;
 }
 .add-item-button::before{
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 7px; 
+  border-radius: 50px; 
   padding: 3px; 
   background:linear-gradient(45deg, #92f7fe, #09d670); 
   -webkit-mask: 
@@ -215,7 +215,15 @@ video {
 }
 .add-item-button:hover {
   background-color: #6cf3c3 !important;
-  color: #21222c !important;
+}
+
+.search-bar {
+  min-width: 250px !important;
+  width: 45% !important;
+}
+
+.search-icon {
+ color: #21222c !important;
 }
 
 .css-16vq84g-MuiPaper-root-MuiCard-root{
@@ -228,20 +236,6 @@ video {
   color: #6cf3c3 !important;
   letter-spacing: -0.04ch !important;
   font-weight: 800 !important;
-}
-
-.css-cvumne-MuiDrawer-docked .MuiDrawer-paper{
-  background-color: #21222c !important;
-  color: #fff !important;
-}
-
-.css-aq1gdx-MuiDrawer-docked .MuiDrawer-paper{
-  background-color: #21222c !important;
-  color: #fff !important;
-}
-
-.css-i4bv87-MuiSvgIcon-root{
-  color: #fff !important;
 }
 
 .css-16vq84g-MuiPaper-root-MuiCard-root{
@@ -280,4 +274,29 @@ video {
 .item-description:hover{
   color: #21222c !important;
   background-color: #2dd197 !important;
+}
+
+/* App Drawer */
+.css-cvumne-MuiDrawer-docked .MuiDrawer-paper{
+  background-color: #21222c !important;
+  color: #fff !important;
+}
+
+.css-aq1gdx-MuiDrawer-docked .MuiDrawer-paper{
+  background-color: #21222c !important;
+  color: #fff !important;
+}
+
+.side-nav .css-i4bv87-MuiSvgIcon-root, .side-nav-chevronlefticon{
+  color: #fff !important;
+}
+
+.drawer-logo{
+  max-width: 50px;
+  margin: 10px 25px 10px 10px;
+}
+
+.drawer-h1{
+text-transform: uppercase;
+    font-size: 0.8em !important;
 }

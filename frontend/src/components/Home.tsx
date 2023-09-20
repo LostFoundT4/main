@@ -38,6 +38,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import AxiosInstance from "../axios/axiosInstance";
+import AddIcon from '@mui/icons-material/Add';
+import AppDrawer from './AppDrawer.tsx'
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -178,18 +180,18 @@ function Tickets({ ticketTypeFilter }: { ticketTypeFilter: string }) {
                             <Typography className="item-category">{reportInfo.item.category}</Typography>
                             <Typography  className="item-description">{reportInfo.description}</Typography>
                         </CardContent>
-                        <CardActions>
+                        {/* <CardActions>
                             <Button size="small" href="./view-item">
                                 View
                             </Button>
-                            {/* Todo: change href */}
+                            Todo: change href *
                             <div style={{ marginLeft: "auto" }}>
                                 <Button size="small" href="./edit-item">
                                     Edit
                                 </Button>
-                                {/* Todo: change href */}
+                                {/* Todo: change href
                             </div>
-                        </CardActions>
+                        </CardActions> */}
                     </Card>
                 </Grid>
             ))}
@@ -212,56 +214,6 @@ function Copyright(props: any) {
     );
 }
 
-const drawerWidth: number = 240;
-
-interface AppBarProps extends MuiAppBarProps {
-    open?: boolean;
-}
-
-const AppBar = styled(MuiAppBar, {
-    shouldForwardProp: (prop) => prop !== "open",
-})<AppBarProps>(({ theme, open }) => ({
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(["width", "margin"], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-    }),
-    ...(open && {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(["width", "margin"], {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-    }),
-}));
-
-const Drawer = styled(MuiDrawer, {
-    shouldForwardProp: (prop) => prop !== "open",
-})(({ theme, open }) => ({
-    "& .MuiDrawer-paper": {
-        position: "relative",
-        whiteSpace: "nowrap",
-        width: drawerWidth,
-        transition: theme.transitions.create("width", {
-            easing: theme.transitions.easing.sharp,
-            duration: theme.transitions.duration.enteringScreen,
-        }),
-        boxSizing: "border-box",
-        ...(!open && {
-            overflowX: "hidden",
-            transition: theme.transitions.create("width", {
-                easing: theme.transitions.easing.sharp,
-                duration: theme.transitions.duration.leavingScreen,
-            }),
-            width: theme.spacing(7),
-            [theme.breakpoints.up("sm")]: {
-                width: theme.spacing(9),
-            },
-        }),
-    },
-}));
-
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
@@ -281,63 +233,7 @@ export default function Home() {
         <ThemeProvider theme={defaultTheme}>
             <Box sx={{ display: "flex" }}>
                 <CssBaseline />
-                <AppBar position="absolute" open={open} style={{ background: '#21222c' }}>
-                    <Toolbar
-                        sx={{
-                            pr: "24px", // keep right padding when drawer closed
-                        }}
-                    >
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={toggleDrawer}
-                            sx={{
-                                marginRight: "36px",
-                                ...(open && { display: "none" }),
-                            }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-
-                        <TextField
-                            id="filled-basic"
-                            label="Search"
-                            variant="filled"
-                            InputProps={{
-                                style: {
-                                    backgroundColor: "#fff",
-                                },
-                                endAdornment: (
-                                    <InputAdornment position="start">
-                                        <SearchIcon />
-                                    </InputAdornment>
-                                ),
-                            }}
-                        />
-                    </Toolbar>
-                </AppBar>
-                <Drawer variant="permanent" open={open} >
-                    <Toolbar
-                        sx={{
-                            bgColor: '#21222c',
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "flex-end",
-                            px: [1],
-                        }}
-                    >
-                        <IconButton onClick={toggleDrawer}>
-                            <ChevronLeftIcon />
-                        </IconButton>
-                    </Toolbar>
-                    <Divider />
-                    <List component="nav">
-                        {mainListItems}
-                        <Divider sx={{ my: 1 }} />
-                        {secondaryListItems}
-                    </List>
-                </Drawer>
+                <AppDrawer />
                 <Box
                     component="main"
                     sx={{
@@ -349,6 +245,22 @@ export default function Home() {
                 >
                     <Toolbar />
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4}}>
+                    <TextField
+                            id="filled-basic"
+                            label="Search"
+                            variant="filled"
+                            className="search-bar"
+                            InputProps={{
+                                style: {
+                                    backgroundColor: "#fff",
+                                },
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <SearchIcon className="search-icon"/>
+                                    </InputAdornment>
+                                ),
+                            }}
+                        /> 
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
                                 <Paper
@@ -372,7 +284,7 @@ export default function Home() {
                                             right: "16px", // Adjust the right value as needed
                                         }}
                                     >
-                                        Add Item
+                                       <AddIcon />
                                     </Button>
                                 </Paper>
                             </Grid>
