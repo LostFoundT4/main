@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Ticket (models.Model):
-    userID = models.ForeignKey(User, related_name='tickets',on_delete=models.SET_DEFAULT, default=None)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     ticketID = models.AutoField(primary_key=True)
     ticketType = models.CharField(max_length=100)
     created_dateTime = models.DateTimeField(auto_now_add=True)
