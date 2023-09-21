@@ -104,7 +104,13 @@ function a11yProps(index: number) {
     };
 }
 
-function BasicTabs() {
+function BasicTabs({
+    searchQuery,
+    onSearchQueryChange,
+}: {
+    searchQuery: string;
+    onSearchQueryChange: (query: string) => void;
+}) {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -124,21 +130,37 @@ function BasicTabs() {
                 </Tabs>
             </Box>
             <CustomTabPanel value={value} index={0}>
-                <Tickets ticketTypeFilter={"Lost"} />
+                <Tickets
+                    ticketTypeFilter={"Lost"}
+                    searchQuery={searchQuery}
+                    onSearchQueryChange={onSearchQueryChange}
+                />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
-                <Tickets ticketTypeFilter={"Found"} />
+                <Tickets
+                    ticketTypeFilter={"Found"}
+                    searchQuery={searchQuery}
+                    onSearchQueryChange={onSearchQueryChange}
+                />
             </CustomTabPanel>
         </Box>
     );
 }
 
-function Tickets({ ticketTypeFilter }: { ticketTypeFilter: string }) {
+function Tickets({
+    ticketTypeFilter,
+    searchQuery,
+    onSearchQueryChange,
+}: {
+    ticketTypeFilter: string;
+    searchQuery: string;
+    onSearchQueryChange: (query: string) => void;
+}) {
     const [reportInfos, setItems] = useState<ReportInfo[]>([]);
-    const [searchQuery, setSearchQuery] = useState<string>("");
 
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setSearchQuery(event.target.value);
+        const query = event.target.value;
+        onSearchQueryChange(query); // Update the common search query state
     };
 
     useEffect(() => {
@@ -175,12 +197,13 @@ function Tickets({ ticketTypeFilter }: { ticketTypeFilter: string }) {
         <div>
             <TextField
                 id="filled-basic"
-                label="Search"
+                // label="Search"
                 variant="filled"
                 className="search-bar"
                 InputProps={{
                     style: {
                         backgroundColor: "#fff",
+                        display: "none", // Add this line to hide the search bar
                     },
                     endAdornment: (
                         <InputAdornment position="end">
@@ -260,27 +283,13 @@ function Tickets({ ticketTypeFilter }: { ticketTypeFilter: string }) {
     );
 }
 
-function Copyright(props: any) {
-    return (
-        <Typography
-            variant="body2"
-            color="text.secondary"
-            align="center"
-            {...props}
-        >
-            <Link color="inherit" href="./sign-in">
-                Back to Login
-            </Link>{" "}
-        </Typography>
-    );
-}
-
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Home() {
     const [open, setOpen] = React.useState(true);
-    const [value, setValue] = React.useState(0); // Initialize the selected tab index
+    const [value, setValue] = React.useState(0);
+    const [searchQuery, setSearchQuery] = useState<string>(""); // State for search query
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -288,6 +297,10 @@ export default function Home() {
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
+    };
+
+    const handleSearchQueryChange = (query: string) => {
+        setSearchQuery(query); // Update the search query in the Home component
     };
 
     return (
@@ -318,7 +331,35 @@ export default function Home() {
                                         position: "relative",
                                     }}
                                 >
-                                    <BasicTabs />
+                                    <TextField
+                                        id="filled-basic"
+                                        label="Search"
+                                        variant="filled"
+                                        className="search-bar"
+                                        InputProps={{
+                                            style: {
+                                                backgroundColor: "#fff",
+                                                marginBottom: "16px", // Add margin to move it below the search bar
+                                            },
+                                            endAdornment: (
+                                                <InputAdornment position="end">
+                                                    <SearchIcon className="search-icon" />
+                                                </InputAdornment>
+                                            ),
+                                        }}
+                                        value={searchQuery} // Pass the searchQuery state
+                                        onChange={(e) =>
+                                            handleSearchQueryChange(
+                                                e.target.value
+                                            )
+                                        }
+                                    />
+                                    <BasicTabs
+                                        searchQuery={searchQuery}
+                                        onSearchQueryChange={
+                                            handleSearchQueryChange
+                                        }
+                                    />
                                     <Button
                                         href="./add-new-item" // Todo: change href
                                         variant="contained"
