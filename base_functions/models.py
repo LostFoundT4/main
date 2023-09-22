@@ -20,5 +20,6 @@ class Item (models.Model):
 class userAdditionalProfile(models.Model):
     userProfileNumber = models.AutoField(primary_key = True)
     usedID = models.ForeignKey(User, related_name='profile', on_delete=models.SET_DEFAULT, default=None)
-    userTelegramID = models.CharField(max_length=100)
+    userTelegramID = models.CharField(max_length=100, blank=True, null=True)
     userProfilePicture = models.ImageField(upload_to='profile-images/', blank=True, null=True)
+    userPhoneNumber = models.CharField(max_length=8, blank=True)
