@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState } from "react";
 import {
   Typography,
   TextField,
@@ -17,8 +16,26 @@ function EditProfile() {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePicture, setProfilePicture] = useState(""); // You can use a URL or a file object
 
+  // Function to handle profile picture changes
+  function handleProfilePictureChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+
+    if (file) {
+      // Use FileReader to read the selected image and set it as the profile picture
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        const imageDataUrl = event.target?.result as string | null;
+
+        if (imageDataUrl) {
+          setProfilePicture(imageDataUrl);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   // Function to handle form submission
-  const handleSubmit = (e: { preventDefault: () => void; }) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Send the updated profile information to the server or update states.
@@ -41,11 +58,38 @@ function EditProfile() {
           mt: 4,
         }}
       >
-        <Avatar sx={{ width: 100, height: 100 }} src={profilePicture} alt="Profile" />
+        <Avatar
+          sx={{ width: 100, height: 100 }}
+          src={profilePicture}
+          alt="Profile"
+        />
         <Typography variant="h5" mt={2}>
           Edit Profile
         </Typography>
         <form onSubmit={handleSubmit}>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            sx={{ mt: 2 }}
+            onClick={() => {
+              const profilePictureInput = document.getElementById(
+                "profilePictureInput"
+              );
+              if (profilePictureInput) {
+                profilePictureInput.click();
+              }
+            }}
+          >
+            Choose Profile Picture
+          </Button>
+          <input
+            type="file"
+            accept="image/*"
+            id="profilePictureInput"
+            style={{ display: "none" }}
+            onChange={(e) => handleProfilePictureChange(e)}
+          />
           <TextField
             label="Username"
             variant="outlined"
@@ -77,14 +121,6 @@ function EditProfile() {
             margin="normal"
             value={phoneNumber}
             onChange={(e) => setPhoneNumber(e.target.value)}
-          />
-          <TextField
-            label="Profile Picture URL"
-            variant="outlined"
-            fullWidth
-            margin="normal"
-            value={profilePicture}
-            onChange={(e) => setProfilePicture(e.target.value)}
           />
           <Button
             type="submit"
