@@ -38,8 +38,8 @@ import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import AxiosInstance from "../axios/axiosInstance";
-import AddIcon from '@mui/icons-material/Add';
 import AppDrawer from './AppDrawer'
+import CreateTicketButton from "./ticket_component/CreateTicketButton";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -290,6 +290,7 @@ export default function Home() {
     const [open, setOpen] = React.useState(true);
     const [value, setValue] = React.useState(0);
     const [searchQuery, setSearchQuery] = useState<string>(""); // State for search query
+    const [modalOpen, setModalOpen] = useState(false);
 
     const toggleDrawer = () => {
         setOpen(!open);
@@ -360,18 +361,7 @@ export default function Home() {
                                             handleSearchQueryChange
                                         }
                                     />
-                                    <Button
-                                        href="./add-new-item" // Todo: change href
-                                        variant="contained"
-                                        className="add-item-button"
-                                        style={{
-                                            position: "absolute",
-                                            top: "16px", // Adjust the top value as needed
-                                            right: "16px", // Adjust the right value as needed
-                                        }}
-                                    >
-                                        <AddIcon />
-                                    </Button>
+                                    <CreateTicketButton /> 
                                 </Paper>
                             </Grid>
                         </Grid>
