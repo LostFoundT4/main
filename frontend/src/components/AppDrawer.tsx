@@ -19,7 +19,6 @@ import {
     secondaryListItems,
 } from "./profile_components/ListItems";
 
-
 const drawerWidth: number = 240;
 
 interface AppBarProps extends MuiAppBarProps {
@@ -89,7 +88,11 @@ export default function AppDrawer() {
         <ThemeProvider theme={defaultTheme}>
             <Box sx={{ display: "flex" }}>
                 <CssBaseline />
-                <AppBar position="absolute" open={open} style={{ background: '#21222c' }}>
+                <AppBar
+                    position="absolute"
+                    open={open}
+                    style={{ background: "#21222c" }}
+                >
                     <Toolbar
                         sx={{
                             pr: "24px", // keep right padding when drawer closed
@@ -107,14 +110,20 @@ export default function AppDrawer() {
                         >
                             <MenuIcon />
                         </IconButton>
-                        <img className="drawer-logo" src="https://res.cloudinary.com/dcaux54kw/image/upload/v1694597637/glogo.png"></img>
-                        <Typography className="drawer-h1">Connect and Reunite: Share Your Findings with People.</Typography>
+                        <img
+                            className="drawer-logo"
+                            src="https://res.cloudinary.com/dcaux54kw/image/upload/v1694597637/glogo.png"
+                        ></img>
+                        <Typography className="drawer-h1">
+                            Connect and Reunite: Share Your Findings with
+                            People.
+                        </Typography>
                     </Toolbar>
                 </AppBar>
-                <Drawer variant="permanent" open={open} >
+                <Drawer variant="permanent" open={open}>
                     <Toolbar
                         sx={{
-                            bgColor: '#21222c',
+                            bgColor: "#21222c",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "flex-end",
@@ -122,7 +131,7 @@ export default function AppDrawer() {
                         }}
                     >
                         <IconButton onClick={toggleDrawer}>
-                            <ChevronLeftIcon className="side-nav-chevronlefticon"/>
+                            <ChevronLeftIcon className="side-nav-chevronlefticon" />
                         </IconButton>
                     </Toolbar>
                     <Divider />
@@ -131,7 +140,7 @@ export default function AppDrawer() {
                         <Divider sx={{ my: 1 }} />
                         {secondaryListItems}
                     </List>
-                </Drawer> 
+                </Drawer>
                 <Box
                     component="main"
                     sx={{
