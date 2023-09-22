@@ -8,7 +8,7 @@ import {
 import SignInSide from "./components/SignInSide";
 import SignUpSide from "./components/SignUpSide";
 import Home from "./components/Home";
-import Profile from "./components/ProfilePage";
+import Profile from "./components/Dashboard";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 
 export const App = () => {
@@ -20,7 +20,7 @@ export const App = () => {
                 <Route path="/frontend/sign-in" element={<SignInSide />}></Route>
                 <Route element = {<ProtectedRoute />}>
                     <Route path="/frontend/home" element={<Home />}></Route>
-                    <Route path="/frontend/profile-page" element = {<Profile />}></Route>
+                    <Route path="/frontend/dashboard" element = {<Profile />}></Route>
                 </Route>
             </Routes>
         </Router>

@@ -10,7 +10,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 
 export const mainListItems = (
     <React.Fragment>
-        <ListItemButton href="./dashboard">
+        <ListItemButton href="/frontend/dashboard">
             <ListItemIcon>
                 <DashboardIcon />
             </ListItemIcon>
@@ -22,7 +22,7 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Items" />
         </ListItemButton>
-        <ListItemButton href="./profile">
+        <ListItemButton href="./profile-page">
             <ListItemIcon>
                 <PeopleIcon />
             </ListItemIcon>

@@ -30,7 +30,7 @@ function Copyright(props: any) {
       align="center"
       {...props}
     >
-      <Link color="inherit" href="./">
+      <Link color="inherit" href="/frontend/sign-in">
         Back to Login
       </Link>{" "}
     </Typography>
