@@ -16,3 +16,9 @@ class Item (models.Model):
     category = models.CharField(max_length=200)
     image = models.ImageField(upload_to='images/', blank=True, null=True)
     found_dateTime = models.DateTimeField(default=timezone.now)
+
+class userAdditionalProfile(models.Model):
+    userProfileNumber = models.AutoField(primary_key = True)
+    usedID = models.ForeignKey(User, related_name='profile', on_delete=models.SET_DEFAULT, default=None)
+    userTelegramID = models.CharField(max_length=100)
+    userProfilePicture = models.ImageField(upload_to='profile-images/', blank=True, null=True)
