@@ -29,11 +29,11 @@ class LoginAPI(generics.GenericAPIView):
             user = serializer.validated_data
             _, token = AuthToken.objects.create(user)
             print("Hello")
-            #return Response({
-            #    "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            #    "token": token
-            #})
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response({
+               "user": UserSerializer(user, context=self.get_serializer_context()).data,
+               "token": token
+            })
+            # return Response(serializer.data , status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 

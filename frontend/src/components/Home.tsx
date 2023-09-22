@@ -39,7 +39,7 @@ import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
 import AxiosInstance from "../axios/axiosInstance";
 import AddIcon from '@mui/icons-material/Add';
-import AppDrawer from './AppDrawer.tsx'
+import AppDrawer from './AppDrawer'
 
 interface TabPanelProps {
     children?: React.ReactNode;

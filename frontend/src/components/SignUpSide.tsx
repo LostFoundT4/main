@@ -50,7 +50,7 @@ export default function SignUpSide() {
         setPasswordError(false)
     },[pwd])
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // Check if the email ends with "@smu.edu.sg"
         if (!emailRegex.test(email)) {
@@ -64,7 +64,7 @@ export default function SignUpSide() {
         // If email is valid, proceed with form submission
         setEmailError(false);
         setPasswordError(false);
-        AxiosInstance.post('/api/auth/register',{
+        await AxiosInstance.post('/api/auth/register',{
             "username": usr,
             "password": pwd,
             "email":email

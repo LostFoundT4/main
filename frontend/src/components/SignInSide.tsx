@@ -1,4 +1,4 @@
-import {useState , useRef , useEffect} from "react";
+import {useState , useContext , useEffect} from "react";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -30,7 +30,7 @@ export default function SignInSide() {
 
     const [usr,setUsr] = useState("")
     const [pwd,setPwd] = useState("")
-    const[isCorrectCred,setisCorrectCred] = useState(true)
+    const [isCorrectCred,setisCorrectCred] = useState(true)
     const [showPassword, setShowPassword] = useState(false);
 
     useEffect(() =>{
@@ -41,10 +41,13 @@ export default function SignInSide() {
         event.preventDefault();
 
         const data = new FormData(event.currentTarget);
-        AxiosInstance.post('/api/auth/login',{
+        await AxiosInstance.post('/api/auth/login',{
             "username":data.get("username"),
             "password":data.get("password")},
-            ).then((response)=> {navigate("/frontend/home")}
+            ).then(async (response)=> {
+                console.log(response.data)
+                navigate("/frontend/home")
+            }
             ).catch((error) => {
                 setisCorrectCred(false)
             })
