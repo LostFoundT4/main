@@ -22,7 +22,6 @@ class TicketSerializer(serializers.ModelSerializer):
         model = Ticket
         fields = ['ticketID', 'ticketType', 'created_dateTime', 'user', 'username']
 
-
 class AlterTicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
