@@ -249,21 +249,26 @@ video {
 
 .item-name{
   font-size: 17px !important;
+  color:#fff !important;
 }
 
 .item-category{
+  color: #21222c !important;
   background-color: #2dd197 !important;
   padding: 7px 15px !important;
   margin-bottom: 5px !important;
   width: fit-content !important;
   cursor: default;
   font-size: 13px !important;
+  transition: 0.4s ease-in-out !important;
+  cursor: default;
 }
 
 .item-description{
   font-size: 15px !important;
   color:#6cf3c3 !important;
   background-color: #21222c !important;
+  margin-bottom: 5px !important;
   padding: 7px 15px !important;
   width: fit-content !important;
   font-weight: 300 !important;
@@ -276,6 +281,22 @@ video {
   background-color: #2dd197 !important;
 }
 
+.item-category:hover{
+  color: #2dd197 !important;
+  background-color: #21222c !important;
+}
+
+.popup-modal{
+  border: none !important;
+  background-color: #35363f !important;
+  border-radius: 15px !important;
+  min-width: 500px !important;
+  width: 35% !important;
+}
+
+.popup-content-container{
+  padding-top: 15px !important;
+}
 /* App Drawer */
 .css-cvumne-MuiDrawer-docked .MuiDrawer-paper{
   background-color: #21222c !important;
