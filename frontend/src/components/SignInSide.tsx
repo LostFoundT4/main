@@ -45,7 +45,9 @@ export default function SignInSide() {
             "username":data.get("username"),
             "password":data.get("password")},
             ).then(async (response)=> {
-                console.log(response.data)
+                localStorage.clear()
+                localStorage.setItem("userName",response.data.user.username)
+                localStorage.setItem("id",response.data.user.id)
                 navigate("/frontend/home")
             }
             ).catch((error) => {
