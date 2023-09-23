@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 const defaultTheme = createTheme();
 
 export default function LandingPage() {
+    localStorage.setItem('authToken', "0");
     return (
         <ThemeProvider theme={defaultTheme}>
             <CssBaseline />

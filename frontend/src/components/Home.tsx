@@ -41,6 +41,9 @@ import AxiosInstance from "../axios/axiosInstance";
 import AddIcon from "@mui/icons-material/Add";
 import AppDrawer from "./AppDrawer";
 
+import { useLocation } from 'react-router-dom';
+import axios from "axios/index";
+
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
@@ -96,6 +99,10 @@ function CustomTabPanel(props: TabPanelProps) {
         </div>
     );
 }
+
+document.addEventListener("DOMContentLoaded", function(){
+    console.log("Hello");
+});
 
 function a11yProps(index: number) {
     return {
@@ -287,6 +294,7 @@ function Tickets({
 const defaultTheme = createTheme();
 
 export default function Home() {
+    console.log(localStorage.getItem('authToken'))
     const [open, setOpen] = React.useState(true);
     const [value, setValue] = React.useState(0);
     const [searchQuery, setSearchQuery] = useState<string>(""); // State for search query

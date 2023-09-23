@@ -34,7 +34,8 @@ class LoginAPI(generics.GenericAPIView):
             #    "user": UserSerializer(user, context=self.get_serializer_context()).data,
             #    "token": token
             #})
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            print(serializer.data)
+            return Response(token, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_401_UNAUTHORIZED)
 

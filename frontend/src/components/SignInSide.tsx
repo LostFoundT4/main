@@ -44,7 +44,14 @@ export default function SignInSide() {
         AxiosInstance.post('/api/auth/login',{
             "username":data.get("username"),
             "password":data.get("password")},
-            ).then((response)=> {navigate("/frontend/home")}
+            )
+           // .then((response)=> {navigate("/frontend/home" ,{state:response})}
+            .then((response)=> {
+                console.log(response.data)
+                localStorage.setItem('authToken', "0");
+                localStorage.setItem('authToken', response.data);
+                navigate("/frontend/home");
+            }
             ).catch((error) => {
                 setisCorrectCred(false)
             })
