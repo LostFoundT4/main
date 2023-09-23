@@ -290,7 +290,6 @@ export default function Home() {
     const [open, setOpen] = React.useState(true);
     const [value, setValue] = React.useState(0);
     const [searchQuery, setSearchQuery] = useState<string>(""); // State for search query
-    const [modalOpen, setModalOpen] = useState(false);
 
     const toggleDrawer = () => {
         setOpen(!open);

@@ -19,6 +19,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import AxiosInstance from '../../axios/axiosInstance';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -29,11 +30,30 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
+interface Location{
+  locationID : number
+  building: string
+  room: number
+}
+
 export default function CreateTicketButton() {
   const [open, setOpen] = React.useState(false);
-  const [value, setValue] = React.useState<Dayjs | null>(dayjs());
+  const [datetime, setDateTime] = React.useState<Dayjs | null>(dayjs());
   const [type, setType] = React.useState('');
+  const [itemName, setItemName] = React.useState('');
+  const [category,setCategory] = React.useState('');
+  const [location,setLocation] = React.useState<Location[]>([]);
+  const [description , SetDescription ] = React.useState("")
+  const [selectedLocation, setSelectedLocation] = React.useState('');
+  const [file , SetFile ] = React.useState<File>()
+  
+  React.useEffect(()=>{
+    fetchLocation()
+  },[])
 
+  function handleimage(e : any) {
+    SetFile(e.target.files[0])
+  }
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -45,6 +65,69 @@ export default function CreateTicketButton() {
   const handleChange = (event:any) => {
     setType(event.target.value);
   };
+
+  const fetchLocation = async() => {
+    await AxiosInstance.get("/locations/").then(
+      (response) => {
+        setLocation(response.data)
+      }
+    )
+  }
+
+  const handleProcced = async () =>{
+    let id = localStorage.getItem("id")
+
+    await AxiosInstance.post("/tickets/",{
+      "ticketType": type,
+      "user" : parseInt(id!)
+    }).then(async (response) => {
+
+      const formData = new FormData();
+      formData.append('ticketID', response.data.ticketID)
+      formData.append('itemName', itemName)
+      formData.append('category', category)
+      if(file?.type !== undefined){
+        formData.append('image', file!)
+      }
+      formData.append('found_dateTime', datetime?.format('YYYY-MM-DDTHH:mm:ss[Z]')!)
+
+      await AxiosInstance.post("/items/", formData ,{
+        headers: {
+          "Content-Type": "multipart/form-data",
+        }
+      }).then(async (response) => {
+
+          await AxiosInstance.post("/reportInfos/",{
+            "ticket": response.data.ticketID,
+            "item": response.data.itemID,
+            "location": parseInt(selectedLocation),
+            "description": description
+
+          }).then(async(response) =>{
+
+            await AxiosInstance.post("/status/",{
+              "user": parseInt(id!),
+              "ticket": response.data.ticket,
+              "type": "Pending",
+              "endorsedUserID": null
+            }).then(async(response) =>{
+              console.log("succuessfully created ticket")
+
+            }).catch((error) => {
+              console.log("failed Status")
+            })
+        })
+        .catch((error) => {
+        console.log("failed Reportinfo")
+      })
+      }).catch((error) => {
+        console.log("failed creating items")
+      })
+    }).catch((error) => {
+      console.log("failed creating ticket")
+    })
+    setOpen(false)
+  }
 
   return (
     <div>
@@ -82,7 +165,7 @@ export default function CreateTicketButton() {
         <DialogContent dividers>
           <Typography gutterBottom>
             <FormControl fullWidth>
-              <InputLabel id="TicketType">Type</InputLabel>
+              <InputLabel id="TicketType" required>Type</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
@@ -96,13 +179,25 @@ export default function CreateTicketButton() {
             </FormControl>
           </Typography>
           <Typography gutterBottom>
-            <TextField id="outlined-basic" label="ItemName" variant="outlined" />
+            <TextField id="outlined-basic" label="ItemName" variant="outlined" value ={itemName} onChange={(e) => setItemName(e.target.value)} required/>
           </Typography>
           <Typography gutterBottom>
-            <TextField id="outlined-basic" label="Category" variant="outlined" />
+            <TextField id="outlined-basic" label="Category" variant="outlined" value ={category} onChange={(e) => setCategory(e.target.value)} required/>
           </Typography>
           <Typography gutterBottom>
-            <TextField id="outlined-basic" label="Location" variant="outlined" />
+            <FormControl fullWidth>
+
+              <InputLabel id="location" required>Location</InputLabel>
+              <Select
+              disabled={false}
+              value={selectedLocation}
+              onChange={(e) => setSelectedLocation(e.target.value)}>
+              {location.map((item,index) => (
+                <MenuItem key={index} value={item.locationID}>{item.building} {item.room}</MenuItem>
+              ))}
+              </Select>
+            </FormControl>
+
           </Typography>
           <Typography gutterBottom>
             <TextField
@@ -110,6 +205,8 @@ export default function CreateTicketButton() {
               label="Description"
               multiline
               rows={4}
+              value={description}
+              onChange={(e) => SetDescription(e.target.value)}
           />
           </Typography>
           <Typography gutterBottom>
@@ -117,8 +214,8 @@ export default function CreateTicketButton() {
                 <DemoContainer components={['DateTimePicker', 'DateTimePicker']}>
                   <DateTimePicker
                     label="Date"
-                    value={value}
-                    onChange={(newValue) => setValue(newValue)}
+                    value={datetime}
+                    onChange={(e) => setDateTime(e)}
                   />
                 </DemoContainer>
               </LocalizationProvider>
@@ -131,14 +228,15 @@ export default function CreateTicketButton() {
             Upload File
             <input
               type="file"
+              onChange={handleimage}
               hidden
             />
           </Button>
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleClose}>
-            Save changes
+          <Button autoFocus onClick={handleProcced} >
+            Procceed
           </Button>
         </DialogActions>
       </BootstrapDialog>
