@@ -22,7 +22,7 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Items" />
         </ListItemButton>
-        <ListItemButton href="./edit-profile">
+        <ListItemButton href="./profile">
             <ListItemIcon>
                 <PeopleIcon />
             </ListItemIcon>
@@ -42,7 +42,7 @@ export const secondaryListItems = (
             </ListItemIcon>
             <ListItemText primary="Settings" />
         </ListItemButton>
-        <ListItemButton href="../api/auth/logout">
+        <ListItemButton href="./sign-in">
             <ListItemIcon>
                 <LogoutIcon />
             </ListItemIcon>
