@@ -7,6 +7,8 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleIcon from "@mui/icons-material/People";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
+import AxiosInstance from "../../axios/axiosInstance";
+import { useNavigate } from "react-router-dom";
 
 export const mainListItems = (
     <React.Fragment>
@@ -31,6 +33,33 @@ export const mainListItems = (
     </React.Fragment>
 );
 
+
+const handleLogout = () => {
+    // let navigate = useNavigate()
+    
+    // Retrieve authToken from local storage
+    const authToken = localStorage.getItem("authToken");
+    console.log("authToken:", authToken);
+
+    // Check if authToken is available
+    if (authToken) {
+        // Send a POST request to log out
+        AxiosInstance
+            .post("/api/auth/logout")
+            .then(() => {
+                localStorage.removeItem("authToken");
+                // navigate("/frontend/sign-in");
+
+            })
+            .catch((error) => {
+                console.error("Logout failed:", error);
+            });
+    } else {
+        // Handle the case where authToken is not available (e.g., user is not logged in)
+    }
+};
+
+
 export const secondaryListItems = (
     <React.Fragment>
         {/* <ListSubheader component="div" inset>
@@ -42,7 +71,7 @@ export const secondaryListItems = (
             </ListItemIcon>
             <ListItemText primary="Settings" />
         </ListItemButton>
-        <ListItemButton href="./sign-in">
+        <ListItemButton onClick={handleLogout}>
             <ListItemIcon>
                 <LogoutIcon />
             </ListItemIcon>
