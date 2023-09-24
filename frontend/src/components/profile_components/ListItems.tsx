@@ -41,23 +41,17 @@ const handleLogout = () => {
     const authToken = localStorage.getItem("authToken");
     console.log("authToken:", authToken);
 
-    // Check if authToken is available
-    if (authToken) {
-        // Send a POST request to log out
-        AxiosInstance
-            .post("/api/auth/logout")
-            .then(() => {
-                localStorage.removeItem("authToken");
-                // navigate("/frontend/sign-in");
+    const axios = require('axios')
 
-            })
-            .catch((error) => {
-                console.error("Logout failed:", error);
-            });
-    } else {
-        // Handle the case where authToken is not available (e.g., user is not logged in)
-    }
-};
+    let reqInstance = axios.create({
+        headers: {
+            Authorization : `Token ${localStorage.getItem("authToken")}`
+        }
+    })
+
+    reqInstance.post("/api/auth/logout");
+
+
 
 
 export const secondaryListItems = (
