@@ -193,7 +193,7 @@ export default function CreateTicketButton() {
               value={selectedLocation}
               onChange={(e) => setSelectedLocation(e.target.value)}>
               {location.map((item,index) => (
-                <MenuItem key={index} value={item.locationID}>{item.building} {item.room}</MenuItem>
+                <MenuItem key={index} value={item.locationID}>{item.building} Room {item.room}</MenuItem>
               ))}
               </Select>
             </FormControl>
