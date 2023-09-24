@@ -36,7 +36,7 @@ export default function SignInSide() {
     useEffect(() =>{
         setisCorrectCred(true)
     },[usr,pwd])
-
+    
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -55,6 +55,7 @@ export default function SignInSide() {
                 localStorage.clear()
                 localStorage.setItem("userName",response.data.user.username)
                 localStorage.setItem("id",response.data.user.id)
+                localStorage.setItem('authToken', response.data.token);
                 navigate("/frontend/home")
             }
             ).catch((error) => {
