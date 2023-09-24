@@ -5,6 +5,6 @@ urlpatterns = [
     path('sign-up', index),
     path('sign-in', index),
     path('home', index),
-    path('profile-page',index),
     path('edit-profile', index),
+    path('dashboard',index)
 ]

@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import Ticket, Item
-from .serializers import TicketSerializer, ItemSerializer
+from .serializers import TicketSerializer, ItemSerializer , AlterTicketSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -16,7 +16,7 @@ def ticket_list(request):
         return Response(serializer.data)
 
     if request.method == 'POST':
-        serializer = TicketSerializer(data = request.data)
+        serializer = AlterTicketSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -34,7 +34,7 @@ def ticket_detail(request, id, format=None):
         serializer = TicketSerializer(ticket)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = TicketSerializer(ticket, data=request.data)
+        serializer = AlterTicketSerializer(ticket, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

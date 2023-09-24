@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 
 export const mainListItems = (
     <React.Fragment>
-        <ListItemButton href="./dashboard">
+        <ListItemButton href="/frontend/dashboard">
             <ListItemIcon>
                 <DashboardIcon />
             </ListItemIcon>
@@ -24,7 +24,7 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Items" />
         </ListItemButton>
-        <ListItemButton href="./profile">
+        <ListItemButton href="./profile-page">
             <ListItemIcon>
                 <PeopleIcon />
             </ListItemIcon>
@@ -35,23 +35,21 @@ export const mainListItems = (
 
 
 const handleLogout = () => {
-    // let navigate = useNavigate()
+
+    let navigate = useNavigate()
+    localStorage.clear()
+    navigate("/frontend/sign-in")
     
     // Retrieve authToken from local storage
-    const authToken = localStorage.getItem("authToken");
-    console.log("authToken:", authToken);
+    // const authToken = localStorage.getItem("authToken");
+    // console.log("authToken:", authToken);
 
-    const axios = require('axios')
-
-    let reqInstance = axios.create({
-        headers: {
-            Authorization : `Token ${localStorage.getItem("authToken")}`
-        }
-    })
-
-    reqInstance.post("/api/auth/logout");
-
-
+    // let reqInstance = AxiosInstance.create({
+    //     headers: {
+    //         Authorization : `Token ${localStorage.getItem("authToken")}`
+    //     }
+    // })
+}
 
 
 export const secondaryListItems = (

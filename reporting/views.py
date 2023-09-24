@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import ReportInfo, Status, Location
-from .serializers import LocationSerializer, ReportSerializer, StatusSerializer
+from .serializers import LocationSerializer, ReportSerializer, StatusSerializer , AlterReportSerializer , AlterStatusSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -54,7 +54,7 @@ def reportInfo_list(request):
         return Response(serializer.data)
 
     if request.method == 'POST':
-        serializer = ReportSerializer(data = request.data)
+        serializer = AlterReportSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -71,7 +71,7 @@ def reportInfo_detail(request, id, format=None):
         serializer = ReportSerializer(reportInfo)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = ReportSerializer(reportInfo, data=request.data)
+        serializer = AlterReportSerializer(reportInfo, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -92,7 +92,7 @@ def status_list(request):
         return Response(serializer.data)
 
     if request.method == 'POST':
-        serializer = StatusSerializer(data = request.data)
+        serializer = AlterStatusSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -109,7 +109,7 @@ def status_detail(request, id, format=None):
         serializer = StatusSerializer(statusObj)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = StatusSerializer(statusObj, data=request.data)
+        serializer = AlterStatusSerializer(statusObj, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
