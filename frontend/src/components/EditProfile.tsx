@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useState , useEffect} from "react";
 import AppDrawer from "./AppDrawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-
+import AxiosInstance from "../axios/axiosInstance";
 import {
   Typography,
   TextField,
@@ -21,6 +21,16 @@ function EditProfile() {
   const [telegramHandle, setTelegramHandle] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePicture, setProfilePicture] = useState(""); // You can use a URL or a file object
+
+  useEffect(() => {
+    AxiosInstance.get("/api/auth/get-user",{
+      headers: {
+        "Authorization": "Token " + localStorage.getItem("authToken")
+      }
+    }).then((response) => {
+      //populate value
+    })
+  })
 
   // Function to handle profile picture changes
   function handleProfilePictureChange(e: React.ChangeEvent<HTMLInputElement>) {
