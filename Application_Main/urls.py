@@ -34,6 +34,8 @@ urlpatterns = [
     path('tickets/<int:id>', base_views.ticket_detail),
     path('items/', base_views.item_list),
     path('items/<int:id>', base_views.item_detail),
+    path('userProfiles/', base_views.userprofile_list),
+    path('userProfiles/<int:id>', base_views.userprofile_detail),
 
     # CRUD for reporting
     path('locations/', reporting_views.location_list),
@@ -42,4 +44,5 @@ urlpatterns = [
     path('reportInfos/<int:id>', reporting_views.reportInfo_detail),
     path('status/', reporting_views.status_list),
     path('status/<int:id>', reporting_views.status_detail)
+
 ]
