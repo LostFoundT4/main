@@ -130,7 +130,7 @@ export default function CreateTicketButton() {
   }
 
   return (
-    <div>
+    <div >
       <Button 
         variant="contained"
         className="add-item-button"
@@ -146,9 +146,10 @@ export default function CreateTicketButton() {
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
         open={open}
+        className="add-item-container"
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          Creating New Ticket
+          CREATE NEW TICKET
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -224,8 +225,9 @@ export default function CreateTicketButton() {
           <Button
               variant="contained"
               component="label"
+              className="upload-file-btn"
             >
-            Upload File
+            Upload Image
             <input
               type="file"
               onChange={handleimage}
@@ -235,7 +237,7 @@ export default function CreateTicketButton() {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleProcced} >
+          <Button autoFocus onClick={handleProcced} className="upload-file-btn" >
             Procceed
           </Button>
         </DialogActions>
