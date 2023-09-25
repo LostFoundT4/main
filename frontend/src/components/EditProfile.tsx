@@ -40,6 +40,8 @@ function EditProfile() {
         setPhoneNumber(response.data[0].userPhoneNumber)
         setTelegramHandle(response.data[0].userTelegramID)
         SetThisFile(response.data[0].userProfilePicture)
+      }).then(()=>{
+        //Somehow preload image
       })
       setUsername(response.data.username)
       setEmail(response.data.email)
@@ -49,10 +51,11 @@ function EditProfile() {
 
   // Function to handle profile picture changes
   function handleProfilePictureChange(e: React.ChangeEvent<HTMLInputElement>) {
-    const file = e.target.files?.[0];
+    const newfile = e.target.files?.[0];
 
-    if (file) {
-      // Use FileReader to read the selected image and set it as the profile picture
+    if (newfile) {
+      //Use FileReader to read the selected image and set it as the profile picture
+      SetThisFile(newfile)
       const reader = new FileReader();
       reader.onload = (event) => {
         const imageDataUrl = event.target?.result as string | null;
@@ -61,22 +64,49 @@ function EditProfile() {
           setProfilePicture(imageDataUrl);
         }
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(newfile);
     }
+    
   }
 
   // Function to handle form submission
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     // Send the updated profile information to the server or update states.
     // Right now it's just logging the values to the console.
-    console.log("Updated Profile Information:");
-    console.log("Username:", username);
-    console.log("Email:", email);
-    console.log("Telegram Handle:", telegramHandle);
-    console.log("Phone Number:", phoneNumber);
-    console.log("Profile Picture:", profilePicture);
+    // console.log("Updated Profile Information:");
+    // console.log("Username:", username);
+    // console.log("Email:", email);
+    // console.log("Telegram Handle:", telegramHandle);
+    // console.log("Phone Number:", phoneNumber);
+    // console.log("Profile Picture:", profilePicture);
+
+    AxiosInstance.put("/api/auth/updateProfile/"+id+"/",{ 
+    "username":username,
+    "email":email
+    },{
+    headers:{
+      "Authorization": "Token " + localStorage.getItem("authToken")
+    },
+      }).then((response)=>{
+        AxiosInstance.get("/userProfiles/",{params:{"user":id}}).then((response)=>{
+          const formData = new FormData();
+          formData.append('userTelegramID', telegramHandle)
+          formData.append('userPhoneNumber', phoneNumber)
+          if(thisfile?.type !== undefined){
+            formData.append('userProfilePicture', thisfile!)
+          }
+          AxiosInstance.put("/userProfiles/"+response.data[0].userProfileNumber,formData,{
+          headers: {
+            "Content-Type": "multipart/form-data",
+          }}).then((response)=>{
+            window.location.reload()
+          })
+        })
+      }).catch((error)=>{
+        console.log("failed")
+      })
 
   };
 
