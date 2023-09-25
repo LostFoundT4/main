@@ -38,6 +38,10 @@ interface Location{
 }
 
 export default function CreateTicketButton() {
+
+  const [username, setUsername] = React.useState("");
+  const [id, setID] = React.useState(0);
+
   const [open, setOpen] = React.useState(false);
   const [datetime, setDateTime] = React.useState<Dayjs | null>(dayjs());
   const [type, setType] = React.useState('');
@@ -73,6 +77,17 @@ export default function CreateTicketButton() {
     setCheckLocation(false)
   },[location])
 
+  React.useEffect(() => {
+    AxiosInstance.get("/api/auth/get-user",{
+      headers: {
+        "Authorization": "Token " + localStorage.getItem("authToken")
+      }
+    }).then((response) => {
+      setUsername(response.data.username)
+      setID(response.data.id)
+    })
+  })
+
   function handleimage(e : any) {
     SetFile(e.target.files[0])
   }
@@ -97,11 +112,10 @@ export default function CreateTicketButton() {
   }
 
   const handleProcced = async () =>{
-    let id = localStorage.getItem("id")
 
     await AxiosInstance.post("/tickets/",{
       "ticketType": type,
-      "user" : parseInt(id!)
+      "user" : id
     }).then(async (response) => {
 
       const formData = new FormData();
@@ -128,7 +142,7 @@ export default function CreateTicketButton() {
           }).then(async(response) =>{
 
             await AxiosInstance.post("/status/",{
-              "user": parseInt(id!),
+              "user": id,
               "ticket": response.data.ticket,
               "type": "Pending",
               "endorsedUserID": null

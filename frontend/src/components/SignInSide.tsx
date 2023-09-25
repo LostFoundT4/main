@@ -45,16 +45,8 @@ export default function SignInSide() {
             "username":data.get("username"),
             "password":data.get("password")},
             )
-           // .then((response)=> {navigate("/frontend/home" ,{state:response})}
-            // .then((response)=> {
-            //     console.log(response.data)
-            //     localStorage.setItem('authToken', "0");
-            //     localStorage.setItem('authToken', response.data);
-            //     navigate("/frontend/home");
             .then(async (response)=> {
                 localStorage.clear()
-                localStorage.setItem("userName",response.data.user.username)
-                localStorage.setItem("id",response.data.user.id)
                 localStorage.setItem('authToken', response.data.token);
                 navigate("/frontend/home")
             }
