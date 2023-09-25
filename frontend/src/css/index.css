@@ -338,7 +338,9 @@ video {
 .add-item-container .css-1sqnrkk-MuiInputBase-input-MuiOutlinedInput-input,
 .add-item-container .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input,
 .add-item-container .css-i4bv87-MuiSvgIcon-root,
-.add-item-container .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root{
+.add-item-container .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root,
+.add-item-container .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root,
+.add-item-container .css-hfutr2-MuiSvgIcon-root-MuiSelect-icon{
   color: #fff !important;
 }
 .add-item-container .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root,
@@ -346,10 +348,7 @@ video {
 .add-item-container .css-dpjnhs-MuiInputBase-root-MuiOutlinedInput-root,
 .add-item-container .css-a643pv-MuiStack-root{
   background-color: #35363f !important;
-  border-radius: 10px !important;
-}
-.css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root{
-  color: #fff !important;
+  border-radius: 10px !important
 }
 
 .add-item-container .css-1u3bzj6-MuiFormControl-root-MuiTextField-root{
