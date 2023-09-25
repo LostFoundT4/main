@@ -238,6 +238,9 @@ function Tickets({
   };
 
   const CustomModal = () => {
+    console.log(reportDetail.item.found_dateTime)
+    const date = reportDetail.item.found_dateTime.substring(0,10)
+    const time = reportDetail.item.found_dateTime.substring(11,16)
     return (
       <div>
         <Modal
@@ -272,7 +275,7 @@ function Tickets({
                 {reportDetail.description}
               </Typography>
               <Typography className="item-category">
-                Last seen/found at: {reportDetail.location.building} {reportDetail.location.room} on {reportDetail.item.found_dateTime}
+                Last seen/found at: {reportDetail.location.building} {reportDetail.location.room} on {date}  {time} hrs
               </Typography>
               
               </div>
