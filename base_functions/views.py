@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
-from .models import Ticket, Item
-from .serializers import TicketSerializer, ItemSerializer , AlterTicketSerializer
+from .models import Ticket, Item, UserAdditionalProfile
+from .serializers import TicketSerializer, ItemSerializer , AlterTicketSerializer, CurrentUserProfileSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -78,6 +78,41 @@ def item_detail(request, id, format=None):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     elif request.method == 'DELETE':
         item.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET', 'POST'])
+def userprofile_list(request):
+
+    if request.method == 'GET':
+        userProfile = UserAdditionalProfile.objects.all()
+        serializer = CurrentUserProfileSerializer(userProfile, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        serializer = CurrentUserProfileSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def userprofile_detail(request, id, format=None):
+
+    try:
+        userProfile = UserAdditionalProfile.objects.get(pk=id)
+    except Item.DoesNotExist:
+        return Response(status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CurrentUserProfileSerializer(userProfile)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = CurrentUserProfileSerializer(userProfile, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        userProfile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 def index(request):
