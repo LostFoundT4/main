@@ -39,6 +39,7 @@ export default function SignUpSide() {
 
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
+    const [phoneError, setPhoneError] = useState(false);
 
     const emailRegex = /^[A-Za-z0-9._%+-]+@[^@]*smu\.edu\.sg$/;
 
@@ -49,6 +50,10 @@ export default function SignUpSide() {
     useEffect(()=>{
         setPasswordError(false)
     },[pwd])
+
+    useEffect(()=>{
+        setPhoneError(false)
+    },[phoneError])
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -61,6 +66,10 @@ export default function SignUpSide() {
             setPasswordError(true);
             return; // Do not proceed with form submission
         }
+        if (phoneNo.length > 8) {
+            setPasswordError(true);
+            return; // Do not proceed with form submission
+        }
         // If email is valid, proceed with form submission
         setEmailError(false);
         setPasswordError(false);
@@ -69,7 +78,22 @@ export default function SignUpSide() {
             "password": pwd,
             "email":email
             },
-            ).then((response)=> {navigate("/frontend/sign-in")}
+            ).then(async(response)=> {
+                
+                await AxiosInstance.get("/api/auth/get-user",{
+                    headers: {
+                      "Authorization": "Token " + response.data.token
+                    }
+                }).then(async(response)=>{
+                    await AxiosInstance.post('/userProfiles/',{
+                        "user": response.data.id,
+                        "userTelegramID": tele,
+                        "userPhoneNumber": phoneNo
+                    }).then((response)=>{
+                        navigate("/frontend/sign-in")
+                    })
+                })
+            }
             ).catch((error) => {
                 console.log("Account cannot be created");
             })
@@ -259,6 +283,12 @@ export default function SignUpSide() {
                                         autoComplete="phone-number"
                                         onChange={(e) => setPhoneNo(e.target.value)}
                                         value={phoneNo}
+                                        error={phoneError} // Set error prop based on validation
+                                        helperText={
+                                            phoneError
+                                                ? 'Your password must contain less than 8 digit.'
+                                                : ""
+                                        }
                                     />
                                 </Grid>
                                 <Grid item xs={12}>

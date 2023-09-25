@@ -16,22 +16,37 @@ import {
 
 function EditProfile() {
   // State variables to store user profile information
+  const [id, setID] = useState(0);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [telegramHandle, setTelegramHandle] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePicture, setProfilePicture] = useState(""); // You can use a URL or a file object
 
-  useEffect(() => {
+  const [thisfile , SetThisFile ] = React.useState<File>()
+
+  useEffect(()=>{
     AxiosInstance.get("/api/auth/get-user",{
       headers: {
         "Authorization": "Token " + localStorage.getItem("authToken")
       }
     }).then((response) => {
+      setID(response.data.id)
+      AxiosInstance.get("/userProfiles",{
+        data:{
+          "user":id
+        }
+      }).then((response)=>{
+        console.log(response)
+        setPhoneNumber(response.data[0].userPhoneNumber)
+        setTelegramHandle(response.data[0].userTelegramID)
+        SetThisFile(response.data[0].userProfilePicture)
+      })
       setUsername(response.data.username)
       setEmail(response.data.email)
     })
-  })
+
+  },[])
 
   // Function to handle profile picture changes
   function handleProfilePictureChange(e: React.ChangeEvent<HTMLInputElement>) {
@@ -63,6 +78,7 @@ function EditProfile() {
     console.log("Telegram Handle:", telegramHandle);
     console.log("Phone Number:", phoneNumber);
     console.log("Profile Picture:", profilePicture);
+
   };
 
   const defaultTheme = createTheme();
