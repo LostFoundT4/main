@@ -7,24 +7,31 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import PeopleIcon from "@mui/icons-material/People";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
+import HomeIcon from '@mui/icons-material/Home';
 import AxiosInstance from "../../axios/axiosInstance";
 import { useNavigate } from "react-router-dom";
 
 export const mainListItems = (
     <React.Fragment>
-        <ListItemButton href="./dashboard">
+        <ListItemButton href="/frontend/home">
+            <ListItemIcon>
+                <HomeIcon />
+            </ListItemIcon>
+            <ListItemText primary="Home" />
+        </ListItemButton>
+        <ListItemButton href="/frontend/dashboard">
             <ListItemIcon>
                 <DashboardIcon />
             </ListItemIcon>
             <ListItemText primary="Dashboard" />
         </ListItemButton>
-        <ListItemButton href="./items">
+        <ListItemButton href="/frontend/home">
             <ListItemIcon>
                 <ShoppingCartIcon />
             </ListItemIcon>
             <ListItemText primary="Items" />
         </ListItemButton>
-        <ListItemButton href="./profile">
+        <ListItemButton href="/frontend/dashboard">
             <ListItemIcon>
                 <PeopleIcon />
             </ListItemIcon>
@@ -35,23 +42,20 @@ export const mainListItems = (
 
 
 const handleLogout = () => {
-    // let navigate = useNavigate()
+
+    localStorage.clear()
+    
     
     // Retrieve authToken from local storage
-    const authToken = localStorage.getItem("authToken");
-    console.log("authToken:", authToken);
+    // const authToken = localStorage.getItem("authToken");
+    // console.log("authToken:", authToken);
 
-    const axios = require('axios')
-
-    let reqInstance = axios.create({
-        headers: {
-            Authorization : `Token ${localStorage.getItem("authToken")}`
-        }
-    })
-
-    reqInstance.post("/api/auth/logout");
-
-
+    // let reqInstance = AxiosInstance.create({
+    //     headers: {
+    //         Authorization : `Token ${localStorage.getItem("authToken")}`
+    //     }
+    // })
+}
 
 
 export const secondaryListItems = (
@@ -59,13 +63,13 @@ export const secondaryListItems = (
         {/* <ListSubheader component="div" inset>
       Others
     </ListSubheader> */}
-        <ListItemButton href="./settings">
+        <ListItemButton href="/frontend/edit-profile">
             <ListItemIcon>
                 <SettingsIcon />
             </ListItemIcon>
-            <ListItemText primary="Settings" />
+            <ListItemText primary="Edit Profile" />
         </ListItemButton>
-        <ListItemButton onClick={handleLogout}>
+        <ListItemButton onClick={handleLogout} href="/frontend/sign-in">
             <ListItemIcon>
                 <LogoutIcon />
             </ListItemIcon>
