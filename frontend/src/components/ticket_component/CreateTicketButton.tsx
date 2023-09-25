@@ -20,6 +20,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import AxiosInstance from '../../axios/axiosInstance';
+import FormHelperText from '@mui/material/FormHelperText';
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiDialogContent-root': {
@@ -46,10 +47,31 @@ export default function CreateTicketButton() {
   const [description , SetDescription ] = React.useState("")
   const [selectedLocation, setSelectedLocation] = React.useState('');
   const [file , SetFile ] = React.useState<File>()
+
+  const [checktype, setCheckType] = React.useState(false);
+  const [checkitemName, setCheckItemName] = React.useState(false);
+  const [checkcategory,setCheckCategory] = React.useState(false);
+  const [checklocation,setCheckLocation] = React.useState(false);
   
   React.useEffect(()=>{
     fetchLocation()
   },[])
+
+  React.useEffect(()=>{
+    setCheckItemName(false)
+  },[itemName])
+  
+  React.useEffect(()=>{
+    setCheckCategory(false)
+  },[category])
+
+  React.useEffect(()=>{
+    setCheckType(false)
+  },[type])
+  
+  React.useEffect(()=>{
+    setCheckLocation(false)
+  },[location])
 
   function handleimage(e : any) {
     SetFile(e.target.files[0])
@@ -112,7 +134,7 @@ export default function CreateTicketButton() {
               "endorsedUserID": null
             }).then(async(response) =>{
               console.log("succuessfully created ticket")
-
+              setOpen(false)
             }).catch((error) => {
               console.log("failed Status")
             })
@@ -125,8 +147,11 @@ export default function CreateTicketButton() {
       })
     }).catch((error) => {
       console.log("failed creating ticket")
+      setCheckItemName(true)
+      setCheckCategory(true)
+      setCheckLocation(true)
+      setCheckType(true)
     })
-    setOpen(false)
   }
 
   return (
@@ -165,37 +190,73 @@ export default function CreateTicketButton() {
         <DialogContent dividers>
           <Typography gutterBottom>
             <FormControl fullWidth>
-              <InputLabel id="TicketType" required>Type</InputLabel>
+              <InputLabel 
+              id="TicketType" 
+              required
+              error ={checktype}
+              >Type</InputLabel>
               <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
                 value={type}
                 label="TicketType"
                 onChange={handleChange}
+                error ={checktype}
               >
                 <MenuItem value={"Lost"}>Lost</MenuItem>
                 <MenuItem value={"Found"}>Found</MenuItem>
               </Select>
+              {checktype? <FormHelperText error={checktype}>Type Required</FormHelperText> : ""}
             </FormControl>
           </Typography>
           <Typography gutterBottom>
-            <TextField id="outlined-basic" label="ItemName" variant="outlined" value ={itemName} onChange={(e) => setItemName(e.target.value)} required/>
+            <TextField 
+            id="outlined-basic" 
+            label="ItemName" 
+            variant="outlined" 
+            value ={itemName} 
+            onChange={(e) => setItemName(e.target.value)} 
+            required
+            error={checkitemName} // Set error prop based on validation
+            helperText={
+              checkitemName
+              ? 'Item Name Required'
+              : ""
+            }/>
           </Typography>
           <Typography gutterBottom>
-            <TextField id="outlined-basic" label="Category" variant="outlined" value ={category} onChange={(e) => setCategory(e.target.value)} required/>
+            <TextField 
+            id="outlined-basic" 
+            label="Category" 
+            variant="outlined" 
+            value ={category} onChange={(e) => setCategory(e.target.value)} 
+            required
+            error={checkcategory} // Set error prop based on validation
+            helperText={
+              checkcategory
+              ? 'Category Required'
+              : ""
+            }
+            />
           </Typography>
           <Typography gutterBottom>
             <FormControl fullWidth>
 
-              <InputLabel id="location" required>Location</InputLabel>
+              <InputLabel 
+              id="location" 
+              required 
+              error={checklocation}>Location</InputLabel>
               <Select
               disabled={false}
               value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}>
+              onChange={(e) => setSelectedLocation(e.target.value)}
+              error={checklocation}
+              >  
               {location.map((item,index) => (
                 <MenuItem key={index} value={item.locationID}>{item.building} Room {item.room}</MenuItem>
               ))}
               </Select>
+              {checklocation? <FormHelperText error={checklocation}>Location Required</FormHelperText> : ""}
             </FormControl>
 
           </Typography>
