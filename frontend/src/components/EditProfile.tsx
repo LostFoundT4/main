@@ -37,7 +37,6 @@ function EditProfile() {
           "user":id
         }
       }).then((response)=>{
-        console.log(response)
         setPhoneNumber(response.data[0].userPhoneNumber)
         setTelegramHandle(response.data[0].userTelegramID)
         SetThisFile(response.data[0].userProfilePicture)
