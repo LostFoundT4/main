@@ -42,19 +42,7 @@ export const mainListItems = (
 
 
 const handleLogout = () => {
-
-    localStorage.clear()
-    
-    
-    // Retrieve authToken from local storage
-    // const authToken = localStorage.getItem("authToken");
-    // console.log("authToken:", authToken);
-
-    // let reqInstance = AxiosInstance.create({
-    //     headers: {
-    //         Authorization : `Token ${localStorage.getItem("authToken")}`
-    //     }
-    // })
+    localStorage.removeItem('authToken')
 }
 
 

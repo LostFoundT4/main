@@ -28,7 +28,8 @@ function EditProfile() {
         "Authorization": "Token " + localStorage.getItem("authToken")
       }
     }).then((response) => {
-      //populate value
+      setUsername(response.data.username)
+      setEmail(response.data.email)
     })
   })
 

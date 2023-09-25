@@ -383,7 +383,6 @@ function Tickets({
 const defaultTheme = createTheme();
 
 export default function Home() {
-    console.log(localStorage.getItem('authToken'))
 
     const [open, setOpen] = React.useState(true);
     const [value, setValue] = React.useState(0);
