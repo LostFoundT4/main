@@ -48,4 +48,3 @@ jobs:
           version_label: CS203-lostandfound-app-updated5a
           region: "us-east-1"
           deployment_package: deploy2b.zip
-          use_existing_version_if_available: false
