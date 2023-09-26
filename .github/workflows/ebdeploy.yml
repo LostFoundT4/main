@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Generate deployment package
-        run: zip -r deploy2ca.zip . -x '*.git*'
+        run: zip -r deploy2cb.zip . -x '*.git*'
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v20
@@ -42,9 +42,9 @@ jobs:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_KEY }}
 
-          application_name: CS203-lostandfound-app
-          environment_name: CS203-lostandfound-app-dev
+          application_name: CS203-Updated-Version
+          environment_name: CS203-Updated-Version-env
 
           version_label: CS203-lostandfound-app-updated5c
           region: "us-east-1"
-          deployment_package: deploy2ca.zip
+          deployment_package: deploy2cb.zip
