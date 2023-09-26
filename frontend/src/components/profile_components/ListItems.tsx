@@ -19,23 +19,11 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Home" />
         </ListItemButton>
-        <ListItemButton href="/frontend/dashboard">
-            <ListItemIcon>
-                <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-        </ListItemButton>
         <ListItemButton href="/frontend/home">
             <ListItemIcon>
                 <ShoppingCartIcon />
             </ListItemIcon>
             <ListItemText primary="Items" />
-        </ListItemButton>
-        <ListItemButton href="/frontend/dashboard">
-            <ListItemIcon>
-                <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Profile" />
         </ListItemButton>
     </React.Fragment>
 );

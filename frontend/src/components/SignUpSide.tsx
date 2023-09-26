@@ -53,7 +53,7 @@ export default function SignUpSide() {
 
     useEffect(()=>{
         setPhoneError(false)
-    },[phoneError])
+    },[phoneNo])
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -67,12 +67,13 @@ export default function SignUpSide() {
             return; // Do not proceed with form submission
         }
         if (phoneNo.length > 8) {
-            setPasswordError(true);
+            setPhoneError(true);
             return; // Do not proceed with form submission
         }
         // If email is valid, proceed with form submission
         setEmailError(false);
         setPasswordError(false);
+        setPhoneError(false);
         await AxiosInstance.post('/api/auth/register',{
             "username": usr,
             "password": pwd,
@@ -286,7 +287,7 @@ export default function SignUpSide() {
                                         error={phoneError} // Set error prop based on validation
                                         helperText={
                                             phoneError
-                                                ? 'Your password must contain less than 8 digit.'
+                                                ? 'Your Phone Number must contain less than 8 digit.'
                                                 : ""
                                         }
                                     />
