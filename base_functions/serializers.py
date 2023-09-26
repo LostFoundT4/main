@@ -1,4 +1,4 @@
-from dataclasses import field, fields
+from dataclasses import fields
 from pyexpat import model
 from rest_framework import serializers
 from .models import Ticket, Item, UserAdditionalProfile
@@ -8,12 +8,6 @@ from django.contrib.auth.models import User
 class CurrentUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
-
-class CurrentUserProfileSerializer(serializers.ModelSerializer):
-    
-    class Meta:
-        model = UserAdditionalProfile
         fields = '__all__'
 
 class ItemSerializer(serializers.ModelSerializer):
@@ -33,4 +27,9 @@ class TicketSerializer(serializers.ModelSerializer):
 class AlterTicketSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ticket
+        fields = '__all__'
+
+class CurrentUserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAdditionalProfile
         fields = '__all__'
