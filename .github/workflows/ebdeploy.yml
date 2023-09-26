@@ -45,6 +45,6 @@ jobs:
           application_name: CS203-Updated-Version
           environment_name: CS203-Updated-Version-env
 
-          version_label: CS203-lostandfound-app-updated5c
+          version_label: CS203-updated5c
           region: "us-east-1"
           deployment_package: deploy2cb.zip
