@@ -22,8 +22,9 @@ export const App = () => {
                 <Route path="/frontend/sign-in" element={<SignInSide />}></Route>
                 <Route element = {<ProtectedRoute />}>
                     <Route path="/frontend/home" element={<Home />}></Route>
-                    <Route path="/frontend/dashboard" element = {<Profile />}></Route>
+                    <Route path="/frontend/dashboard" element={<Profile />}></Route>
                     <Route path="/frontend/edit-profile" element={<EditProfile />}></Route>
+                    <Route path="/frontend/my-items" element={<MyItems />}></Route>
                 </Route>
             </Routes>
         </Router>
