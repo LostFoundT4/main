@@ -19,7 +19,7 @@ export const mainListItems = (
             </ListItemIcon>
             <ListItemText primary="Home" />
         </ListItemButton>
-        <ListItemButton href="/frontend/home">
+        <ListItemButton href="/frontend/my-items">
             <ListItemIcon>
                 <ShoppingCartIcon />
             </ListItemIcon>

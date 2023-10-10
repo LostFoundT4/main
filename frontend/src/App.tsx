@@ -11,10 +11,12 @@ import Home from "./components/Home";
 import EditProfile from "./components/EditProfile";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 import Profile from "./components/Dashboard";
-
+import * as React from "react";
+import AxiosInstance from "./axios/axiosInstance";
+import { useEffect, useState } from "react";
+import MyItems from "./components/MyItems";
 
 export const App = () => {
-
     return (
         <Router>
             <Routes>

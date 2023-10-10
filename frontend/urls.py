@@ -7,6 +7,6 @@ urlpatterns = [
     path('home', index),
     path('edit-profile', index),
     path('dashboard',index),
-    path('profile-page', index)
+    path('profile-page', index),
     path('my-items', index)
 ]
