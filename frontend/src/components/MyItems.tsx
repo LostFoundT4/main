@@ -181,58 +181,64 @@ function Tickets({
 
     useEffect(() => {
         const fetchData = async () => {
-          try {
-            // Fetch the user's id
-            const userResponse = await AxiosInstance.get("/api/auth/get-user", {
-              headers: {
-                Authorization: "Token " + localStorage.getItem("authToken"),
-              },
-            });
-      
-            // Set the user ID state
-            setID(userResponse.data.id);
-            console.log("User ID:", userResponse.data.id);
-      
-            // Fetch items that belong to the user
-            const reportInfoResponse = await AxiosInstance.get("/reportInfos");
-      
-            // Filter items based on the provided ticketTypeFilter and user ID
-            const filteredItems = reportInfoResponse.data.filter(
-              (reportInfo: ReportInfo) =>
-                reportInfo.ticket.ticketType === ticketTypeFilter &&
-                reportInfo.ticket.user === userResponse.data.id
-            );
-      
-            // Set the filtered items in state
-            setItems(filteredItems);
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
+            try {
+                // Fetch the user's id
+                const userResponse = await AxiosInstance.get(
+                    "/api/auth/get-user",
+                    {
+                        headers: {
+                            Authorization:
+                                "Token " + localStorage.getItem("authToken"),
+                        },
+                    }
+                );
+
+                // Set the user ID state
+                setID(userResponse.data.id);
+                console.log("User ID:", userResponse.data.id);
+
+                // Fetch items that belong to the user
+                const reportInfoResponse = await AxiosInstance.get(
+                    "/reportInfos"
+                );
+
+                // Filter items based on the provided ticketTypeFilter and user ID
+                const filteredItems = reportInfoResponse.data.filter(
+                    (reportInfo: ReportInfo) =>
+                        reportInfo.ticket.ticketType === ticketTypeFilter &&
+                        reportInfo.ticket.user === userResponse.data.id
+                );
+
+                // Set the filtered items in state
+                setItems(filteredItems);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
         };
-      
+
         // Call the fetchData function to initiate the data fetching
         fetchData();
-      }, [ticketTypeFilter]);
-          
+    }, [ticketTypeFilter]);
+
     // console.log("Logged User ID during:", id);
 
     useEffect(() => {
         // Fetch items that belong to the user
         AxiosInstance.get("/reportInfos")
-        .then((response) => {
-            // Filter items based on the provided ticketTypeFilter
-            const filteredItems = response.data.filter(
-                (reportInfo: ReportInfo) =>
-                    reportInfo.ticket.ticketType === ticketTypeFilter &&
-                    reportInfo.ticket.user === id
-            );
-            setItems(filteredItems);
-        })
-        .catch((error) => {
-            console.error("Error fetching items:", error);
-        });
+            .then((response) => {
+                // Filter items based on the provided ticketTypeFilter
+                const filteredItems = response.data.filter(
+                    (reportInfo: ReportInfo) =>
+                        reportInfo.ticket.ticketType === ticketTypeFilter &&
+                        reportInfo.ticket.user === id
+                );
+                setItems(filteredItems);
+            })
+            .catch((error) => {
+                console.error("Error fetching items:", error);
+            });
     }, [ticketTypeFilter]); // Re-fetch data when ticketTypeFilter changes
-    
+
     // console.log("Logged User ID after:", id);
 
     const filteredReportInfos = reportInfos.filter((reportInfo) => {
@@ -330,7 +336,7 @@ function Tickets({
                                 {reportDetail.location.room} on {date} {time}{" "}
                                 hrs
                             </Typography>
-                            <EditTicketButton/>
+                            <EditTicketButton />
                         </div>
                     </Box>
                 </Modal>
@@ -479,6 +485,11 @@ export default function Home() {
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
+                                <Box
+                                    style={{ fontSize: "36px", color: "white" }}
+                                >
+                                    My Items
+                                </Box>
                                 <Paper
                                     sx={{
                                         p: 2,

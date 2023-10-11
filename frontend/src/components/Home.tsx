@@ -428,6 +428,11 @@ export default function Home() {
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                         <Grid container spacing={3}>
                             <Grid item xs={12}>
+                                <Box
+                                    style={{ fontSize: "36px", color: "white" }}
+                                >
+                                    Home
+                                </Box>
                                 <Paper
                                     sx={{
                                         p: 2,
