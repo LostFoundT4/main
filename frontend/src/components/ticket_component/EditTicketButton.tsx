@@ -37,7 +37,7 @@ interface Location {
     room: number;
 }
 
-export default function CreateTicketButton() {
+export default function EditTicketButton() {
     const [username, setUsername] = React.useState("");
     const [id, setID] = React.useState(0);
 
@@ -147,7 +147,7 @@ export default function CreateTicketButton() {
                                 })
                                     .then(async (response) => {
                                         console.log(
-                                            "succuessfully created ticket"
+                                            "succuessfully edited ticket"
                                         );
                                         setOpen(false);
                                     })
@@ -160,11 +160,11 @@ export default function CreateTicketButton() {
                             });
                     })
                     .catch((error) => {
-                        console.log("failed creating items");
+                        console.log("failed editing items");
                     });
             })
             .catch((error) => {
-                console.log("failed creating ticket");
+                console.log("failed editing ticket");
                 setCheckItemName(true);
                 setCheckCategory(true);
                 setCheckLocation(true);
@@ -184,7 +184,7 @@ export default function CreateTicketButton() {
                 }}
                 onClick={handleClickOpen}
             >
-                <AddIcon />
+                EDIT
             </Button>
             <BootstrapDialog
                 onClose={handleClose}
@@ -193,7 +193,7 @@ export default function CreateTicketButton() {
                 className="add-item-container"
             >
                 <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                    CREATE NEW TICKET
+                    EDIT TICKET
                 </DialogTitle>
                 <IconButton
                     aria-label="close"
@@ -343,7 +343,7 @@ export default function CreateTicketButton() {
                         onClick={handleProcced}
                         className="upload-file-btn"
                     >
-                        Procceed
+                        Proceed
                     </Button>
                 </DialogActions>
             </BootstrapDialog>
