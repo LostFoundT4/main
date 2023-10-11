@@ -47,9 +47,9 @@ export default function CreateTicketButton() {
     const [itemName, setItemName] = React.useState("");
     const [category, setCategory] = React.useState("");
     const [location, setLocation] = React.useState<Location[]>([]);
-    const [description, SetDescription] = React.useState("");
+    const [description, setDescription] = React.useState("");
     const [selectedLocation, setSelectedLocation] = React.useState("");
-    const [file, SetFile] = React.useState<File>();
+    const [file, setFile] = React.useState<File>();
 
     const [checktype, setCheckType] = React.useState(false);
     const [checkitemName, setCheckItemName] = React.useState(false);
@@ -88,7 +88,7 @@ export default function CreateTicketButton() {
     });
 
     function handleimage(e: any) {
-        SetFile(e.target.files[0]);
+        setFile(e.target.files[0]);
     }
 
     const handleClickOpen = () => {
@@ -108,30 +108,36 @@ export default function CreateTicketButton() {
         });
     };
 
+    // Step 1: Create a new ticket
     const handleProceed = async () => {
         await AxiosInstance.post("/tickets/", {
             ticketType: type,
             user: id,
         })
-            .then(async (response) => {
+        .then(async (response) => {
+                // Step 2: Prepare form data for the item associated with the ticket
                 const formData = new FormData();
                 formData.append("ticketID", response.data.ticketID);
                 formData.append("itemName", itemName);
                 formData.append("category", category);
+                // Step 3: Check if a file was selected and append it to the form data
                 if (file?.type !== undefined) {
                     formData.append("image", file!);
                 }
+                // Step 4: Format and append the found date and time to the form data
                 formData.append(
                     "found_dateTime",
                     datetime?.format("YYYY-MM-DDTHH:mm:ss[Z]")!
                 );
 
+                // Step 5: Create an item associated with the ticket
                 await AxiosInstance.post("/items/", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 })
                     .then(async (response) => {
+                        // Step 6: Create a report info associated with the item
                         await AxiosInstance.post("/reportInfos/", {
                             ticket: response.data.ticketID,
                             item: response.data.itemID,
@@ -139,6 +145,7 @@ export default function CreateTicketButton() {
                             description: description,
                         })
                             .then(async (response) => {
+                                 // Step 7: Set the status of the ticket to "Pending"
                                 await AxiosInstance.post("/status/", {
                                     user: id,
                                     ticket: response.data.ticket,
@@ -307,7 +314,7 @@ export default function CreateTicketButton() {
                             multiline
                             rows={4}
                             value={description}
-                            onChange={(e) => SetDescription(e.target.value)}
+                            onChange={(e) => setDescription(e.target.value)}
                         />
                     </Typography>
                     <Typography gutterBottom>
