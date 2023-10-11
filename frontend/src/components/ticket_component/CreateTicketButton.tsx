@@ -108,7 +108,7 @@ export default function CreateTicketButton() {
         });
     };
 
-    const handleProcced = async () => {
+    const handleProceed = async () => {
         await AxiosInstance.post("/tickets/", {
             ticketType: type,
             user: id,
@@ -340,10 +340,10 @@ export default function CreateTicketButton() {
                 <DialogActions>
                     <Button
                         autoFocus
-                        onClick={handleProcced}
+                        onClick={handleProceed}
                         className="upload-file-btn"
                     >
-                        Procceed
+                        Proceed
                     </Button>
                 </DialogActions>
             </BootstrapDialog>
