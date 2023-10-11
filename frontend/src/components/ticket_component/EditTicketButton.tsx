@@ -117,7 +117,7 @@ export default function EditTicketButton() {
         // Make an API request to delete the ticket using its ID
         await AxiosInstance.delete("/items/" + /*send help pls*/ +"", {
             headers: {
-                Authorization: `Token ${localStorage.getItem("authToken")}`,
+                Authorization: "Token " + localStorage.getItem("authToken"),
             },
         })
             .then(async (response) => {
