@@ -32,20 +32,21 @@
     ```
 
 9) Navigate into the `frontend` folder and run the command. This ensure frontend dependencies are installed.
-  ```bash
-  npm install
-  ```
+    ```bash
+    npm install
+    ```
 
 10) In a separate command line, in the same folder, run the command to update `bundle.js` which will run webpack with babel. You do not need to be in (.venv).
-  ```bash
-  npm run dev
-  ```
+    ```bash
+    npm run dev
+    ```
 
 **Database setup**
 1) Type the following commands to activate the models and create the models tables in database (sqlite3).
-  ```bash
-  python manage.py migrate
-  ```
+    ```bash
+    python manage.py migrate
+    ```
+    If you run into any errors, delete the database and run the command again. Ensure that you have done the previous installation steps (especially steps 8 - 10) to install any required dependencies.
 
 **Running The Application**
 1) Type the following commands to run the server as needed:
