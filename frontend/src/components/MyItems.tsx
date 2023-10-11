@@ -43,6 +43,7 @@ import CreateTicketButton from "./ticket_component/CreateTicketButton";
 import Modal from "@mui/material/Modal";
 import { useLocation } from "react-router-dom";
 import axios from "axios/index";
+import EditTicketButton from "./ticket_component/EditTicketButton";
 
 // page where users can only see and add their items and not others'
 
@@ -232,7 +233,7 @@ function Tickets({
         });
     }, [ticketTypeFilter]); // Re-fetch data when ticketTypeFilter changes
     
-    console.log("Logged User ID after:", id);
+    // console.log("Logged User ID after:", id);
 
     const filteredReportInfos = reportInfos.filter((reportInfo) => {
         const { description, item } = reportInfo;
@@ -329,6 +330,7 @@ function Tickets({
                                 {reportDetail.location.room} on {date} {time}{" "}
                                 hrs
                             </Typography>
+                            <EditTicketButton/>
                         </div>
                     </Box>
                 </Modal>
