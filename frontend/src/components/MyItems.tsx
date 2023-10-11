@@ -44,6 +44,8 @@ import Modal from "@mui/material/Modal";
 import { useLocation } from "react-router-dom";
 import axios from "axios/index";
 
+// page where users can only see and add their items and not others'
+
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
