@@ -126,7 +126,7 @@ export default function EditTicketButton() {
     // });
 
   };
-  const handleProcced = async () => {
+  const handleProceed = async () => {
     await AxiosInstance.post("/tickets/", {
         ticketType: type,
         user: id,
@@ -360,7 +360,7 @@ return (
               Delete</Button>
                 <Button
                     autoFocus
-                    onClick={handleProcced}
+                    onClick={handleProceed}
                     className="upload-file-btn"
                 >
                     Proceed
