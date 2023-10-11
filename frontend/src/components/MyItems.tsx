@@ -45,6 +45,8 @@ import { useLocation } from "react-router-dom";
 import axios from "axios/index";
 import EditTicketButton from "./ticket_component/EditTicketButton";
 
+// page where users can only see and add their items and not others'
+
 interface TabPanelProps {
     children?: React.ReactNode;
     index: number;
