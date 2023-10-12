@@ -117,7 +117,7 @@ export default function EditTicketButton({data, data2} : {data: any, data2: any}
     }
 
     // Make an API request to delete the ticket using its ID
-    await AxiosInstance.delete("/items/" + data.data.ticketID, {
+    await AxiosInstance.delete("/items/" + data.ticketID, {
       headers: {
         Authorization: "Token " + localStorage.getItem("authToken"),
       },
@@ -131,16 +131,14 @@ export default function EditTicketButton({data, data2} : {data: any, data2: any}
   };
 
   const handleEdit = async() => {
-    // Step 2: Prepare form data for the item associated with the ticket
+    // TODO: Add function to edit Ticket Type (Lost/Found)
+    // TODO: Prefill form with current item's information.
     const formData = new FormData();
-    // formData.append("ticketID", response.data.ticketID);
     formData.append("itemName", itemName);
     formData.append("category", category);
-    // Step 3: Check if a file was selected and append it to the form data
     if (file?.type !== undefined) {
         formData.append("image", file!);
     }
-    // Step 4: Format and append the found date and time to the form data
     formData.append(
         "found_dateTime",
         datetime?.format("YYYY-MM-DDTHH:mm:ss[Z]")!
@@ -148,16 +146,17 @@ export default function EditTicketButton({data, data2} : {data: any, data2: any}
 
     await AxiosInstance.put("/items/" + data2, formData, {
         headers: {
-            "Content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
         },
       })
-      .then(async (response) => {
-        console.log("Successfully edited ticket");
-      })
-      .catch((error) => {
-        console.log("Failed to edit ticket");
-      });
-};
+        .then(async (response) => {
+          console.log("Successfully edited ticket");
+        })
+        .catch((error) => {
+          console.log("Failed to edit ticket: " + error);
+        });
+      };
+      
 
 //   const handleProceed = async () => {
 //     await AxiosInstance.post("/tickets/", {
