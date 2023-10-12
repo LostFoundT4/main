@@ -336,7 +336,7 @@ function Tickets({
                                 {reportDetail.location.room} on {date} {time}{" "}
                                 hrs
                             </Typography>
-                            <EditTicketButton />
+                            <EditTicketButton data = {reportDetail.ticket.ticketID}/>
                         </div>
                     </Box>
                 </Modal>
