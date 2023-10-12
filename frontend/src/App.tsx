@@ -14,7 +14,7 @@ import Profile from "./components/Dashboard";
 import * as React from "react";
 import AxiosInstance from "./axios/axiosInstance";
 import { useEffect, useState } from "react";
-import MyItems from "./components/MyItems";
+import MyListings from "./components/MyListings";
 
 export const App = () => {
     return (
@@ -26,7 +26,7 @@ export const App = () => {
                     <Route path="/frontend/home" element={<Home />}></Route>
                     <Route path="/frontend/dashboard" element={<Profile />}></Route>
                     <Route path="/frontend/edit-profile" element={<EditProfile />}></Route>
-                    <Route path="/frontend/my-items" element={<MyItems />}></Route>
+                    <Route path="/frontend/my-listings" element={<MyListings />}></Route>
                 </Route>
             </Routes>
         </Router>
