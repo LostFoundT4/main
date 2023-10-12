@@ -37,8 +37,9 @@ interface Location {
   room: number;
 }
 
-export default function EditTicketButton(data: any) {
+export default function EditTicketButton(data: any, data2: any) {
   console.log(data);
+  console.log(data2);
   const [username, setUsername] = React.useState("");
   const [id, setID] = React.useState(0);
 
@@ -116,7 +117,7 @@ export default function EditTicketButton(data: any) {
     }
 
     // Make an API request to delete the ticket using its ID
-    await AxiosInstance.delete("/items/" + data.data, {
+    await AxiosInstance.delete("/items/" + data.data.ticketID, {
       headers: {
         Authorization: "Token " + localStorage.getItem("authToken"),
       },
@@ -129,67 +130,81 @@ export default function EditTicketButton(data: any) {
       });
   };
 
-  const handleProceed = async () => {
-    await AxiosInstance.post("/tickets/", {
-      ticketType: type,
-      user: id,
-    })
-      .then(async (response) => {
-        const formData = new FormData();
-        formData.append("ticketID", response.data.ticketID);
-        formData.append("itemName", itemName);
-        formData.append("category", category);
-        if (file?.type !== undefined) {
-          formData.append("image", file!);
-        }
-        formData.append(
-          "found_dateTime",
-          datetime?.format("YYYY-MM-DDTHH:mm:ss[Z]")!
-        );
+//   const handleProceed = async () => {
+//     await AxiosInstance.post("/tickets/", {
+//       ticketType: type,
+//       user: id,
+//     })
+//       .then(async (response) => {
+//         const formData = new FormData();
+//         formData.append("ticketID", response.data.ticketID);
+//         formData.append("itemName", itemName);
+//         formData.append("category", category);
+//         if (file?.type !== undefined) {
+//           formData.append("image", file!);
+//         }
+//         formData.append(
+//           "found_dateTime",
+//           datetime?.format("YYYY-MM-DDTHH:mm:ss[Z]")!
+//         );
 
-        await AxiosInstance.post("/items/", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        })
+//         await AxiosInstance.post("/items/", formData, {
+//           headers: {
+//             "Content-Type": "multipart/form-data",
+//           },
+//         })
+//           .then(async (response) => {
+//             await AxiosInstance.post("/reportInfos/", {
+//               ticket: response.data.ticketID,
+//               item: response.data.itemID,
+//               location: parseInt(selectedLocation),
+//               description: description,
+//             })
+//               .then(async (response) => {
+//                 await AxiosInstance.post("/status/", {
+//                   user: id,
+//                   ticket: response.data.ticket,
+//                   type: "Pending",
+//                   endorsedUserID: null,
+//                 })
+//                   .then(async (response) => {
+//                     console.log("successfully edited ticket");
+//                     setOpen(false);
+//                   })
+//                   .catch((error) => {
+//                     console.log("failed Status");
+//                   });
+//               })
+//               .catch((error) => {
+//                 console.log("failed Reportinfo");
+//               });
+//           })
+//           .catch((error) => {
+//             console.log("failed editing items");
+//           });
+//       })
+//       .catch((error) => {
+//         console.log("failed editing ticket");
+//         setCheckItemName(true);
+//         setCheckCategory(true);
+//         setCheckLocation(true);
+//         setCheckType(true);
+//       });
+//   };
+    const handleEdit = async() => {
+        await AxiosInstance.put("/items/" + data2, {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Token " + localStorage.getItem("authToken"),
+            },
+          })
           .then(async (response) => {
-            await AxiosInstance.post("/reportInfos/", {
-              ticket: response.data.ticketID,
-              item: response.data.itemID,
-              location: parseInt(selectedLocation),
-              description: description,
-            })
-              .then(async (response) => {
-                await AxiosInstance.post("/status/", {
-                  user: id,
-                  ticket: response.data.ticket,
-                  type: "Pending",
-                  endorsedUserID: null,
-                })
-                  .then(async (response) => {
-                    console.log("successfully edited ticket");
-                    setOpen(false);
-                  })
-                  .catch((error) => {
-                    console.log("failed Status");
-                  });
-              })
-              .catch((error) => {
-                console.log("failed Reportinfo");
-              });
+            console.log("Successfully edited ticket");
           })
           .catch((error) => {
-            console.log("failed editing items");
+            console.log("Failed to edit ticket");
           });
-      })
-      .catch((error) => {
-        console.log("failed editing ticket");
-        setCheckItemName(true);
-        setCheckCategory(true);
-        setCheckLocation(true);
-        setCheckType(true);
-      });
-  };
+    };
 
   return (
     <div>
@@ -336,7 +351,7 @@ export default function EditTicketButton(data: any) {
           <Button autoFocus onClick={handleDelete} className="delete-file-btn">
             Delete
           </Button>
-          <Button autoFocus onClick={handleProceed} className="upload-file-btn">
+          <Button autoFocus onClick={handleEdit} className="upload-file-btn">
             Proceed
           </Button>
         </DialogActions>
