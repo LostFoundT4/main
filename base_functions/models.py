@@ -1,3 +1,5 @@
+from sqlite3 import Timestamp
+from statistics import mode
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -23,3 +25,15 @@ class UserAdditionalProfile(models.Model):
     userTelegramID = models.CharField(max_length=100, blank=True, null=True)
     userProfilePicture = models.ImageField(upload_to='profile-images/', blank=True, null=True)
     userPhoneNumber = models.CharField(max_length=8, blank=True)
+
+class Reputation(models.Model):
+    reputationID = models.AutoField(primary_key = True)
+    user = models.ForeignKey(User, related_name='reputation', on_delete=models.SET_DEFAULT, default=None)
+    flagged = models.IntegerField(max_length=8, blank=True, null=True)
+    score = models.IntegerField(max_length=8, blank=True)
+
+class Blacklist(models.Model):
+    blacklistID = models.AutoField(primary_key= True)
+    user = models.ForeignKey(User, related_name='blacklist', on_delete=models.SET_DEFAULT, default=None)    
+    ticket = models.ForeignKey(Ticket, related_name='blacklist', on_delete=models.SET_DEFAULT, default=None)
+    timestamp = models.DateTimeField(auto_now_add=True)

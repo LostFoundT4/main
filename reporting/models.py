@@ -12,12 +12,19 @@ class ReportInfo(models.Model):
 
 class Status(models.Model):
     statusID = models.AutoField(primary_key=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE)
     ticket = models.ForeignKey(Ticket,on_delete=models.CASCADE)
     type = models.CharField(max_length=200)
     endorsedUserID = models.IntegerField(blank=True, null=True)
+    counter = models.IntegerField(blank=True, null=True)
+    timer = models.TimeField(blank=True, null=True)
 
 class Location (models.Model):
     locationID = models.AutoField(primary_key=True)
     building = models.CharField(max_length=200)
     room = models.CharField(max_length=200)
+
+class PendingUsers(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    status = models.ForeignKey(Status, on_delete=models.CASCADE)
