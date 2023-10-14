@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from .models import ReportInfo, Status, Location
-from base_functions.serializers import TicketSerializer, ItemSerializer
+from .models import ReportInfo, Status, Location, PendingUsers
+from base_functions.serializers import TicketSerializer, ItemSerializer, CurrentUserSerializer
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -26,13 +26,19 @@ class StatusSerializer(serializers.ModelSerializer):
 
 
 class AlterReportSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = ReportInfo
         fields = "__all__"
 
 class AlterStatusSerializer(serializers.ModelSerializer):
-   
     class Meta:
         model = Status
+        fields = "__all__"
+
+class PendingUsersSerializer(serializers.ModelSerializer):
+    user = CurrentUserSerializer()
+    status = StatusSerializer()
+    
+    class Meta:
+        model = PendingUsers
         fields = "__all__"

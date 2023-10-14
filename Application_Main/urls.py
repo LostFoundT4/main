@@ -36,6 +36,10 @@ urlpatterns = [
     path('items/<int:id>', base_views.item_detail),
     path('userProfiles/', base_views.userprofile_list),
     path('userProfiles/<int:id>', base_views.userprofile_detail),
+    path('reputation/', base_views.reputation_list),
+    path('reputation/<int:id>', base_views.reputation_detail),
+    path('blacklist/', base_views.blacklist_list),
+    path('blacklist/<int:id>', base_views.blacklist_detail),
 
     # CRUD for reporting
     path('locations/', reporting_views.location_list),
@@ -43,6 +47,8 @@ urlpatterns = [
     path('reportInfos/', reporting_views.reportInfo_list),
     path('reportInfos/<int:id>', reporting_views.reportInfo_detail),
     path('status/', reporting_views.status_list),
-    path('status/<int:id>', reporting_views.status_detail)
+    path('status/<int:id>', reporting_views.status_detail),
+    path('pendingUsers/', reporting_views.pendingUsers_list),
+    path('pendingUsers/<int:id>', reporting_views.pendingUsers_detail)
 
 ]

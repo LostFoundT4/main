@@ -1,7 +1,7 @@
 from dataclasses import fields
 from pyexpat import model
 from rest_framework import serializers
-from .models import Ticket, Item, UserAdditionalProfile
+from .models import Ticket, Item, UserAdditionalProfile, Reputation, Blacklist
 from django.contrib.auth.models import User
 
 
@@ -13,6 +13,16 @@ class CurrentUserSerializer(serializers.ModelSerializer):
 class ItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = Item
+        fields = '__all__'
+
+class ReputationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reputation
+        fields = '__all__'
+        
+class BlacklistSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Blacklist
         fields = '__all__'
 
 class TicketSerializer(serializers.ModelSerializer):
