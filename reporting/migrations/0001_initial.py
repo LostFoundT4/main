@@ -27,7 +27,7 @@ class Migration(migrations.Migration):
             name="Status",
             fields=[
                 ("statusID", models.AutoField(primary_key=True, serialize=False)),
-                ("type", models.CharField(max_length=200)),
+                ("status", models.CharField(max_length=200)),
                 ("endorsedUserID", models.IntegerField(blank=True, null=True)),
                 ("counter", models.IntegerField(blank=True, null=True)),
                 ("timer", models.TimeField(blank=True, null=True)),

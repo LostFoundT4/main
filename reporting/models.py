@@ -14,7 +14,7 @@ class Status(models.Model):
     statusID = models.AutoField(primary_key=True)
     # user = models.ForeignKey(User, on_delete=models.CASCADE)
     ticket = models.ForeignKey(Ticket,on_delete=models.CASCADE)
-    type = models.CharField(max_length=200)
+    status = models.CharField(max_length=200)
     endorsedUserID = models.IntegerField(blank=True, null=True)
     counter = models.IntegerField(blank=True, null=True)
     timer = models.TimeField(blank=True, null=True)
