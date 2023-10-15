@@ -144,8 +144,10 @@ export default function CreateTicketButton() {
             await AxiosInstance.post("/status/",{
               "user": id,
               "ticket": response.data.ticket,
-              "type": "Pending",
-              "endorsedUserID": null
+              "status": "Unclaimed",
+              "endorsedUserID": null,
+              "counter": 0,
+              "timer": null
             }).then(async(response) =>{
               console.log("succuessfully created ticket")
               setOpen(false)

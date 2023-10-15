@@ -86,6 +86,13 @@ export default function SignUpSide() {
                       "Authorization": "Token " + response.data.token
                     }
                 }).then(async(response)=>{
+                    // Initialize the reputation of the user with clean flagged status, and 5 out of 5 score.
+                    await AxiosInstance.post('/reputation/',{                    
+                        "user": response.data.id,
+                        "flagged": 0,
+                        "score": 5 
+                    })
+                    // Update the additional infomation of the user
                     await AxiosInstance.post('/userProfiles/',{
                         "user": response.data.id,
                         "userTelegramID": tele,

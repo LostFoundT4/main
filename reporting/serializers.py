@@ -22,7 +22,7 @@ class StatusSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Status
-        fields = ['statusID','user_id', 'ticket', 'type', 'endorsedUserID']
+        fields = "__all__"
 
 
 class AlterReportSerializer(serializers.ModelSerializer):

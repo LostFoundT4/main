@@ -134,8 +134,8 @@ function BasicTabs({
           onChange={handleChange}
           aria-label="basic tabs example"
         >
-          <Tab label="Lost Items" {...a11yProps(0)} />
-          <Tab label="Found Items" {...a11yProps(1)} />
+          <Tab label="Lost items..." {...a11yProps(0)} />
+          <Tab label="Found items..." {...a11yProps(1)} />
         </Tabs>
       </Box>
       <CustomTabPanel value={value} index={0}>
@@ -353,16 +353,13 @@ function Tickets({
                     {reportInfo.description}
                   </Typography>
                 </CardContent>
-                {/* <CardActions>
-                                    <Button size="small" href="./view-item">
-                                        View
-                                    </Button>
-                                    <div style={{ marginLeft: "auto" }}>
-                                        <Button size="small" href="./edit-item">
-                                            Edit
+                <CardActions>
+                                    <div style={{ margin: "auto" }} >
+                                        <Button size="medium" class="claim-button">
+                                            CLAIM
                                         </Button>
                                     </div>
-                                </CardActions> */}
+                                </CardActions>
               </Card>
             </Grid>
           ))

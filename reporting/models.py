@@ -17,7 +17,7 @@ class Status(models.Model):
     status = models.CharField(max_length=200)
     endorsedUserID = models.IntegerField(blank=True, null=True)
     counter = models.IntegerField(blank=True, null=True)
-    timer = models.TimeField(blank=True, null=True)
+    timer = models.DateTimeField(blank=True, null=True)
 
 class Location (models.Model):
     locationID = models.AutoField(primary_key=True)

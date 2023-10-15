@@ -283,7 +283,24 @@ video {
   color: #2dd197 !important;
   background-color: #21222c !important;
 }
+.claim-button {
+  background-color: #6cf3c3 !important;
+  padding: 10px 30px !important;
+  color: #21222c !important;
+  font-weight: 800 !important;
+  transition: 0.4s ease-in-out !important;
+  max-width: 250px !important;
+  margin-bottom: 10px !important;
+  display: block !important;
+  border-radius: 7px !important;
+  border: none !important;
+  font-family: "Lexend Deca", "Montserrat" !important;
+}
 
+.claim-button:hover {
+  background-color: #21222c !important;
+  color: #6cf3c3 !important;
+}
 .popup-modal {
   border: none !important;
   background-color: #35363f !important;

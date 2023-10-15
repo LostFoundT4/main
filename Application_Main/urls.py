@@ -49,6 +49,7 @@ urlpatterns = [
     path('status/', reporting_views.status_list),
     path('status/<int:id>', reporting_views.status_detail),
     path('pendingUsers/', reporting_views.pendingUsers_list),
-    path('pendingUsers/<int:id>', reporting_views.pendingUsers_detail)
+    path('pendingUsers/<int:id>', reporting_views.pendingUsers_detail),
+    path('claimTicket/<int:id>', reporting_views.claim_foundItem)
 
 ]

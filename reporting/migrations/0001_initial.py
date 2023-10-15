@@ -30,7 +30,7 @@ class Migration(migrations.Migration):
                 ("status", models.CharField(max_length=200)),
                 ("endorsedUserID", models.IntegerField(blank=True, null=True)),
                 ("counter", models.IntegerField(blank=True, null=True)),
-                ("timer", models.TimeField(blank=True, null=True)),
+                ("timer", models.DateTimeField(blank=True, null=True)),
                 (
                     "ticket",
                     models.ForeignKey(

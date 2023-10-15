@@ -29,8 +29,8 @@ class UserAdditionalProfile(models.Model):
 class Reputation(models.Model):
     reputationID = models.AutoField(primary_key = True)
     user = models.ForeignKey(User, related_name='reputation', on_delete=models.SET_DEFAULT, default=None)
-    flagged = models.IntegerField(max_length=8, blank=True, null=True)
-    score = models.IntegerField(max_length=8, blank=True)
+    flagged = models.IntegerField(blank=True, null=True)
+    score = models.IntegerField(blank=True, null=True)
 
 class Blacklist(models.Model):
     blacklistID = models.AutoField(primary_key= True)

@@ -63,8 +63,8 @@ class Migration(migrations.Migration):
             name="Reputation",
             fields=[
                 ("reputationID", models.AutoField(primary_key=True, serialize=False)),
-                ("flagged", models.IntegerField(blank=True, max_length=8, null=True)),
-                ("score", models.IntegerField(blank=True, max_length=8)),
+                ("flagged", models.IntegerField(blank=True,null=True)),
+                ("score", models.IntegerField(blank=True, null=True)),
                 (
                     "user",
                     models.ForeignKey(
