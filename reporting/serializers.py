@@ -1,3 +1,4 @@
+from asyncore import read
 from rest_framework import serializers
 from .models import ReportInfo, Status, Location, PendingUsers
 from base_functions.serializers import TicketSerializer, ItemSerializer, CurrentUserSerializer
@@ -7,16 +8,6 @@ class LocationSerializer(serializers.ModelSerializer):
         model = Location
         fields = '__all__'
 
-class ReportSerializer(serializers.ModelSerializer):
-    ticket = TicketSerializer()
-    location = LocationSerializer()
-    item = ItemSerializer()
-
-    class Meta:
-        model = ReportInfo
-        fields = ['reportInfoID', 'description', 'ticket', 'location', 'item']
-
-
 class StatusSerializer(serializers.ModelSerializer):
     ticket = TicketSerializer()
 
@@ -24,6 +15,15 @@ class StatusSerializer(serializers.ModelSerializer):
         model = Status
         fields = "__all__"
 
+class ReportSerializer(serializers.ModelSerializer):
+    ticket = TicketSerializer()
+    location = LocationSerializer()
+    item = ItemSerializer()
+    status = StatusSerializer()
+
+    class Meta:
+        model = ReportInfo
+        fields = ['reportInfoID', 'description', 'ticket', 'location', 'item', 'status']
 
 class AlterReportSerializer(serializers.ModelSerializer):
     class Meta:

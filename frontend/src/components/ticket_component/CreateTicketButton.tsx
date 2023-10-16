@@ -47,6 +47,7 @@ export default function CreateTicketButton() {
   const [type, setType] = React.useState('');
   const [itemName, setItemName] = React.useState('');
   const [category,setCategory] = React.useState('');
+  const [itemID,setItemID] = React.useState('');
   const [location,setLocation] = React.useState<Location[]>([]);
   const [description , SetDescription ] = React.useState("")
   const [selectedLocation, setSelectedLocation] = React.useState('');
@@ -132,31 +133,30 @@ export default function CreateTicketButton() {
           "Content-Type": "multipart/form-data",
         }
       }).then(async (response) => {
-
-          await AxiosInstance.post("/reportInfos/",{
+          const itemID = response.data.itemID
+          await AxiosInstance.post("/status/",{
+            "user": id,
             "ticket": response.data.ticketID,
-            "item": response.data.itemID,
-            "location": parseInt(selectedLocation),
-            "description": description
-
+            "status": "Unclaimed",
+            "endorsedUserID": null,
+            "counter": 0,
+            "timer": null
           }).then(async(response) =>{
-
-            await AxiosInstance.post("/status/",{
-              "user": id,
+            await AxiosInstance.post("/reportInfos/",{
               "ticket": response.data.ticket,
-              "status": "Unclaimed",
-              "endorsedUserID": null,
-              "counter": 0,
-              "timer": null
+              "item": parseInt(itemID),
+              "location": parseInt(selectedLocation),
+              "description": description,
+              "status": response.data.statusID
             }).then(async(response) =>{
               console.log("succuessfully created ticket")
               setOpen(false)
             }).catch((error) => {
-              console.log("failed Status")
+              console.log("failed Reportinfo")
             })
         })
         .catch((error) => {
-        console.log("failed Reportinfo")
+        console.log("failed Status")
       })
       }).catch((error) => {
         console.log("failed creating items")

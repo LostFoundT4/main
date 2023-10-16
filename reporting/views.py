@@ -183,10 +183,9 @@ def claim_foundItem(request, id, format=None):
         except Blacklist.DoesNotExist:
             blacklist = False
 
-
         # Check if user's flag status is ok, then proceed with adding the user to the claim list
         if flagStatus < 3 and statusType != "Claimed" and endorsedUserID != "null" and blacklist == False:
-            # pendingUser = PendingUsers.objects.create(user=user, status=statusObj)
+            pendingUser = PendingUsers.objects.create(user=user, status=statusObj)
 
             # Change the status to "Pending"
             statusObj.status = "Pending"
@@ -203,6 +202,7 @@ def claim_foundItem(request, id, format=None):
             return Response(statusData.data)
 
             # Run trend analysis in the backend 
+            
 
         else:
             return Response(status.HTTP_404_NOT_FOUND)
