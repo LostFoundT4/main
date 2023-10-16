@@ -10,6 +10,7 @@ class Status(models.Model):
     status = models.CharField(max_length=200)
     endorsedUserID = models.IntegerField(blank=True, null=True)
     counter = models.IntegerField(blank=True, null=True)
+    previous_counter = models.IntegerField(default=0)
     timer = models.DateTimeField(blank=True, null=True)
 
 class ReportInfo(models.Model):
