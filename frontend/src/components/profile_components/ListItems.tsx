@@ -8,7 +8,7 @@ import PeopleIcon from "@mui/icons-material/People";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
 import HomeIcon from '@mui/icons-material/Home';
-import AxiosInstance from "../../axios/axiosInstance";
+import AxiosInstance from "../../utils/axiosInstance";
 import { useNavigate } from "react-router-dom";
 
 export const mainListItems = (
