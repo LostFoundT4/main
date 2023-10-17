@@ -37,13 +37,13 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import AxiosInstance from "../axios/axiosInstance";
+import AxiosInstance from "../utils/axiosInstance";
 import AppDrawer from "./AppDrawer";
 import CreateTicketButton from "./ticket_component/CreateTicketButton";
 import Modal from "@mui/material/Modal";
 import { useLocation } from "react-router-dom";
-import axios from "axios/index";
 import EditTicketButton from "./ticket_component/EditTicketButton";
+import {UserIDContext,UserNameContext} from "../utils/contextConfig"
 
 // page where users can only see and add/edit/delete their items and not others'
 
@@ -177,25 +177,26 @@ function Tickets({
     };
 
     // State to hold the user
-    const [id, setID] = useState(0);
+    // const [id, setID] = useState(0);
+    const {contextID, setContextID} = React.useContext(UserIDContext)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // Fetch the user's id
-                const userResponse = await AxiosInstance.get(
-                    "/api/auth/get-user",
-                    {
-                        headers: {
-                            Authorization:
-                                "Token " + localStorage.getItem("authToken"),
-                        },
-                    }
-                );
+                // // Fetch the user's id
+                // const userResponse = await AxiosInstance.get(
+                //     "/api/auth/get-user",
+                //     {
+                //         headers: {
+                //             Authorization:
+                //                 "Token " + localStorage.getItem("authToken"),
+                //         },
+                //     }
+                // );
 
-                // Set the user ID state
-                setID(userResponse.data.id);
-                console.log("User ID:", userResponse.data.id);
+                // // Set the user ID state
+                // setID(userResponse.data.id);
+                // console.log("User ID:", userResponse.data.id);
 
                 // Fetch items that belong to the user
                 const reportInfoResponse = await AxiosInstance.get(
@@ -206,7 +207,7 @@ function Tickets({
                 const filteredItems = reportInfoResponse.data.filter(
                     (reportInfo: ReportInfo) =>
                         reportInfo.ticket.ticketType === ticketTypeFilter &&
-                        reportInfo.ticket.user === userResponse.data.id
+                        reportInfo.ticket.user === Number(contextID)
                 );
 
                 // Set the filtered items in state
@@ -230,7 +231,7 @@ function Tickets({
                 const filteredItems = response.data.filter(
                     (reportInfo: ReportInfo) =>
                         reportInfo.ticket.ticketType === ticketTypeFilter &&
-                        reportInfo.ticket.user === id
+                        reportInfo.ticket.user === Number(contextID)
                 );
                 setItems(filteredItems);
             })
@@ -294,7 +295,7 @@ function Tickets({
     };
 
     const CustomModal = () => {
-        console.log(reportDetail.item.found_dateTime);
+        // console.log(reportDetail.item.found_dateTime);
         const date = reportDetail.item.found_dateTime.substring(0, 10);
         const time = reportDetail.item.found_dateTime.substring(11, 16);
         return (
@@ -418,6 +419,9 @@ function Tickets({
                                     </Typography>
                                     <Typography className="item-description">
                                         {reportInfo.description}
+                                    </Typography>
+                                    <Typography align= 'center' className="item-Status">
+                                        {}
                                     </Typography>
                                 </CardContent>
                                 {/* <CardActions>

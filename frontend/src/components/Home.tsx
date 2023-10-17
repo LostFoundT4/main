@@ -37,7 +37,7 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
-import AxiosInstance from "../axios/axiosInstance";
+import AxiosInstance from "../utils/axiosInstance";
 import AppDrawer from "./AppDrawer";
 import CreateTicketButton from "./ticket_component/CreateTicketButton";
 import Modal from "@mui/material/Modal";
@@ -101,10 +101,6 @@ function CustomTabPanel(props: TabPanelProps) {
         </div>
     );
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("Hello");
-});
 
 function a11yProps(index: number) {
     return {
