@@ -19,8 +19,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import AxiosInstance from "../../axios/axiosInstance";
+import AxiosInstance from "../../utils/axiosInstance";
 import FormHelperText from "@mui/material/FormHelperText";
+import {UserIDContext,UserNameContext} from "../../utils/contextConfig"
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
@@ -38,8 +39,9 @@ interface Location {
 }
 
 export default function CreateTicketButton() {
-    const [username, setUsername] = React.useState("");
-    const [id, setID] = React.useState(0);
+    const {contextID, setContextID} = React.useContext(UserIDContext)
+    // const [username, setUsername] = React.useState("");
+    // const [id, setID] = React.useState(0);
 
     const [open, setOpen] = React.useState(false);
     const [datetime, setDateTime] = React.useState<Dayjs | null>(dayjs());
@@ -76,16 +78,16 @@ export default function CreateTicketButton() {
         setCheckLocation(false);
     }, [location]);
 
-    React.useEffect(() => {
-        AxiosInstance.get("/api/auth/get-user", {
-            headers: {
-                Authorization: "Token " + localStorage.getItem("authToken"),
-            },
-        }).then((response) => {
-            setUsername(response.data.username);
-            setID(response.data.id);
-        });
-    });
+    // React.useEffect(() => {
+    //     AxiosInstance.get("/api/auth/get-user", {
+    //         headers: {
+    //             Authorization: "Token " + localStorage.getItem("authToken"),
+    //         },
+    //     }).then((response) => {
+    //         setUsername(response.data.username);
+    //         setID(response.data.id);
+    //     });
+    // });
 
     function handleimage(e: any) {
         setFile(e.target.files[0]);
@@ -112,7 +114,7 @@ export default function CreateTicketButton() {
     const handleProceed = async () => {
         await AxiosInstance.post("/tickets/", {
             ticketType: type,
-            user: id,
+            user: contextID,
         })
         .then(async (response) => {
                 // Step 2: Prepare form data for the item associated with the ticket
@@ -145,9 +147,9 @@ export default function CreateTicketButton() {
                             description: description,
                         })
                             .then(async (response) => {
-                                 // Step 7: Set the status of the ticket to "Pending"
+                                // Step 7: Set the status of the ticket to "Pending"
                                 await AxiosInstance.post("/status/", {
-                                    user: id,
+                                    user: contextID,
                                     ticket: response.data.ticket,
                                     type: "Pending",
                                     endorsedUserID: null,
