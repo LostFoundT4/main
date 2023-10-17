@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import cloudinary_storage
 import os
-
+import celery
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'knox',
     'accounts',
+    'django_celery_beat',
 ]
 
 REST_FRAMEWORK = {
@@ -143,3 +144,6 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CELERY_BROKER_URL = 'redis://localhost:6379/0' 
+BROKER_TRANSPORT = 'redis'
