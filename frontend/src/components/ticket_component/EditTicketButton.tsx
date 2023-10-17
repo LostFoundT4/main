@@ -61,6 +61,19 @@ interface ReportInfo {
       ticketID: number;
       found_dateTime: string;
   };
+  status: {
+    statusID: number;
+    ticket: {
+      ticketID: number;
+      ticketType: string;
+      created_dateTime: string;
+  };
+    status: string;
+    endorsedUserID: number;
+    counter: number;
+    previous_counter: number;
+    timer: string;
+  }
 }
 
 export default function EditTicketButton({data, data2} : {data: any, data2: any}) {
@@ -171,7 +184,8 @@ export default function EditTicketButton({data, data2} : {data: any, data2: any}
       "description": description,
       "location": filteredReport?.location.locationID,
       "item" : filteredReport?.item.itemID,
-      "ticket" :filteredReport?.ticket.ticketID
+      "ticket" :filteredReport?.ticket.ticketID,
+      "status": filteredReport?.status.statusID
     }).then(async (response) =>{
       const formData = new FormData();
       formData.append("itemName", itemName);
