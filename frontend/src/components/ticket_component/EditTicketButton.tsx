@@ -169,9 +169,9 @@ export default function EditTicketButton({data, data2} : {data: any, data2: any}
     //Need to edit bad request
     await AxiosInstance.put("/reportInfos/" + filteredReport!.reportInfoID,{
       "description": description,
-      "location": location,
-      "item" : filteredReport?.item,
-      "ticket" :filteredReport?.ticket
+      "location": filteredReport?.location.locationID,
+      "item" : filteredReport?.item.itemID,
+      "ticket" :filteredReport?.ticket.ticketID
     }).then(async (response) =>{
       const formData = new FormData();
       formData.append("itemName", itemName);
@@ -189,7 +189,8 @@ export default function EditTicketButton({data, data2} : {data: any, data2: any}
           },
       }).then(async(response) => {
         await AxiosInstance.put("/tickets/" + data.ticketID,{
-          "ticketType" : type
+          "ticketType" : type,
+          "user": contextID
         })
       }).then(async (response) => {
         console.log("Successfully edited ticket");
