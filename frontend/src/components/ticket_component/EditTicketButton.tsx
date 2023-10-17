@@ -19,8 +19,9 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import AxiosInstance from "../../axios/axiosInstance";
+import AxiosInstance from "../../utils/axiosInstance";
 import FormHelperText from "@mui/material/FormHelperText";
+import {UserIDContext,UserNameContext} from "../../utils/contextConfig"
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -34,14 +35,41 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 interface Location {
   locationID: number;
   building: string;
-  room: number;
+  room: string;
+}
+
+interface ReportInfo {
+  reportInfoID: number;
+  description: string;
+  ticket: {
+      ticketID: number;
+      ticketType: string;
+      created_dateTime: string;
+      user: number;
+      username: string;
+  };
+  location: {
+      locationID: number;
+      building: string;
+      room: string;
+  };
+  item: {
+      itemID: number;
+      itemName: string;
+      category: string;
+      image: string;
+      ticketID: number;
+      found_dateTime: string;
+  };
 }
 
 export default function EditTicketButton({data, data2} : {data: any, data2: any}) {
-  console.log("reportDetail.ticket:", data);
-  console.log("reportDetail.item.itemID:", data2);
-  const [username, setUsername] = React.useState("");
-  const [id, setID] = React.useState(0);
+  // console.log("reportDetail.ticket:", data);
+  // console.log("reportDetail.item.itemID:", data2);
+  const {contextID, setContextID} = React.useContext(UserIDContext)
+  const {contextName, setContextName} = React.useContext(UserNameContext)
+  // const [username, setUsername] = React.useState("");
+  // const [id, setID] = React.useState(0);
 
   const [open, setOpen] = React.useState(false);
   const [datetime, setDateTime] = React.useState<Dayjs | null>(dayjs());
@@ -49,9 +77,11 @@ export default function EditTicketButton({data, data2} : {data: any, data2: any}
   const [itemName, setItemName] = React.useState("");
   const [category, setCategory] = React.useState("");
   const [location, setLocation] = React.useState<Location[]>([]);
-  const [description, SetDescription] = React.useState("");
+  const [description, setDescription] = React.useState("");
   const [selectedLocation, setSelectedLocation] = React.useState("");
   const [file, SetFile] = React.useState<File>();
+
+  const [filteredReport,setFilteredReport]= React.useState<ReportInfo>();
 
   const [checktype, setCheckType] = React.useState(false);
   const [checkitemName, setCheckItemName] = React.useState(false);
@@ -60,6 +90,21 @@ export default function EditTicketButton({data, data2} : {data: any, data2: any}
 
   React.useEffect(() => {
     fetchLocation();
+    AxiosInstance.get("/reportInfos/").then((response) => {
+      const filtered = response.data.filter(
+        (ReportInfo: ReportInfo) =>
+          ReportInfo.item.itemID === data2 &&
+          ReportInfo.ticket.ticketID === data.ticketID    
+      );
+      setFilteredReport(filtered[0])
+      setType(filtered[0]!.ticket.ticketType)
+      setItemName(filtered[0]!.item.itemName)
+      setCategory(filtered[0]!.item.category)
+      setDescription(filtered[0]!.description)
+      setSelectedLocation(filtered[0]!.location.locationID)
+      setDateTime(dayjs(filtered[0]!.item.found_dateTime))
+      SetFile(filtered[0]!.item.image)
+    })
   }, []);
 
   React.useEffect(() => {
@@ -78,16 +123,6 @@ export default function EditTicketButton({data, data2} : {data: any, data2: any}
     setCheckLocation(false);
   }, [location]);
 
-  React.useEffect(() => {
-    AxiosInstance.get("/api/auth/get-user", {
-      headers: {
-        Authorization: "Token " + localStorage.getItem("authToken"),
-      },
-    }).then((response) => {
-      setUsername(response.data.username);
-      setID(response.data.id);
-    });
-  });
 
   function handleimage(e: any) {
     SetFile(e.target.files[0]);
@@ -131,94 +166,38 @@ export default function EditTicketButton({data, data2} : {data: any, data2: any}
   };
 
   const handleEdit = async() => {
-    // TODO: Add function to edit Ticket Type (Lost/Found)
-    // TODO: Prefill form with current item's information.
-    const formData = new FormData();
-    formData.append("itemName", itemName);
-    formData.append("category", category);
-    if (file?.type !== undefined) {
-        formData.append("image", file!);
-    }
-    formData.append(
-        "found_dateTime",
-        datetime?.format("YYYY-MM-DDTHH:mm:ss[Z]")!
-    );
-
-    await AxiosInstance.put("/items/" + data2, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
-        .then(async (response) => {
-          console.log("Successfully edited ticket");
+    //Need to edit bad request
+    await AxiosInstance.put("/reportInfos/" + filteredReport!.reportInfoID,{
+      "description": description,
+      "location": location,
+      "item" : filteredReport?.item,
+      "ticket" :filteredReport?.ticket
+    }).then(async (response) =>{
+      const formData = new FormData();
+      formData.append("itemName", itemName);
+      formData.append("category", category);
+      if (file?.type !== undefined) {
+          formData.append("image", file!);
+      }
+      formData.append(
+          "found_dateTime",
+          datetime?.format("YYYY-MM-DDTHH:mm:ss[Z]")!
+      );
+      await AxiosInstance.put("/items/" + data2, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+      }).then(async(response) => {
+        await AxiosInstance.put("/tickets/" + data.ticketID,{
+          "ticketType" : type
         })
-        .catch((error) => {
+      }).then(async (response) => {
+        console.log("Successfully edited ticket");
+      })
+    }).catch((error) => {
           console.log("Failed to edit ticket: " + error);
         });
-      };
-      
-
-//   const handleProceed = async () => {
-//     await AxiosInstance.post("/tickets/", {
-//       ticketType: type,
-//       user: id,
-//     })
-//       .then(async (response) => {
-//         const formData = new FormData();
-//         formData.append("ticketID", response.data.ticketID);
-//         formData.append("itemName", itemName);
-//         formData.append("category", category);
-//         if (file?.type !== undefined) {
-//           formData.append("image", file!);
-//         }
-//         formData.append(
-//           "found_dateTime",
-//           datetime?.format("YYYY-MM-DDTHH:mm:ss[Z]")!
-//         );
-
-//         await AxiosInstance.post("/items/", formData, {
-//           headers: {
-//             "Content-Type": "multipart/form-data",
-//           },
-//         })
-//           .then(async (response) => {
-//             await AxiosInstance.post("/reportInfos/", {
-//               ticket: response.data.ticketID,
-//               item: response.data.itemID,
-//               location: parseInt(selectedLocation),
-//               description: description,
-//             })
-//               .then(async (response) => {
-//                 await AxiosInstance.post("/status/", {
-//                   user: id,
-//                   ticket: response.data.ticket,
-//                   type: "Pending",
-//                   endorsedUserID: null,
-//                 })
-//                   .then(async (response) => {
-//                     console.log("successfully edited ticket");
-//                     setOpen(false);
-//                   })
-//                   .catch((error) => {
-//                     console.log("failed Status");
-//                   });
-//               })
-//               .catch((error) => {
-//                 console.log("failed Reportinfo");
-//               });
-//           })
-//           .catch((error) => {
-//             console.log("failed editing items");
-//           });
-//       })
-//       .catch((error) => {
-//         console.log("failed editing ticket");
-//         setCheckItemName(true);
-//         setCheckCategory(true);
-//         setCheckLocation(true);
-//         setCheckType(true);
-//       });
-//   };
+  };
 
   return (
     <div>
@@ -336,7 +315,7 @@ export default function EditTicketButton({data, data2} : {data: any, data2: any}
               multiline
               rows={4}
               value={description}
-              onChange={(e) => SetDescription(e.target.value)}
+              onChange={(e) => setDescription(e.target.value)}
             />
           </Typography>
           <Typography gutterBottom>
