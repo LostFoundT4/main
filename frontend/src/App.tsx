@@ -12,13 +12,21 @@ import EditProfile from "./components/EditProfile";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 import Profile from "./components/Dashboard";
 import * as React from "react";
-import AxiosInstance from "./axios/axiosInstance";
+import AxiosInstance from "./utils/axiosInstance";
 import { useEffect, useState } from "react";
 import MyListings from "./components/MyListings";
+import {UserIDContext,UserNameContext} from "./utils/contextConfig"
 
 export const App = () => {
+
+    //Using useContext for global Varables
+    const [contextID, setContextID] = useState<string | null>(null)
+    const [contextName, setContextName] = useState<string | null>(null)
+    
     return (
         <Router>
+            <UserIDContext.Provider value={{contextID, setContextID}}>
+            <UserNameContext.Provider value={{contextName, setContextName}}>
             <Routes>
                 <Route path="/frontend/sign-up" element={<SignUpSide />}></Route>
                 <Route path="/frontend/sign-in" element={<SignInSide />}></Route>
@@ -29,6 +37,8 @@ export const App = () => {
                     <Route path="/frontend/my-listings" element={<MyListings />}></Route>
                 </Route>
             </Routes>
+            </UserNameContext.Provider>
+            </UserIDContext.Provider>
         </Router>
     );
 };
