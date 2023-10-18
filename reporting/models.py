@@ -28,4 +28,4 @@ class Location (models.Model):
 class PendingUsers(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    status = models.ForeignKey(Status, on_delete=models.CASCADE)
+    status = models.ForeignKey(Status,related_name="pendingUsers", on_delete=models.CASCADE)

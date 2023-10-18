@@ -8,8 +8,16 @@ class LocationSerializer(serializers.ModelSerializer):
         model = Location
         fields = '__all__'
 
+class PendingUsersSerializer(serializers.ModelSerializer):
+    # user = CurrentUserSerializer()
+    
+    class Meta:
+        model = PendingUsers
+        fields = "__all__"
+        
 class StatusSerializer(serializers.ModelSerializer):
     ticket = TicketSerializer()
+    pendingUsers = PendingUsersSerializer(read_only=True, many=True)
 
     class Meta:
         model = Status
@@ -33,12 +41,4 @@ class AlterReportSerializer(serializers.ModelSerializer):
 class AlterStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Status
-        fields = "__all__"
-
-class PendingUsersSerializer(serializers.ModelSerializer):
-    user = CurrentUserSerializer()
-    status = StatusSerializer()
-    
-    class Meta:
-        model = PendingUsers
         fields = "__all__"
