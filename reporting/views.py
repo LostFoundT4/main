@@ -248,6 +248,30 @@ def confirm_claimedFoundItem(request, id, format=None):
         return Response(status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
+        statusObj = Status.objects.get(ticket=ticket.ticketID)
+        statusID = statusObj.statusID
+
+        isClaimed = False
+        if statusObj.status == "Claimed" :
+            isClaimed = True
+        
+        # Check if the item is belong to the himself
+        isBelongsToUser = False
+        ownerID = ticket.user_id
+        if ownerID == int(endorsedUserID):
+            isBelongsToUser = True
+
+        # Check if the user is in the pending list
+        isInPendingList = False
+        try: 
+            pendingUserList = PendingUsers.objects.get(status=statusID,user=endorsedUserID)
+            isInPendingList = True
+        except PendingUsers.DoesNotExist:
+            isInPendingList = False
+
+        if isClaimed == True or isBelongsToUser == True or isInPendingList == False:
+            return Response(status.HTTP_404_NOT_FOUND)
+
         # The owner of the found item will be de-flagged, increase reputation score
         reputationObj = Reputation.objects.get(user=endorsedUserID)
         flagStatus = reputationObj.flagged
@@ -260,8 +284,6 @@ def confirm_claimedFoundItem(request, id, format=None):
         reputationObj.save()
 
         # Change the status to "Claimed" and endorse the ticket to the owner
-        statusObj = Status.objects.get(ticket=ticket.ticketID)
-        statusID = statusObj.statusID
         statusObj.status = "Claimed"
         statusObj.endorsedUserID = endorsedUserID
         statusObj.save()
