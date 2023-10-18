@@ -11,7 +11,6 @@ class Status(models.Model):
     endorsedUserID = models.IntegerField(blank=True, null=True)
     counter = models.IntegerField(blank=True, null=True)
     previous_counter = models.IntegerField(default=0)
-    timer = models.DateTimeField(blank=True, null=True)
 
 class ReportInfo(models.Model):
     reportInfoID = models.AutoField(primary_key=True)

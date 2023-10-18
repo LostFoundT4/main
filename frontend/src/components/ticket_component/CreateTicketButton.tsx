@@ -135,8 +135,7 @@ export default function CreateTicketButton() {
                           "status": "Unclaimed",
                           "endorsedUserID": null,
                           "counter": 0,
-                          "previous_counter": 0,
-                          "timer": null
+                          "previous_counter": 0
                         }).then(async(response) =>{
                           await AxiosInstance.post("/reportInfos/",{
                             "ticket": response.data.ticket,
