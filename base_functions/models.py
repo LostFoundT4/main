@@ -30,10 +30,9 @@ class Reputation(models.Model):
     reputationID = models.AutoField(primary_key = True)
     user = models.ForeignKey(User, related_name='reputation', on_delete=models.CASCADE, default=None)
     flagged = models.IntegerField(blank=True, null=True)
-    score = models.IntegerField(blank=True, null=True)
+    score = models.FloatField(blank=True, null=True)
 
 class Blacklist(models.Model):
     blacklistID = models.AutoField(primary_key= True)
     user = models.ForeignKey(User, related_name='blacklist', on_delete=models.CASCADE, default=None)    
-    ticket = models.ForeignKey(Ticket, related_name='blacklist', on_delete=models.CASCADE, default=None)
     timestamp = models.DateTimeField(auto_now_add=True)
