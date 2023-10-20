@@ -1,51 +1,31 @@
 import * as React from "react";
 import { useEffect, useState } from "react";
-import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-import CssBaseline from "@mui/material/CssBaseline";
-import MuiDrawer from "@mui/material/Drawer";
-import Box from "@mui/material/Box";
-import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar";
-import Toolbar from "@mui/material/Toolbar";
-import List from "@mui/material/List";
-import Typography from "@mui/material/Typography";
-import Divider from "@mui/material/Divider";
-import IconButton from "@mui/material/IconButton";
-import Badge from "@mui/material/Badge";
-import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
-import Paper from "@mui/material/Paper";
-import Link from "@mui/material/Link";
-import MenuIcon from "@mui/icons-material/Menu";
-import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
-import NotificationsIcon from "@mui/icons-material/Notifications";
 import {
-    mainListItems,
-    secondaryListItems,
-} from "./profile_components/ListItems";
-import Chart from "./profile_components/Chart";
-import Deposits from "./profile_components/Deposits";
-import Orders from "./profile_components/Orders";
-import InputAdornment from "@mui/material/InputAdornment";
-import TextField from "@mui/material/TextField";
+    CssBaseline,
+    Box,
+    Toolbar,
+    Typography,
+    Container,
+    Grid,
+    Paper,
+    InputAdornment,
+    TextField,
+    Tabs,
+    Tab,
+    Card,
+    CardContent,
+    CardMedia,
+    Modal,
+} from "@mui/material";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import TabPanel from "@mui/lab/TabPanel";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import { useNavigate } from "react-router-dom";
-import AxiosInstance from "../utils/axiosInstance";
 import AppDrawer from "./AppDrawer";
 import CreateTicketButton from "./ticket_component/CreateTicketButton";
-import Modal from "@mui/material/Modal";
-import { useLocation } from "react-router-dom";
 import EditTicketButton from "./ticket_component/EditTicketButton";
-import {UserIDContext,UserNameContext} from "../utils/contextConfig"
+import { UserIDContext, UserNameContext } from "../utils/contextConfig";
+import AxiosInstance from "../utils/axiosInstance";
 
-// page where users can only see and add/edit/delete their items and not others'
+// MyListings: Page where users can only see, add, edit, and delete their OWN items, not others
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -105,10 +85,6 @@ function CustomTabPanel(props: TabPanelProps) {
         </div>
     );
 }
-
-document.addEventListener("DOMContentLoaded", function () {
-    console.log("Hello");
-});
 
 function a11yProps(index: number) {
     return {
@@ -177,27 +153,11 @@ function Tickets({
     };
 
     // State to hold the user
-    // const [id, setID] = useState(0);
-    const {contextID, setContextID} = React.useContext(UserIDContext)
+    const { contextID, setContextID } = React.useContext(UserIDContext);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                // // Fetch the user's id
-                // const userResponse = await AxiosInstance.get(
-                //     "/api/auth/get-user",
-                //     {
-                //         headers: {
-                //             Authorization:
-                //                 "Token " + localStorage.getItem("authToken"),
-                //         },
-                //     }
-                // );
-
-                // // Set the user ID state
-                // setID(userResponse.data.id);
-                // console.log("User ID:", userResponse.data.id);
-
                 // Fetch items that belong to the user
                 const reportInfoResponse = await AxiosInstance.get(
                     "/reportInfos"
@@ -221,8 +181,6 @@ function Tickets({
         fetchData();
     }, [ticketTypeFilter]);
 
-    // console.log("Logged User ID during:", id);
-
     useEffect(() => {
         // Fetch items that belong to the user
         AxiosInstance.get("/reportInfos")
@@ -239,8 +197,6 @@ function Tickets({
                 console.error("Error fetching items:", error);
             });
     }, [ticketTypeFilter]); // Re-fetch data when ticketTypeFilter changes
-
-    // console.log("Logged User ID after:", id);
 
     const filteredReportInfos = reportInfos.filter((reportInfo) => {
         const { description, item } = reportInfo;
@@ -295,7 +251,6 @@ function Tickets({
     };
 
     const CustomModal = () => {
-        // console.log(reportDetail.item.found_dateTime);
         const date = reportDetail.item.found_dateTime.substring(0, 10);
         const time = reportDetail.item.found_dateTime.substring(11, 16);
         return (
@@ -338,8 +293,9 @@ function Tickets({
                                 hrs
                             </Typography>
                             <EditTicketButton
-                                myTicket = {reportDetail.ticket}
-                                myItemID = {reportDetail.item.itemID}/>
+                                myTicket={reportDetail.ticket}
+                                myItemID={reportDetail.item.itemID}
+                            />
                         </div>
                     </Box>
                 </Modal>
@@ -420,20 +376,13 @@ function Tickets({
                                     <Typography className="item-description">
                                         {reportInfo.description}
                                     </Typography>
-                                    <Typography align= 'center' className="item-Status">
+                                    <Typography
+                                        align="center"
+                                        className="item-Status"
+                                    >
                                         {}
                                     </Typography>
                                 </CardContent>
-                                {/* <CardActions>
-                                    <Button size="small" href="./view-item">
-                                        View
-                                    </Button>
-                                    <div style={{ marginLeft: "auto" }}>
-                                        <Button size="small" href="./edit-item">
-                                            Edit
-                                        </Button>
-                                    </div>
-                                </CardActions> */}
                             </Card>
                         </Grid>
                     ))
@@ -453,7 +402,6 @@ function Tickets({
     );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function Home() {
