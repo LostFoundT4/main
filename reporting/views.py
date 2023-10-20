@@ -144,6 +144,7 @@ def pendingUsers_list(request):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
 @api_view(['GET', 'PUT', 'DELETE'])
 def pendingUsers_detail(request, id, format=None):
 
@@ -156,7 +157,8 @@ def pendingUsers_detail(request, id, format=None):
         serializer = PendingUsersSerializer(pendingUsers)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = AlterPendingUsersSerializer(pendingUsers, data=request.data)
+        serializer = AlterPendingUsersSerializer(
+            pendingUsers, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -205,14 +207,13 @@ def claim_foundItem(request, id, format=None):
         # # Check if the user is in the pending list already (no double-claim)
         isPending = False
         try:
-            pendingObj = PendingUsers.objects.get(user=userID,status=statusID)
+            pendingObj = PendingUsers.objects.get(user=userID, status=statusID)
             isPending = True
         except PendingUsers.DoesNotExist:
             isPending = False
 
         if isBelongsToUser == True or isBlacklisted == True or isPending == True:
             return Response(status.HTTP_404_NOT_FOUND)
-
 
         # Check if user's reputation, then proceed with adding the user to the claim list
         if flagStatus < 4 and reputationScore >= 3 and statusType != "Claimed" and endorsedUserID != "null":
@@ -230,13 +231,35 @@ def claim_foundItem(request, id, format=None):
             statusObj.counter += 1
             statusObj.save()
 
+            # Check if the user claim multiple items (more than 3) at the same time
+
             statusData = StatusSerializer(statusObj)
             return Response(statusData.data)
 
         else:
+            # Blacklist the users and remove his pending items
+            Blacklist.objects.create(user=user, timestamp=datetime.now())
+            falseClaimList = PendingUsers.objects.filter(user=user)
+            
+            # # (not done)Change the status of the pending items back to unclaimed if no other pending users and reduce the counter
+            for claimer in falseClaimList:
+                statusID = claimer.status_id
+                statusObj = Status.objects.get(pk=statusID)
+                statusObj.counter -= 1
+                statusObj.save()
+
+                if statusObj.counter == 0:
+                    statusObj.status = "Unclaimed"
+                statusObj.save()
+
+
+            falseClaimList.delete()
+            
             return Response(status.HTTP_404_NOT_FOUND)
+
     else:
         return Response(status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['PUT'])
 def confirm_claimedFoundItem(request, id, format=None):
@@ -252,9 +275,9 @@ def confirm_claimedFoundItem(request, id, format=None):
         statusID = statusObj.statusID
 
         isClaimed = False
-        if statusObj.status == "Claimed" :
+        if statusObj.status == "Claimed":
             isClaimed = True
-        
+
         # Check if the item is belong to the himself
         isBelongsToUser = False
         ownerID = ticket.user_id
@@ -263,8 +286,9 @@ def confirm_claimedFoundItem(request, id, format=None):
 
         # Check if the user is in the pending list
         isInPendingList = False
-        try: 
-            pendingUserList = PendingUsers.objects.get(status=statusID,user=endorsedUserID)
+        try:
+            pendingUserList = PendingUsers.objects.get(
+                status=statusID, user=endorsedUserID)
             isInPendingList = True
         except PendingUsers.DoesNotExist:
             isInPendingList = False
@@ -289,7 +313,8 @@ def confirm_claimedFoundItem(request, id, format=None):
         statusObj.save()
 
         # False-claimer's reputation score will descrease 0.5
-        falseClaimerList = PendingUsers.objects.filter(status=statusID).exclude(user=endorsedUserID)
+        falseClaimerList = PendingUsers.objects.filter(
+            status=statusID).exclude(user=endorsedUserID)
 
         for falseClaimer in falseClaimerList:
             user = Reputation.objects.get(user=falseClaimer.user)
@@ -300,7 +325,8 @@ def confirm_claimedFoundItem(request, id, format=None):
             # Blacklist the user if their score is less than 3 which means they false claim item more than 4 times
             if user.score < 3.0:
                 userObj = User.objects.get(pk=userID)
-                Blacklist.objects.create(user=userObj, timestamp=datetime.now())
+                Blacklist.objects.create(
+                    user=userObj, timestamp=datetime.now())
 
         # Delete the pending user list since the item is claimed
         pendingUserList = PendingUsers.objects.filter(status=statusID)

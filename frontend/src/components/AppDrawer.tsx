@@ -1,4 +1,4 @@
-import React, { useState , useEffect} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
 import MuiDrawer from "@mui/material/Drawer";
 import MuiAppBar from "@mui/material/AppBar";
@@ -12,18 +12,20 @@ import {
   Link,
   ListItemIcon,
   CardMedia,
+  Rating,
 } from "@mui/material";
 import {
   mainListItems,
   secondaryListItems,
 } from "./profile_components/ListItems";
-import { UserNameContext } from "../utils/contextConfig";
+import { UserIDContext, UserNameContext } from "../utils/contextConfig";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
 import AxiosInstance from "../utils/axiosInstance";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 const drawerWidth: number = 240;
 
@@ -89,6 +91,8 @@ export default function AppDrawer() {
   // Retrieve profile image
   const [profilePicture, setProfilePicture] = useState(""); // You can use a URL or a file object
   const [userprofile, setUserProfile] = useState("");
+  const [reputation, setReputation] = useState("");
+
   useEffect(() => {
     AxiosInstance.get("/api/auth/get-user", {
       headers: {
@@ -99,6 +103,11 @@ export default function AppDrawer() {
       AxiosInstance.get("/userProfiles/" + response.data.profile[0]).then(
         (response) => {
           setProfilePicture(response.data.userProfilePicture);
+        }
+      );
+      AxiosInstance.get("/reputationwithUserID/" + response.data.id).then(
+        (response) => {
+          setReputation(response.data.score);
         }
       );
     });
@@ -147,11 +156,26 @@ export default function AppDrawer() {
               }}
               href="/frontend/edit-profile"
             >
-                <CardMedia
-                  component="div"
-                  sx={{ width: 40, height: 40, marginRight: "10px" }}
-                  image={profilePicture}
-                />
+              <Rating
+                name="half-rating-read"
+                value={parseFloat(reputation)}
+                precision={0.5}
+                readOnly
+                emptyIcon={
+                  <StarBorderIcon
+                    fontSize="inherit"
+                    sx={{
+                      color: "white",
+                    }}
+                  />
+                }
+                sx={{ marginRight: "10px", color: "white" }}
+              />
+              <CardMedia
+                component="div"
+                sx={{ width: 40, height: 40, marginRight: "10px" }}
+                image={profilePicture}
+              />
               {contextName}
             </Link>
           </Toolbar>

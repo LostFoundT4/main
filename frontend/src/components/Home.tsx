@@ -22,12 +22,14 @@ import {
   Modal,
   Alert,
   Snackbar,
+  Rating,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import AxiosInstance from "../utils/axiosInstance";
 import AppDrawer from "./AppDrawer";
 import { UserIDContext, UserNameContext } from "../utils/contextConfig";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -269,6 +271,12 @@ function Tickets({
   const CustomModal = () => {
     const date = reportDetail.item.found_dateTime.substring(0, 10);
     const time = reportDetail.item.found_dateTime.substring(11, 16);
+    const [reputation, setReputation] = useState("");
+
+    AxiosInstance.get("/reputationwithUserID/" + reportDetail.ticket.user).then((response) => {
+      setReputation(response.data.score);
+    });
+
     return (
       <div>
         <Modal
@@ -309,6 +317,24 @@ function Tickets({
               <Typography className="item-description">
                 Reported by: {reportDetail.ticket.username}
               </Typography>
+              <Typography className="item-rating" sx={{display: "inline-flex" }}>User's Reputation: 
+                <Rating
+                  name="half-rating-read"
+                  value={parseFloat(reputation)}
+                  precision={0.5}
+                  readOnly
+                  emptyIcon={
+                    <StarBorderIcon
+                      sx={{
+                        display: 'inline-flex',
+                        alignSelf: "center",
+                      color: "#21222c",
+                      }}
+                    />
+                  }
+                  sx={{ marginRight: "10px", color: "#21222c" }}
+                />
+              </Typography>
             </div>
           </Box>
         </Modal>
@@ -345,7 +371,7 @@ function Tickets({
     user: 0,
     username: "",
   });
-
+  const [reputation, setReputation] = useState("");
   const handleOpenContactInfo = (
     e: React.MouseEvent<Element, MouseEvent>,
     index: any
@@ -360,6 +386,9 @@ function Tickets({
         console.error("Error fetching user profile:", error);
       });
 
+    AxiosInstance.get("/reputationwithUserID/" + index).then((response) => {
+      setReputation(response.data.score);
+    });
     setOpenUserInfo(true);
   };
   const [openUserInfo, setOpenUserInfo] = React.useState(false);
@@ -393,12 +422,29 @@ function Tickets({
               >
                 {userProfileInfo.username}
               </Typography>
-              <Typography className="item-category">
+              <Typography className="item-description">
                 Phone number: +65
                 {userProfileInfo.userPhoneNumber}
               </Typography>
-              <Typography className="item-description">
+              <Typography className="item-category">
                 Telegram handle: @{userProfileInfo.userTelegramID}
+              </Typography>
+              <Typography className="item-description" sx={{display: "inline-flex" }}>Reputation: 
+                <Rating
+                  name="half-rating-read"
+                  value={parseFloat(reputation)}
+                  precision={0.5}
+                  readOnly
+                  emptyIcon={
+                    <StarBorderIcon
+                      fontSize="inherit"
+                      sx={{
+                        color: "#2dd197",
+                      }}
+                    />
+                  }
+                  sx={{ marginRight: "10px", color: "#2dd197" }}
+                />
               </Typography>
             </div>
           </Box>

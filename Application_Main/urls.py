@@ -39,6 +39,7 @@ urlpatterns = [
     path('userProfileswithUserID/<int:id>', base_views.userprofile_detail_withUserID),
     path('reputation/', base_views.reputation_list),
     path('reputation/<int:id>', base_views.reputation_detail),
+    path('reputationwithUserID/<int:id>', base_views.reputation_detail_withUserID),
     path('blacklist/', base_views.blacklist_list),
     path('blacklist/<int:id>', base_views.blacklist_detail),
 

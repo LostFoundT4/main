@@ -281,6 +281,21 @@ video {
   cursor: default;
 }
 
+.item-rating {
+  color: #21222c !important;
+  background-color: #2dd197 !important;
+  padding: 7px 15px !important;
+  margin-bottom: 5px !important;
+  width: fit-content !important;
+  cursor: default;
+  font-size: 13px !important;
+  transition: 0.4s ease-in-out !important;
+  cursor: default;
+}
+.item-rating.css-1o2fprl-MuiTypography-root{
+  align-items: center !important;
+}
+
 .item-description:hover {
   color: #21222c !important;
   background-color: #2dd197 !important;

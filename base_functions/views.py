@@ -165,6 +165,20 @@ def reputation_detail(request, id, format=None):
         reputation.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET'])
+def reputation_detail_withUserID(request, id, format=None):
+
+    try:
+        reputation = Reputation.objects.get(user=id)
+    except Reputation.DoesNotExist:
+        return Response(status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = ReputationSerializer(reputation)
+        return Response(serializer.data)
+    else:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 @api_view(['GET', 'POST'])
 def blacklist_list(request):
 
