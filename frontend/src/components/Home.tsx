@@ -44,6 +44,8 @@ import Modal from "@mui/material/Modal";
 
 import { useLocation } from "react-router-dom";
 import axios from "axios/index";
+import {UserIDContext,UserNameContext} from "../utils/contextConfig"
+
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -66,6 +68,8 @@ interface ReportInfo {
         ticketID: number;
         ticketType: string;
         created_dateTime: string;
+        user: number;
+        username: string;
     };
     location: {
         locationID: number;
@@ -79,6 +83,16 @@ interface ReportInfo {
         image: string;
         ticketID: number;
         found_dateTime: string;
+    };
+    status: {
+        statusID: number;
+        pendingUsers: {
+            id: number;
+            user: number;
+            username: string;
+        };
+        status: string;
+        endorsedUserID: number;
     };
 }
 
@@ -117,11 +131,10 @@ function BasicTabs({
     onSearchQueryChange: (query: string) => void;
 }) {
     const [value, setValue] = React.useState(0);
-
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     };
-
+    const {contextID, setContextID} = React.useContext(UserIDContext)
     return (
         <Box sx={{ width: "100%" }}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
@@ -139,6 +152,8 @@ function BasicTabs({
                     ticketTypeFilter={"Lost"}
                     searchQuery={searchQuery}
                     onSearchQueryChange={onSearchQueryChange}
+                    activeTab={value}
+                    currentUser={contextID} 
                 />
             </CustomTabPanel>
             <CustomTabPanel value={value} index={1}>
@@ -146,6 +161,8 @@ function BasicTabs({
                     ticketTypeFilter={"Found"}
                     searchQuery={searchQuery}
                     onSearchQueryChange={onSearchQueryChange}
+                    activeTab={value}
+                    currentUser={contextID} 
                 />
             </CustomTabPanel>
         </Box>
@@ -156,13 +173,16 @@ function Tickets({
     ticketTypeFilter,
     searchQuery,
     onSearchQueryChange,
+    activeTab,
+    currentUser
 }: {
     ticketTypeFilter: string;
     searchQuery: string;
     onSearchQueryChange: (query: string) => void;
+    activeTab: number; 
+    currentUser: string | null;
 }) {
     const [reportInfos, setItems] = useState<ReportInfo[]>([]);
-
     const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const query = event.target.value;
         onSearchQueryChange(query); // Update the common search query state
@@ -208,6 +228,8 @@ function Tickets({
             ticketID: 0,
             ticketType: "",
             created_dateTime: "",
+            user: 0,
+            username: "",
         },
         location: {
             locationID: 0,
@@ -221,6 +243,16 @@ function Tickets({
             image: "",
             ticketID: 0,
             found_dateTime: "",
+        },
+        status: {
+            statusID: 0,
+            pendingUsers: {
+                id: 0,
+                user: 0,
+                username: "",
+            },
+            status: "",
+            endorsedUserID: 0,
         },
     });
 
@@ -276,6 +308,9 @@ function Tickets({
                                 {reportDetail.location.room} on {date} {time}{" "}
                                 hrs
                             </Typography>
+                            <Typography className="item-description">
+                                Reported by: {reportDetail.ticket.username}
+                            </Typography>
                         </div>
                     </Box>
                 </Modal>
@@ -293,6 +328,12 @@ function Tickets({
         boxShadow: 24,
         p: 4,
     };
+
+    // Helper function to check if the item belongs to the current user
+    function isItemBelongsToCurrentUser(reportInfo: ReportInfo, currentUser: string|null) {
+        if (currentUser!==null)
+            return reportInfo.ticket.user === parseInt(currentUser);    
+    }
 
     return (
         <div>
@@ -359,9 +400,19 @@ function Tickets({
                                 </CardContent>
                                  <CardActions>
                                     <div style={{ margin: "auto" }}>
-                                        <Button size="small" href="" className="claim-button">
-                                            CLAIM
-                                        </Button>
+                                    {activeTab === 1 ? (  // Check if it's the 'Found Items' tab
+                                            !isItemBelongsToCurrentUser(reportInfo, currentUser) && (
+                                                <Button size="small" href="" className="claim-button">
+                                                    CLAIM
+                                                </Button>
+                                            )
+                                        ) : (
+                                            !isItemBelongsToCurrentUser(reportInfo, currentUser) && (
+                                                <Button size="small" href="" className="claim-button">
+                                                    INFORM THE OWNER
+                                                </Button>
+                                            )
+                                        )}
                                     </div>
                                 </CardActions> 
                             </Card>
