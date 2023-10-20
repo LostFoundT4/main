@@ -1,59 +1,63 @@
-import {useState , useContext , useEffect} from "react";
-import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
-import CssBaseline from "@mui/material/CssBaseline";
-import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
-import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import Grid from "@mui/material/Grid";
+import React, { useState, useEffect } from "react";
+import {
+    Avatar,
+    Button,
+    CssBaseline,
+    TextField,
+    FormControlLabel,
+    Checkbox,
+    Link,
+    Paper,
+    Box,
+    Grid,
+    Typography,
+    IconButton,
+    InputAdornment,
+    Container,
+} from "@mui/material";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
-import Container from "@mui/material/Container";
-import IconButton from "@mui/material/IconButton";
-import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
 import AxiosInstance from "../utils/axiosInstance";
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
 export default function SignInSide() {
-    let navigate = useNavigate()
-
-    const [usr,setUsr] = useState("")
-    const [pwd,setPwd] = useState("")
-    const [isCorrectCred,setisCorrectCred] = useState(true)
+    // Define states for variables
+    const [usr, setUsr] = useState("");
+    const [pwd, setPwd] = useState("");
+    const [isCorrectCred, setisCorrectCred] = useState(true);
     const [showPassword, setShowPassword] = useState(false);
 
-    useEffect(() =>{
-        setisCorrectCred(true)
-    },[usr,pwd])
-    
+    const navigate = useNavigate();
+
+    // Reset isCorrectCred when username or password changes
+    useEffect(() => {
+        setisCorrectCred(true);
+    }, [usr, pwd]);
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const data = new FormData(event.currentTarget);
-        await AxiosInstance.post('/api/auth/login',{
-            "username":data.get("username"),
-            "password":data.get("password")},
-            )
-            .then(async (response)=> {
-                localStorage.clear()
-                localStorage.setItem('authToken', response.data.token);
-                navigate("/frontend/home")
-            }
-            ).catch((error) => {
-                setisCorrectCred(false)
+
+        await AxiosInstance.post("/api/auth/login", {
+            username: data.get("username"),
+            password: data.get("password"),
+        })
+            .then(async (response) => {
+                localStorage.clear();
+                localStorage.setItem("authToken", response.data.token);
+
+                navigate("/frontend/home");
             })
-    }
+            .catch((error) => {
+                setisCorrectCred(false);
+            });
+    };
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -77,7 +81,7 @@ export default function SignInSide() {
                 >
                     <Container maxWidth="sm">
                         <Typography
-                            className = "sign-in-h1"
+                            className="sign-in-h1"
                             component="h4"
                             variant="h3"
                             align="left"
@@ -87,16 +91,21 @@ export default function SignInSide() {
                             WELCOME !
                         </Typography>
                         <div className="sign-in-logo-container">
-                        <img className="sign-in-logo" src="https://res.cloudinary.com/dcaux54kw/image/upload/v1694597637/glogo.png"></img>
+                            <img
+                                className="sign-in-logo"
+                                src="https://res.cloudinary.com/dcaux54kw/image/upload/v1694597637/glogo.png"
+                            ></img>
                         </div>
                         <Typography
-                            className = "sign-in-h2"
+                            className="sign-in-h2"
                             variant="h5"
                             align="center"
                             color="#fff"
                             paragraph
                         >
-                            Lost something? Found something?<br/>Let us know and we'll look around.
+                            Lost something? Found something?
+                            <br />
+                            Let us know and we'll look around.
                         </Typography>
                         <Stack
                             sx={{ pt: 1 }}
@@ -127,9 +136,13 @@ export default function SignInSide() {
                         }}
                     >
                         <Avatar sx={{ m: 1, bgcolor: "#21222c" }}>
-                            <LoginOutlinedIcon sx={{color: '#ffffff'}}/>
+                            <LoginOutlinedIcon sx={{ color: "#ffffff" }} />
                         </Avatar>
-                        <Typography className="sign-in-h3" component="h1" variant="h5">
+                        <Typography
+                            className="sign-in-h3"
+                            component="h1"
+                            variant="h5"
+                        >
                             Log In
                         </Typography>
                         <Box
@@ -147,10 +160,14 @@ export default function SignInSide() {
                                 name="username"
                                 autoComplete="username"
                                 autoFocus
-                                error = {isCorrectCred ? false : true }
+                                error={isCorrectCred ? false : true}
                                 onChange={(e) => setUsr(e.target.value)}
                                 value={usr}
-                                helperText= {isCorrectCred ? "" : "Incorrect Username/Password"}
+                                helperText={
+                                    isCorrectCred
+                                        ? ""
+                                        : "Incorrect Username/Password"
+                                }
                             />
                             <TextField
                                 margin="normal"
@@ -158,15 +175,17 @@ export default function SignInSide() {
                                 fullWidth
                                 name="password"
                                 label="Password"
-                                type={
-                                    showPassword ? "text" : "password"
-                                    }
+                                type={showPassword ? "text" : "password"}
                                 id="password"
                                 autoComplete="current-password"
-                                error = {isCorrectCred ? false : true }
+                                error={isCorrectCred ? false : true}
                                 onChange={(e) => setPwd(e.target.value)}
                                 value={pwd}
-                                helperText= {isCorrectCred ? "" : "Incorrect Username/Password"}
+                                helperText={
+                                    isCorrectCred
+                                        ? ""
+                                        : "Incorrect Username/Password"
+                                }
                                 InputProps={{
                                     endAdornment: (
                                         <InputAdornment position="end">
@@ -207,12 +226,20 @@ export default function SignInSide() {
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2" className="sign-in-link">
+                                    <Link
+                                        href="#"
+                                        variant="body2"
+                                        className="sign-in-link"
+                                    >
                                         Forgot password?
                                     </Link>
                                 </Grid>
                                 <Grid item>
-                                    <Link href="sign-up" variant="body2" className="sign-in-link">
+                                    <Link
+                                        href="sign-up"
+                                        variant="body2"
+                                        className="sign-in-link"
+                                    >
                                         {"Don't have an account? Sign up"}
                                     </Link>
                                 </Grid>
