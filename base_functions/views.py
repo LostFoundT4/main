@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import Ticket, Item, UserAdditionalProfile, Reputation, Blacklist
-from .serializers import ReputationSerializer, TicketSerializer, ItemSerializer , AlterTicketSerializer, CurrentUserProfileSerializer, BlacklistSerializer
+from .serializers import ReputationSerializer, TicketSerializer, ItemSerializer , AlterTicketSerializer, CurrentUserProfileSerializer, BlacklistSerializer, AlterCurrentUserProfileSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -89,7 +89,7 @@ def userprofile_list(request):
         return Response(serializer.data)
 
     if request.method == 'POST':
-        serializer = CurrentUserProfileSerializer(data = request.data)
+        serializer = AlterCurrentUserProfileSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -106,7 +106,7 @@ def userprofile_detail(request, id, format=None):
         serializer = CurrentUserProfileSerializer(userProfile)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = CurrentUserProfileSerializer(userProfile, data=request.data)
+        serializer = AlterCurrentUserProfileSerializer(userProfile, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -114,6 +114,21 @@ def userprofile_detail(request, id, format=None):
     elif request.method == 'DELETE':
         userProfile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def userprofile_detail_withUserID(request, id, format=None):
+
+    try:
+        userProfile = UserAdditionalProfile.objects.get(user=id)
+    except UserAdditionalProfile.DoesNotExist:
+        return Response(status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CurrentUserProfileSerializer(userProfile)
+        return Response(serializer.data)
+    else:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        
 
 @api_view(['GET', 'POST'])
 def reputation_list(request):
