@@ -216,6 +216,11 @@ export default function CreateTicketButton() {
                     console.log("Successfully created a ticket");
                     setOpen(false);
                     setSuccessAlert(true);
+
+                    // Waits for 1s before reloading
+                    setTimeout(() => {
+                        window.location.reload();
+                      }, 1000);
                   })
                   .catch((error) => {
                     console.log("Failed to create a report info");
