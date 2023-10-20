@@ -21,7 +21,7 @@ import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import AxiosInstance from "../../utils/axiosInstance";
 import FormHelperText from "@mui/material/FormHelperText";
-import {UserIDContext,UserNameContext} from "../../utils/contextConfig"
+import { UserIDContext, UserNameContext } from "../../utils/contextConfig";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
@@ -39,10 +39,10 @@ interface Location {
 }
 
 export default function CreateTicketButton() {
-    const {contextID, setContextID} = React.useContext(UserIDContext)
-    // const [username, setUsername] = React.useState("");
-    // const [id, setID] = React.useState(0);
+    // Context for user data
+    const { contextID, setContextID } = React.useContext(UserIDContext);
 
+    // Define states for form fields
     const [open, setOpen] = React.useState(false);
     const [datetime, setDateTime] = React.useState<Dayjs | null>(dayjs());
     const [type, setType] = React.useState("");
@@ -53,6 +53,7 @@ export default function CreateTicketButton() {
     const [selectedLocation, setSelectedLocation] = React.useState("");
     const [file, setFile] = React.useState<File>();
 
+    // Define states for form field validations
     const [checktype, setCheckType] = React.useState(false);
     const [checkitemName, setCheckItemName] = React.useState(false);
     const [checkcategory, setCheckCategory] = React.useState(false);
@@ -85,6 +86,7 @@ export default function CreateTicketButton() {
     const handleClickOpen = () => {
         setOpen(true);
     };
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -98,68 +100,79 @@ export default function CreateTicketButton() {
             setLocation(response.data);
         });
     };
-    // Step 1: Create a new ticket
+
     const handleProceed = async () => {
+        // Create a ticket
         await AxiosInstance.post("/tickets/", {
             ticketType: type,
             user: contextID,
         })
-        .then(async (response) => {
-                // Step 2: Prepare form data for the item associated with the ticket
+            .then(async (response) => {
+                // Create and fill up formData
                 const formData = new FormData();
                 formData.append("ticketID", response.data.ticketID);
                 formData.append("itemName", itemName);
                 formData.append("category", category);
-                // Step 3: Check if a file was selected and append it to the form data
                 if (file?.type !== undefined) {
                     formData.append("image", file!);
                 }
-                // Step 4: Format and append the found date and time to the form data
                 formData.append(
                     "found_dateTime",
                     datetime?.format("YYYY-MM-DDTHH:mm:ss[Z]")!
                 );
 
-                // Step 5: Create an item associated with the ticket
+                // Create an item associated with the ticket
                 await AxiosInstance.post("/items/", formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
                 })
                     .then(async (response) => {
-                        // Step 6: Create a report info associated with the item
-                        const itemID = response.data.itemID
-                        await AxiosInstance.post("/status/",{
-                          "user": contextID,
-                          "ticket": response.data.ticketID,
-                          "status": "Unclaimed",
-                          "endorsedUserID": null,
-                          "counter": 0,
-                          "previous_counter": 0
-                        }).then(async(response) =>{
-                          await AxiosInstance.post("/reportInfos/",{
-                            "ticket": response.data.ticket,
-                            "item": parseInt(itemID),
-                            "location": parseInt(selectedLocation),
-                            "description": description,
-                            "status": response.data.statusID
-                          }).then(async(response) =>{
-                            console.log("succuessfully created ticket")
-                            setOpen(false)
-                          }).catch((error) => {
-                            console.log("failed Reportinfo")
-                          })
-                      })
-                      .catch((error) => {
-                      console.log("failed Status")
-                    })
+                        const itemID = response.data.itemID;
+
+                        // Step 7: Create a status entry for the item
+                        await AxiosInstance.post("/status/", {
+                            user: contextID,
+                            ticket: response.data.ticketID,
+                            status: "Unclaimed",
+                            endorsedUserID: null,
+                            counter: 0,
+                            previous_counter: 0,
+                        })
+                            .then(async (response) => {
+                                // Create a report info associated with the item
+                                const statusID = response.data.statusID;
+                                await AxiosInstance.post("/reportInfos/", {
+                                    ticket: response.data.ticket,
+                                    item: parseInt(itemID),
+                                    location: parseInt(selectedLocation),
+                                    description: description,
+                                    status: statusID,
+                                })
+                                    .then(async (response) => {
+                                        // Log success and close the form
+                                        console.log(
+                                            "Successfully created a ticket"
+                                        );
+                                        setOpen(false);
+                                    })
+                                    .catch((error) => {
+                                        console.log(
+                                            "Failed to create a report info"
+                                        );
+                                    });
+                            })
+                            .catch((error) => {
+                                console.log("Failed to create a status entry");
+                            });
                     })
                     .catch((error) => {
-                        console.log("failed creating items");
+                        console.log("Failed to create an item");
                     });
             })
             .catch((error) => {
-                console.log("failed creating ticket");
+                // Log failure and set flags for validation checks
+                console.log("Failed to create a ticket");
                 setCheckItemName(true);
                 setCheckCategory(true);
                 setCheckLocation(true);
