@@ -338,8 +338,8 @@ function Tickets({
                                 hrs
                             </Typography>
                             <EditTicketButton
-                                data = {reportDetail.ticket}
-                                data2 = {reportDetail.item.itemID}/>
+                                myTicket = {reportDetail.ticket}
+                                myItemID = {reportDetail.item.itemID}/>
                         </div>
                     </Box>
                 </Modal>
