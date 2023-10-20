@@ -416,10 +416,11 @@ function Tickets({
         setSuccessAlert(true);
       })
       .catch((error) => {
-        setFailAlert(true);
+        setErrorAlert(true);
       });
   };
 
+  // Success Alert
   const [openSuccessAlert, setSuccessAlert] = React.useState(false);
   const handleCloseSuccessAlert = (
     event?: React.SyntheticEvent | Event,
@@ -448,25 +449,26 @@ function Tickets({
     );
   };
 
-  const [openFailAlert, setFailAlert] = React.useState(false);
-  const handleCloseFailAlert = (
+  // Error Alert
+  const [openErrorAlert, setErrorAlert] = React.useState(false);
+  const handleCloseErrorAlert = (
     event?: React.SyntheticEvent | Event,
     reason?: string
   ) => {
     if (reason === "clickaway") {
       return;
     }
-    setFailAlert(false);
+    setErrorAlert(false);
   };
-  const FailAlert = () => {
+  const ErrorAlert = () => {
     return (
       <Snackbar
-        open={openFailAlert}
+        open={openErrorAlert}
         autoHideDuration={5000}
-        onClose={handleCloseFailAlert}
+        onClose={handleCloseErrorAlert}
       >
         <Alert
-          onClose={handleCloseFailAlert}
+          onClose={handleCloseErrorAlert}
           severity="error"
           sx={{ width: "100%" }}
         >
@@ -500,7 +502,7 @@ function Tickets({
       <CustomModal />
       <UserInfoModal />
       <SuccessAlert />
-      <FailAlert />
+      <ErrorAlert />
       <Grid container spacing={4}>
         {filteredReportInfos.length > 0 ? (
           filteredReportInfos.map((reportInfo) => (
