@@ -23,6 +23,8 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import AxiosInstance from "../../utils/axiosInstance";
 import { UserIDContext, UserNameContext } from "../../utils/contextConfig";
+import { useContext, useEffect, useState } from "react";
+
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
         padding: theme.spacing(2),
@@ -40,42 +42,42 @@ interface Location {
 
 export default function CreateTicketButton() {
     // Context for user data
-    const { contextID, setContextID } = React.useContext(UserIDContext);
+    const { contextID, setContextID } = useContext(UserIDContext);
 
     // Define states for form fields
-    const [open, setOpen] = React.useState(false);
-    const [datetime, setDateTime] = React.useState<Dayjs | null>(dayjs());
-    const [type, setType] = React.useState("");
-    const [itemName, setItemName] = React.useState("");
-    const [category, setCategory] = React.useState("");
-    const [location, setLocation] = React.useState<Location[]>([]);
-    const [description, setDescription] = React.useState("");
-    const [selectedLocation, setSelectedLocation] = React.useState("");
-    const [file, setFile] = React.useState<File>();
+    const [open, setOpen] = useState(false);
+    const [datetime, setDateTime] = useState<Dayjs | null>(dayjs());
+    const [type, setType] = useState("");
+    const [itemName, setItemName] = useState("");
+    const [category, setCategory] = useState("");
+    const [location, setLocation] = useState<Location[]>([]);
+    const [description, setDescription] = useState("");
+    const [selectedLocation, setSelectedLocation] = useState("");
+    const [file, setFile] = useState<File>();
 
     // Define states for form field validations
-    const [checktype, setCheckType] = React.useState(false);
-    const [checkitemName, setCheckItemName] = React.useState(false);
-    const [checkcategory, setCheckCategory] = React.useState(false);
-    const [checklocation, setCheckLocation] = React.useState(false);
+    const [checktype, setCheckType] = useState(false);
+    const [checkitemName, setCheckItemName] = useState(false);
+    const [checkcategory, setCheckCategory] = useState(false);
+    const [checklocation, setCheckLocation] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         fetchLocation();
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setCheckItemName(false);
     }, [itemName]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setCheckCategory(false);
     }, [category]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setCheckType(false);
     }, [type]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setCheckLocation(false);
     }, [location]);
 

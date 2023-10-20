@@ -1,27 +1,29 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
-import { styled } from "@mui/material/styles";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogActions from "@mui/material/DialogActions";
-import IconButton from "@mui/material/IconButton";
+import {
+    Button,
+    styled,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogActions,
+    IconButton,
+    Typography,
+    TextField,
+    InputLabel,
+    MenuItem,
+    FormControl,
+    Select,
+    FormHelperText,
+} from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import Typography from "@mui/material/Typography";
-import AddIcon from "@mui/icons-material/Add";
-import TextField from "@mui/material/TextField";
 import dayjs, { Dayjs } from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import InputLabel from "@mui/material/InputLabel";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
 import AxiosInstance from "../../utils/axiosInstance";
-import FormHelperText from "@mui/material/FormHelperText";
 import { UserIDContext, UserNameContext } from "../../utils/contextConfig";
+import { useContext, useEffect, useState } from "react";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     "& .MuiDialogContent-root": {
@@ -83,27 +85,30 @@ export default function EditTicketButton({
     myTicket: any;
     myItemID: any;
 }) {
-    const { contextID, setContextID } = React.useContext(UserIDContext);
-    const { contextName, setContextName } = React.useContext(UserNameContext);
+    // Context for user data
+    const { contextID, setContextID } = useContext(UserIDContext);
+    const { contextName, setContextName } = useContext(UserNameContext);
 
-    const [open, setOpen] = React.useState(false);
-    const [datetime, setDateTime] = React.useState<Dayjs | null>(dayjs());
-    const [type, setType] = React.useState("");
-    const [itemName, setItemName] = React.useState("");
-    const [category, setCategory] = React.useState("");
-    const [location, setLocation] = React.useState<Location[]>([]);
-    const [description, setDescription] = React.useState("");
-    const [selectedLocation, setSelectedLocation] = React.useState("");
-    const [file, SetFile] = React.useState<File>();
+    // Define states for form fields
+    const [open, setOpen] = useState(false);
+    const [datetime, setDateTime] = useState<Dayjs | null>(dayjs());
+    const [type, setType] = useState("");
+    const [itemName, setItemName] = useState("");
+    const [category, setCategory] = useState("");
+    const [location, setLocation] = useState<Location[]>([]);
+    const [description, setDescription] = useState("");
+    const [selectedLocation, setSelectedLocation] = useState("");
+    const [file, SetFile] = useState<File>();
 
-    const [filteredReport, setFilteredReport] = React.useState<ReportInfo>();
+    const [filteredReport, setFilteredReport] = useState<ReportInfo>();
 
-    const [checktype, setCheckType] = React.useState(false);
-    const [checkitemName, setCheckItemName] = React.useState(false);
-    const [checkcategory, setCheckCategory] = React.useState(false);
-    const [checklocation, setCheckLocation] = React.useState(false);
+    // Define states for form field validations
+    const [checktype, setCheckType] = useState(false);
+    const [checkitemName, setCheckItemName] = useState(false);
+    const [checkcategory, setCheckCategory] = useState(false);
+    const [checklocation, setCheckLocation] = useState(false);
 
-    React.useEffect(() => {
+    useEffect(() => {
         fetchLocation();
         AxiosInstance.get("/reportInfos/").then((response) => {
             const filtered = response.data.filter(
@@ -122,19 +127,19 @@ export default function EditTicketButton({
         });
     }, []);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setCheckItemName(false);
     }, [itemName]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setCheckCategory(false);
     }, [category]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setCheckType(false);
     }, [type]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setCheckLocation(false);
     }, [location]);
 
@@ -192,26 +197,33 @@ export default function EditTicketButton({
             }
         )
             .then(async (response) => {
-                const formmyTicket = new FormData();
-                formmyTicket.append("itemName", itemName);
-                formmyTicket.append("category", category);
+                // Create and fill up formData
+                const formData = new FormData();
+                formData.append("itemName", itemName);
+                formData.append("category", category);
                 if (file?.type !== undefined) {
-                    formmyTicket.append("image", file!);
+                    formData.append("image", file!);
                 }
-                formmyTicket.append(
+                formData.append(
                     "found_dateTime",
                     datetime?.format("YYYY-MM-DDTHH:mm:ss[Z]")!
                 );
-                await AxiosInstance.put("/items/" + myItemID, formmyTicket, {
+
+                // Update the item in its /items ID using the filled formData
+                await AxiosInstance.put("/items/" + myItemID, formData, {
                     headers: {
                         "Content-Type": "multipart/form-myTicket",
                     },
                 })
                     .then(async (response) => {
-                        await AxiosInstance.put("/tickets/" + myTicket.ticketID, {
-                            ticketType: type,
-                            user: contextID,
-                        });
+                        // Update the item in its /tickets ID using the filled formData
+                        await AxiosInstance.put(
+                            "/tickets/" + myTicket.ticketID,
+                            {
+                                ticketType: type,
+                                user: contextID,
+                            }
+                        );
                     })
                     .then(async (response) => {
                         console.log("Successfully edited ticket");
