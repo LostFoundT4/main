@@ -156,47 +156,18 @@ function Tickets({
     const { contextID, setContextID } = React.useContext(UserIDContext);
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                // Fetch items that belong to the user
-                const reportInfoResponse = await AxiosInstance.get(
-                    "/reportInfos"
-                );
-
-                // Filter items based on the provided ticketTypeFilter and user ID
-                const filteredItems = reportInfoResponse.data.filter(
-                    (reportInfo: ReportInfo) =>
-                        reportInfo.ticket.ticketType === ticketTypeFilter &&
-                        reportInfo.ticket.user === Number(contextID)
-                );
-
+        // Fetch items that belong to the user
+        AxiosInstance.get("/reportInfos").then((response) => {
+            // Filter items based on the provided ticketTypeFilter and user ID
+            const filteredItems = response.data.filter(
+                (reportInfo: ReportInfo) =>
+                    (reportInfo.ticket.ticketType === ticketTypeFilter &&
+                    reportInfo.ticket.user === Number(contextID))
+                )
                 // Set the filtered items in state
                 setItems(filteredItems);
-            } catch (error) {
-                console.error("Error fetching data:", error);
-            }
-        };
-
-        // Call the fetchData function to initiate the data fetching
-        fetchData();
-    }, [ticketTypeFilter]);
-
-    useEffect(() => {
-        // Fetch items that belong to the user
-        AxiosInstance.get("/reportInfos")
-            .then((response) => {
-                // Filter items based on the provided ticketTypeFilter
-                const filteredItems = response.data.filter(
-                    (reportInfo: ReportInfo) =>
-                        reportInfo.ticket.ticketType === ticketTypeFilter &&
-                        reportInfo.ticket.user === Number(contextID)
-                );
-                setItems(filteredItems);
-            })
-            .catch((error) => {
-                console.error("Error fetching items:", error);
-            });
-    }, [ticketTypeFilter]); // Re-fetch data when ticketTypeFilter changes
+                })        
+    }, [ticketTypeFilter,contextID]);
 
     const filteredReportInfos = reportInfos.filter((reportInfo) => {
         const { description, item } = reportInfo;
