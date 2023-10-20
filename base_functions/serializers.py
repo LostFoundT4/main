@@ -40,6 +40,13 @@ class AlterTicketSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class CurrentUserProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.username")
+
+    class Meta:
+        model = UserAdditionalProfile
+        fields = ['userProfileNumber', 'userTelegramID', 'userProfilePicture', 'userPhoneNumber', 'user', 'username']
+
+class AlterCurrentUserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAdditionalProfile
         fields = '__all__'

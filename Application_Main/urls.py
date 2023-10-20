@@ -36,6 +36,7 @@ urlpatterns = [
     path('items/<int:id>', base_views.item_detail),
     path('userProfiles/', base_views.userprofile_list),
     path('userProfiles/<int:id>', base_views.userprofile_detail),
+    path('userProfileswithUserID/<int:id>', base_views.userprofile_detail_withUserID),
     path('reputation/', base_views.reputation_list),
     path('reputation/<int:id>', base_views.reputation_detail),
     path('blacklist/', base_views.blacklist_list),
