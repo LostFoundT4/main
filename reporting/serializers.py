@@ -2,6 +2,7 @@ from asyncore import read
 from rest_framework import serializers
 from .models import ReportInfo, Status, Location, PendingUsers
 from base_functions.serializers import TicketSerializer, ItemSerializer, CurrentUserSerializer
+from django.contrib.auth.models import User
 
 class LocationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -10,10 +11,11 @@ class LocationSerializer(serializers.ModelSerializer):
 
 class PendingUsersSerializer(serializers.ModelSerializer):
     # user = CurrentUserSerializer()
+    username = serializers.CharField(source="user.username")
     
     class Meta:
         model = PendingUsers
-        fields = "__all__"
+        fields = ['id', 'user', 'username', 'status']
         
 class StatusSerializer(serializers.ModelSerializer):
     ticket = TicketSerializer()
@@ -41,4 +43,10 @@ class AlterReportSerializer(serializers.ModelSerializer):
 class AlterStatusSerializer(serializers.ModelSerializer):
     class Meta:
         model = Status
+        fields = "__all__"
+
+class AlterPendingUsersSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = PendingUsers
         fields = "__all__"

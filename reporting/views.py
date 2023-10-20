@@ -6,7 +6,7 @@ from .models import ReportInfo, Status, Location, PendingUsers
 from base_functions.models import Ticket, Item, Reputation, Blacklist
 from base_functions.serializers import ReputationSerializer
 from django.contrib.auth.models import User
-from .serializers import LocationSerializer, ReportSerializer, StatusSerializer, AlterReportSerializer, AlterStatusSerializer, PendingUsersSerializer
+from .serializers import LocationSerializer, ReportSerializer, StatusSerializer, AlterReportSerializer, AlterStatusSerializer, PendingUsersSerializer, AlterPendingUsersSerializer
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
@@ -139,7 +139,7 @@ def pendingUsers_list(request):
         return Response(serializer.data)
 
     if request.method == 'POST':
-        serializer = PendingUsersSerializer(data=request.data)
+        serializer = AlterPendingUsersSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -156,7 +156,7 @@ def pendingUsers_detail(request, id, format=None):
         serializer = PendingUsersSerializer(pendingUsers)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = PendingUsersSerializer(pendingUsers, data=request.data)
+        serializer = AlterPendingUsersSerializer(pendingUsers, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
