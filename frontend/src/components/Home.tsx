@@ -454,16 +454,19 @@ function Tickets({
   };
 
   // Handle claim item
-  const handleClaim = (ticketID: any, userID: any) => {
+  const handleClaim = (ticketID: any , userID:any) => {
     AxiosInstance.put("/claimTicket/" + ticketID, {
       userID: userID,
     })
       .then((response) => {
-        setSuccessAlert(true);
+        if(response.data === 404){
+          setErrorAlert(true);
+        }
+        else{
+          setSuccessAlert(true);
+        }
       })
-      .catch((error) => {
-        setErrorAlert(true);
-      });
+
   };
 
   // Success Alert

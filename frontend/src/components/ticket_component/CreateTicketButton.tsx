@@ -69,18 +69,22 @@ export default function CreateTicketButton() {
 
   useEffect(() => {
     setCheckItemName(false);
+    setErrorAlert(false);
   }, [itemName]);
 
   useEffect(() => {
     setCheckCategory(false);
+    setErrorAlert(false);
   }, [category]);
 
   useEffect(() => {
     setCheckType(false);
+    setErrorAlert(false);
   }, [type]);
 
   useEffect(() => {
     setCheckLocation(false);
+    setErrorAlert(false);
   }, [location]);
 
   function handleimage(e: any) {
@@ -203,6 +207,7 @@ export default function CreateTicketButton() {
             })
               .then(async (response) => {
                 // Create a report info associated with the item
+                console.log(description)
                 const statusID = response.data.statusID;
                 await AxiosInstance.post("/reportInfos/", {
                   ticket: response.data.ticket,
@@ -213,29 +218,19 @@ export default function CreateTicketButton() {
                 })
                   .then(async (response) => {
                     // Log success and close the form
-                    console.log("Successfully created a ticket");
-                    setOpen(false);
-                    setSuccessAlert(true);
-
-                    // Waits for 1s before reloading
-                    setTimeout(() => {
+                    if (response.data === 404) {
+                      console.log("Failed to create a report info");
+                      setErrorAlert(true);
+                    }
+                    else {
+                      setSuccessAlert(true);
+                      setTimeout(() => {
                         window.location.reload();
                       }, 1000);
+                    }
                   })
-                  .catch((error) => {
-                    console.log("Failed to create a report info");
-                    setErrorAlert(true);
-                  });
-              })
-              .catch((error) => {
-                console.log("Failed to create a status entry");
-                setErrorAlert(true);
-              });
+              })  
           })
-          .catch((error) => {
-            console.log("Failed to create an item");
-            setErrorAlert(true);
-          });
       })
       .catch((error) => {
         // Log failure and set flags for validation checks
