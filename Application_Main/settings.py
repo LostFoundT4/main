@@ -147,3 +147,18 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 CELERY_BROKER_URL = 'redis://localhost:6379/0' 
 BROKER_TRANSPORT = 'redis'
+
+# Use the requests email backend
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+REQUESTS_EMAIL_BACKEND = 'Application_Main.mail.backends.requests.EmailBackend'
+
+# Mailgun API settings
+MAILGUN_API_KEY = '27c56135d5921e5c2a3f6d9611f4e1ab-3750a53b-d22445e0'
+MAILGUN_DOMAIN = 'sandboxa986cf647509474da1b274d050c3747b.mailgun.org'
+
+# Email configuration
+DEFAULT_FROM_EMAIL = 'mailgun@sandboxa986cf647509474da1b274d050c3747b.mailgun.org>'
+EMAIL_HOST_USER = 'mailgun@sandboxa986cf647509474da1b274d050c3747b.mailgun.org>'
+EMAIL_HOST_PASSWORD = '27c56135d5921e5c2a3f6d9611f4e1ab-3750a53b-d22445e0'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
