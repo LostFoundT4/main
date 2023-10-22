@@ -167,6 +167,19 @@ def pendingUsers_detail(request, id, format=None):
         pendingUsers.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['PUT'])
+def close_ticket(request, id, format=None):
+    try:
+        statusObj = Status.objects.get(pk=id)
+    except Status.DoesNotExist:
+        return Response(status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'PUT':
+        statusObj.status = "Found"
+        statusObj.save()
+        return Response(status.HTTP_200_OK)
+
+    return Response(status.HTTP_400_BAD_REQUEST)
 
 @api_view(['PUT'])
 def claim_foundItem(request, id, format=None):

@@ -571,11 +571,9 @@ function Tickets({
                   }}
                   image={reportInfo.item.image}
                 />
-                {activeTab === 1 ? (
                   <Typography className="item-status">
                     {reportInfo.status.status}
                   </Typography>
-                ) : null}
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography
                     gutterBottom

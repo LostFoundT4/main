@@ -152,7 +152,7 @@ export default function AppDrawer() {
                 display: "flex",
                 alignItems: "center", // Align items vertically
                 textDecoration: "none",
-                color: "white",
+                color: "white"
               }}
               href="/frontend/edit-profile"
             >
@@ -169,7 +169,7 @@ export default function AppDrawer() {
                     }}
                   />
                 }
-                sx={{ marginRight: "10px", color: "white" }}
+                sx={{ marginRight: "10px", color: "white", fontSize: "13px"}}
               />
               <CardMedia
                 component="div"

@@ -195,12 +195,15 @@ export default function CreateTicketButton() {
         })
           .then(async (response) => {
             const itemID = response.data.itemID;
-
+            let ticketType = "Unclaimed"
+            if (type === "Lost"){
+              ticketType = "Lost"
+            }
             // Step 7: Create a status entry for the item
             await AxiosInstance.post("/status/", {
               user: contextID,
               ticket: response.data.ticketID,
-              status: "Unclaimed",
+              status: ticketType,
               endorsedUserID: null,
               counter: 0,
               previous_counter: 0,
