@@ -273,9 +273,11 @@ function Tickets({
     const time = reportDetail.item.found_dateTime.substring(11, 16);
     const [reputation, setReputation] = useState("");
 
-    AxiosInstance.get("/reputationwithUserID/" + reportDetail.ticket.user).then((response) => {
-      setReputation(response.data.score);
-    });
+    AxiosInstance.get("/reputationwithUserID/" + reportDetail.ticket.user).then(
+      (response) => {
+        setReputation(response.data.score);
+      }
+    );
 
     return (
       <div>
@@ -317,7 +319,11 @@ function Tickets({
               <Typography className="item-description">
                 Reported by: {reportDetail.ticket.username}
               </Typography>
-              <Typography className="item-rating" sx={{display: "inline-flex" }}>User's Reputation: 
+              <Typography
+                className="item-rating"
+                sx={{ display: "inline-flex" }}
+              >
+                User's Reputation:
                 <Rating
                   name="half-rating-read"
                   value={parseFloat(reputation)}
@@ -325,14 +331,14 @@ function Tickets({
                   readOnly
                   emptyIcon={
                     <StarBorderIcon
-                      sx={{
-                        display: 'inline-flex',
-                        alignSelf: "center",
-                      color: "#21222c",
-                      }}
+                    sx={{
+                      color: "#2dd197",
+                      display: "inline-flex",
+                      alignSelf: "center",
+                    }}
                     />
                   }
-                  sx={{ marginRight: "10px", color: "#21222c" }}
+                  sx={{ marginRight: "10px", color: "#21222c", fontSize:"16px"}}
                 />
               </Typography>
             </div>
@@ -429,7 +435,12 @@ function Tickets({
               <Typography className="item-category">
                 Telegram handle: @{userProfileInfo.userTelegramID}
               </Typography>
-              <Typography className="item-description" sx={{display: "inline-flex" }}>Reputation: 
+              <Typography
+                className="item-description"
+                sx={{ display: "inline-flex",
+                alignItems: "center", }}
+              >
+                Reputation:
                 <Rating
                   name="half-rating-read"
                   value={parseFloat(reputation)}
@@ -440,10 +451,11 @@ function Tickets({
                       fontSize="inherit"
                       sx={{
                         color: "#2dd197",
+                        display: "inline-flex"
                       }}
                     />
                   }
-                  sx={{ marginRight: "10px", color: "#2dd197" }}
+                  sx={{ marginRight: "10px", color: "#2dd197", fontSize:"16px" }}
                 />
               </Typography>
             </div>
@@ -454,19 +466,16 @@ function Tickets({
   };
 
   // Handle claim item
-  const handleClaim = (ticketID: any , userID:any) => {
+  const handleClaim = (ticketID: any, userID: any) => {
     AxiosInstance.put("/claimTicket/" + ticketID, {
       userID: userID,
-    })
-      .then((response) => {
-        if(response.data === 404){
-          setErrorAlert(true);
-        }
-        else{
-          setSuccessAlert(true);
-        }
-      })
-
+    }).then((response) => {
+      if (response.data === 404) {
+        setErrorAlert(true);
+      } else {
+        setSuccessAlert(true);
+      }
+    });
   };
 
   // Success Alert
@@ -571,9 +580,30 @@ function Tickets({
                   }}
                   image={reportInfo.item.image}
                 />
-                  <Typography className="item-status">
+                {reportInfo.status.status === "Found" ||
+                reportInfo.status.status === "Claimed" ? (
+                  <Typography
+                    className="item-status"
+                    sx={{ backgroundColor: "#21222c", color:"#6cf3c3 !important" }}
+                  >
                     {reportInfo.status.status}
                   </Typography>
+                ) : reportInfo.status.status === "Pending" ? (
+                  <Typography
+                    className="item-status"
+                    sx={{ backgroundColor: "#f9f97d" }}
+                  >
+                    {reportInfo.status.status}
+                  </Typography>
+                ) : reportInfo.status.status === "Lost" ||
+                reportInfo.status.status === "Unclaimed"? (
+                  <Typography
+                    className="item-status"
+                    sx={{ backgroundColor: "#2dd197", color:"##21222c !important" }}
+                  >
+                    {reportInfo.status.status}
+                  </Typography>
+                ) : null}
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography
                     gutterBottom
@@ -596,7 +626,10 @@ function Tickets({
                       ? !isItemBelongsToCurrentUser(
                           reportInfo,
                           currentUser
-                        ) && (
+                        )&& 
+                          !(
+                            reportInfo.status.status === "Claimed"
+                          ) && (
                           <Button
                             size="small"
                             href=""
@@ -616,6 +649,9 @@ function Tickets({
                       : !isItemBelongsToCurrentUser(
                           reportInfo,
                           currentUser
+                        ) && 
+                        !(
+                          reportInfo.status.status === "Found"
                         ) && (
                           <Button
                             size="small"

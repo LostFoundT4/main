@@ -65,10 +65,10 @@ interface ReportInfo {
   status: {
     statusID: number;
     pendingUsers?: {
-        id: number;
-        user: number;
-        username: string;
-      }[];
+      id: number;
+      user: number;
+      username: string;
+    }[];
     status: string;
     endorsedUserID: number;
   };
@@ -224,11 +224,13 @@ function Tickets({
     },
     status: {
       statusID: 0,
-      pendingUsers: [{
-        id: 0,
-        user: 0,
-        username: "",
-      }],
+      pendingUsers: [
+        {
+          id: 0,
+          user: 0,
+          username: "",
+        },
+      ],
       status: "",
       endorsedUserID: 0,
     },
@@ -323,12 +325,13 @@ function Tickets({
   const [selectedPendingUserId, setSelectedPendingUserId] = useState<
     null | number
   >(null);
-  
+
   const endorseTicket = (ticketID: any) => {
     if (selectedPendingUserId) {
-      AxiosInstance.put("/endorseTicket/" +  ticketID, {
+      AxiosInstance.put("/endorseTicket/" + ticketID, {
         endorsedUserID: selectedPendingUserId,
-      }).then((response) => {
+      })
+        .then((response) => {
           if (response.data === 404) {
             setErrorAlert(true);
           } else {
@@ -362,13 +365,23 @@ function Tickets({
         autoHideDuration={5000}
         onClose={handleCloseSuccessAlert}
       >
-        <Alert
-          onClose={handleCloseSuccessAlert}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Ticket closed successfully!
-        </Alert>
+        {activeTab === 1 ? (
+          <Alert
+            onClose={handleCloseSuccessAlert}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            Ticket endorsed successfully!
+          </Alert>
+        ) : (
+          <Alert
+            onClose={handleCloseSuccessAlert}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            Ticket closed successfully!
+          </Alert>
+        )}
       </Snackbar>
     );
   };
@@ -443,11 +456,38 @@ function Tickets({
                     pt: "80%",
                   }}
                   image={reportInfo.item.image}
-                onClick={(e) => handleOpen(e, reportInfo)}
+                  onClick={(e) => handleOpen(e, reportInfo)}
                 />
-                <Typography className="item-status">
-                  {reportInfo.status.status}
-                </Typography>
+                {reportInfo.status.status === "Found" ||
+                reportInfo.status.status === "Claimed" ? (
+                  <Typography
+                    className="item-status"
+                    sx={{
+                      backgroundColor: "#21222c",
+                      color: "#6cf3c3 !important",
+                    }}
+                  >
+                    {reportInfo.status.status}
+                  </Typography>
+                ) : reportInfo.status.status === "Pending" ? (
+                  <Typography
+                    className="item-status"
+                    sx={{ backgroundColor: "#f9f97d" }}
+                  >
+                    {reportInfo.status.status}
+                  </Typography>
+                ) : reportInfo.status.status === "Lost" ||
+                  reportInfo.status.status === "Unclaimed" ? (
+                  <Typography
+                    className="item-status"
+                    sx={{
+                      backgroundColor: "#2dd197",
+                      color: "##21222c !important",
+                    }}
+                  >
+                    {reportInfo.status.status}
+                  </Typography>
+                ) : null}
                 <CardContent sx={{ flexGrow: 1 }}>
                   <Typography
                     gutterBottom
@@ -467,30 +507,37 @@ function Tickets({
                     {}
                   </Typography>
                 </CardContent>
-                {activeTab === 1 ? ( 
-                <TextField
-                  className="pendingUser-dropdown"
-                  select
-                  label="Select Pending User"
-                  value={
-                    selectedPendingUserId === null ? "" : selectedPendingUserId
-                  }
-                  onChange={(e) => {
-                    setSelectedPendingUserId(
-                      e.target.value === "" ? null : Number(e.target.value)
-                    )
-                  }}
-                  variant="outlined"
-                  fullWidth
-                  sx={{ mb: 2 }}
-                >
-                  {reportInfo.status.pendingUsers &&
-                    reportInfo.status.pendingUsers.map((user) => (
-                      <MenuItem key={user.id} value={user.user}>
-                        {user.username}
-                      </MenuItem>
-                    ))}
-                </TextField>) : null}
+                {activeTab === 1 ? (
+                  <TextField
+                    className="pendingUser-dropdown"
+                    select
+                    label="Select Pending User"
+                    value={
+                      selectedPendingUserId === null
+                        ? ""
+                        : selectedPendingUserId
+                    }
+                    onChange={(e) => {
+                      setSelectedPendingUserId(
+                        e.target.value === "" ? null : Number(e.target.value)
+                      );
+                    }}
+                    variant="outlined"
+                    fullWidth
+                    sx={{ mb: 2 }}
+                  >
+                    {reportInfo.status.pendingUsers &&
+                      reportInfo.status.pendingUsers.map((user) => (
+                        <MenuItem
+                          key={user.id}
+                          value={user.user}
+                          className="pendingUser-item"
+                        >
+                          {user.username}
+                        </MenuItem>
+                      ))}
+                  </TextField>
+                ) : null}
                 <CardActions>
                   <div style={{ margin: "auto" }}>
                     {activeTab === 1 ? ( // Check if it's the 'Found Items' tab
