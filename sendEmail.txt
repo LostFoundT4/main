@@ -9,9 +9,9 @@ sudo apt-get -y install perl
 
 ./swaks --auth \
     --server smtp.mailgun.org \
-    --au postmaster@YOUR_DOMAIN_NAME \
-    --ap <password> \
-    --from <same_as_au> \
+    --au postmaster@findmyitem.app \
+    --ap 1c60b965de6e7dcd7c71726e9a2ce597-324e0bb2-8fc2c952 \
+    --from postmaster@findmyitem.app \
     --to <personal_email> \
     --h-Subject: "Hello" \
     --body 'Testing some Mailgun awesomeness!'
