@@ -33,7 +33,7 @@ class ReportSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ReportInfo
-        fields = ['reportInfoID', 'description', 'ticket', 'location', 'item', 'status']
+        fields = ['reportInfoID', 'description', 'ticket', 'location', 'item', 'status', 'securityQuestion']
 
 class AlterReportSerializer(serializers.ModelSerializer):
     class Meta:

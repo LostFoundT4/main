@@ -11,7 +11,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.utils import timezone
-
+from difflib import SequenceMatcher
 
 # CRUD for Location
 @api_view(['GET', 'POST'])
@@ -181,9 +181,13 @@ def close_ticket(request, id, format=None):
 
     return Response(status.HTTP_400_BAD_REQUEST)
 
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
 @api_view(['PUT'])
 def claim_foundItem(request, id, format=None):
     userID = request.data['userID']
+    givenAnswer = request.data['securityAnswer']
 
     try:
         ticket = Ticket.objects.get(pk=id)
@@ -191,6 +195,11 @@ def claim_foundItem(request, id, format=None):
         return Response(status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
+        # Check if the security answer matches
+        reportInfo = ReportInfo.objects.get(ticket=ticket.ticketID)
+        if similar(givenAnswer, reportInfo.securityAnswer) < 0.8:
+            return Response(status.HTTP_404_NOT_FOUND)
+        
         # userID = ticket.user_id
         user = User.objects.get(pk=userID)
 
@@ -217,7 +226,7 @@ def claim_foundItem(request, id, format=None):
         except Blacklist.DoesNotExist:
             isBlacklisted = False
 
-        # # Check if the user is in the pending list already (no double-claim)
+        # Check if the user is in the pending list already (no double-claim)
         isPending = False
         try:
             pendingObj = PendingUsers.objects.get(user=userID, status=statusID)

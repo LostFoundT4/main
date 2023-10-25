@@ -30,6 +30,7 @@ import AppDrawer from "./AppDrawer";
 import { UserIDContext, UserNameContext } from "../utils/contextConfig";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
+import { WindowSharp } from "@mui/icons-material";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -48,6 +49,7 @@ interface Item {
 interface ReportInfo {
   reportInfoID: number;
   description: string;
+  securityQuestion: string;
   ticket: {
     ticketID: number;
     ticketType: string;
@@ -227,6 +229,7 @@ function Tickets({
   const [reportDetail, setreportDetail] = useState<ReportInfo>({
     reportInfoID: 0,
     description: "",
+    securityQuestion: "",
     ticket: {
       ticketID: 0,
       ticketType: "",
@@ -466,13 +469,16 @@ function Tickets({
   };
 
   // Handle claim item
-  const handleClaim = (ticketID: any, userID: any) => {
-    if (!window.confirm("Are you sure you want to claim this ticket?")) {
-        return;
+  const handleClaim = (reportInfo: any, userID: any) => {
+    // Prompt for security answer
+    let securityAnswer = window.prompt(reportInfo.securityQuestion)
+    if (securityAnswer === null || securityAnswer === ""){
+      return;
     }
 
-    AxiosInstance.put("/claimTicket/" + ticketID, {
+    AxiosInstance.put("/claimTicket/" + reportInfo.ticket.ticketID, {
       userID: userID,
+      securityAnswer: securityAnswer,
     }).then((response) => {
       if (response.data === 404) {
         setErrorAlert(true);
@@ -644,7 +650,7 @@ function Tickets({
                             onClick={(e) => {
                               e.stopPropagation(); // Stop event propagation
                               handleClaim(
-                                reportInfo.ticket.ticketID,
+                                reportInfo,
                                 currentUser
                               );
                               setOpen(false); // Close the modal

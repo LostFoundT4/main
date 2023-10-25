@@ -45,6 +45,8 @@ interface Location {
 interface ReportInfo {
   reportInfoID: number;
   description: string;
+  securityQuestion: string;
+  securityAnswer: string;
   ticket: {
     ticketID: number;
     ticketType: string;
@@ -100,6 +102,8 @@ export default function EditTicketButton({
   const [location, setLocation] = useState<Location[]>([]);
   const [description, setDescription] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [securityQuestion, setSecurityQuestion] = useState("");
+  const [securityAnswer, setSecurityAnswer] = useState("");
   const [file, SetFile] = useState<File>();
 
   const [filteredReport, setFilteredReport] = useState<ReportInfo>();
@@ -109,6 +113,8 @@ export default function EditTicketButton({
   const [checkitemName, setCheckItemName] = useState(false);
   const [checkcategory, setCheckCategory] = useState(false);
   const [checklocation, setCheckLocation] = useState(false);
+  const [checksecurityQuestion, setCheckSecurityQuestion] = useState(false);
+  const [checksecurityAnswer, setCheckSecurityAnswer] = useState(false);
 
   useEffect(() => {
     fetchLocation();
@@ -126,6 +132,8 @@ export default function EditTicketButton({
       setSelectedLocation(filtered[0]!.location.locationID);
       setDateTime(dayjs(filtered[0]!.item.found_dateTime));
       SetFile(filtered[0]!.item.image);
+      setSecurityQuestion(filtered[0]!.securityQuestion);
+      setSecurityAnswer(filtered[0]!.securityAnswer);
     });
   }, []);
 
@@ -144,6 +152,16 @@ export default function EditTicketButton({
   useEffect(() => {
     setCheckLocation(false);
   }, [location]);
+
+  useEffect(() => {
+    setCheckSecurityQuestion(false);
+    setErrorAlert(false);
+  }, [securityQuestion]);
+
+  useEffect(() => {
+    setCheckSecurityAnswer(false);
+    setErrorAlert(false);
+  }, [securityAnswer]);
 
   function handleimage(e: any) {
     SetFile(e.target.files[0]);
@@ -231,7 +249,7 @@ export default function EditTicketButton({
     }
 
     // Make an API request to delete the ticket using its ID
-    await AxiosInstance.delete("/items/" + myTicket.ticketID, {
+    await AxiosInstance.delete("/tickets/" + myTicket.ticketID, {
       headers: {
         Authorization: "Token " + localStorage.getItem("authToken"),
       },
@@ -252,6 +270,8 @@ export default function EditTicketButton({
       item: filteredReport?.item.itemID,
       ticket: filteredReport?.ticket.ticketID,
       status: filteredReport?.status.statusID,
+      securityQuestion: securityQuestion,
+      securityAnswer: securityAnswer,
     })
       .then(async (response) => {
         // Create and fill up formData
@@ -421,6 +441,35 @@ export default function EditTicketButton({
               </DemoContainer>
             </LocalizationProvider>
           </Typography>
+          {type === "Found" && (
+            <>
+              <Typography gutterBottom>
+                <TextField
+                  id="security-question"
+                  label="Security Question"
+                  variant="outlined"
+                  value={securityQuestion}
+                  onChange={(e) => setSecurityQuestion(e.target.value)}
+                  required
+                  error={checksecurityQuestion} // Set error prop based on validation
+                  helperText={checksecurityQuestion ? "Security Question Required" : ""}
+                />
+              </Typography>
+              <Typography gutterBottom>
+                <TextField
+                  id="security-answer"
+                  label="Security Answer"
+                  variant="outlined"
+                  value={securityAnswer}
+                  onChange={(e) => setSecurityAnswer(e.target.value)}
+                  required
+                  error={checksecurityAnswer} // Set error prop based on validation
+                  helperText={checksecurityAnswer ? "Security Answer Required" : ""}
+                />
+              </Typography>
+            </>
+          )}
+
           <Typography gutterBottom>
             <Button
               variant="contained"

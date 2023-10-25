@@ -16,6 +16,8 @@ import {
   FormHelperText,
   Snackbar,
   Alert,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 import { Close as CloseIcon, Add as AddIcon } from "@mui/icons-material";
 import dayjs, { Dayjs } from "dayjs";
@@ -55,6 +57,9 @@ export default function CreateTicketButton() {
   const [location, setLocation] = useState<Location[]>([]);
   const [description, setDescription] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
+  const [securityQuestion, setSecurityQuestion] = useState("");
+  const [securityAnswer, setSecurityAnswer] = useState("");
+  const [isValuableChecked, setIsValuableChecked] = useState(false);
   const [file, setFile] = useState<File>();
 
   // Define states for form field validations
@@ -62,6 +67,8 @@ export default function CreateTicketButton() {
   const [checkitemName, setCheckItemName] = useState(false);
   const [checkcategory, setCheckCategory] = useState(false);
   const [checklocation, setCheckLocation] = useState(false);
+  const [checksecurityQuestion, setCheckSecurityQuestion] = useState(false);
+  const [checksecurityAnswer, setCheckSecurityAnswer] = useState(false);
 
   useEffect(() => {
     fetchLocation();
@@ -86,6 +93,16 @@ export default function CreateTicketButton() {
     setCheckLocation(false);
     setErrorAlert(false);
   }, [location]);
+
+  useEffect(() => {
+    setCheckSecurityQuestion(false);
+    setErrorAlert(false);
+  }, [securityQuestion]);
+
+  useEffect(() => {
+    setCheckSecurityAnswer(false);
+    setErrorAlert(false);
+  }, [securityAnswer]);
 
   function handleimage(e: any) {
     setFile(e.target.files[0]);
@@ -172,6 +189,7 @@ export default function CreateTicketButton() {
     await AxiosInstance.post("/tickets/", {
       ticketType: type,
       user: contextID,
+      isValuable: isValuableChecked,
     })
       .then(async (response) => {
         // Create and fill up formData
@@ -192,48 +210,51 @@ export default function CreateTicketButton() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-        })
-          .then(async (response) => {
-            const itemID = response.data.itemID;
-            let ticketType = "Unclaimed"
-            if (type === "Lost"){
-              ticketType = "Lost"
-            }
-            // Step 7: Create a status entry for the item
-            await AxiosInstance.post("/status/", {
-              user: contextID,
-              ticket: response.data.ticketID,
-              status: ticketType,
-              endorsedUserID: null,
-              counter: 0,
-              previous_counter: 0,
-            })
-              .then(async (response) => {
-                // Create a report info associated with the item
-                console.log(description)
-                const statusID = response.data.statusID;
-                await AxiosInstance.post("/reportInfos/", {
-                  ticket: response.data.ticket,
-                  item: parseInt(itemID),
-                  location: parseInt(selectedLocation),
-                  description: description,
-                  status: statusID,
-                })
-                  .then(async (response) => {
-                    // Log success and close the form
-                    if (response.data === 404) {
-                      console.log("Failed to create a report info");
-                      setErrorAlert(true);
-                    }
-                    else {
-                      setSuccessAlert(true);
-                      setTimeout(() => {
-                        window.location.reload();
-                      }, 1000);
-                    }
-                  })
-              })  
-          })
+        }).then(async (response) => {
+          const itemID = response.data.itemID;
+          let ticketType = "Unclaimed";
+          if (type === "Lost") {
+            ticketType = "Lost";
+          }
+          // Step 7: Create a status entry for the item
+          await AxiosInstance.post("/status/", {
+            user: contextID,
+            ticket: response.data.ticketID,
+            status: ticketType,
+            endorsedUserID: null,
+            counter: 0,
+            previous_counter: 0,
+          }).then(async (response) => {
+            // Create a report info associated with the item
+            console.log(description);
+            const statusID = response.data.statusID;
+            await AxiosInstance.post("/reportInfos/", {
+              ticket: response.data.ticket,
+              item: parseInt(itemID),
+              location: parseInt(selectedLocation),
+              description: description,
+              status: statusID,
+              securityQuestion: securityQuestion,
+              securityAnswer: securityAnswer,
+            }).then(async (response) => {
+              // Log success and close the form
+              if (response.data === 404) {
+                console.log("Failed to create a report info");
+                setErrorAlert(true);
+              } else {
+                setSuccessAlert(true);
+                if (isValuableChecked && type === "Found") {
+                  alert(
+                    "Please pass the item to the nearest security counter."
+                  );
+                }
+                setTimeout(() => {
+                  window.location.reload();
+                }, 1000);
+              }
+            });
+          });
+        });
       })
       .catch((error) => {
         // Log failure and set flags for validation checks
@@ -243,6 +264,8 @@ export default function CreateTicketButton() {
         setCheckCategory(true);
         setCheckLocation(true);
         setCheckType(true);
+        setCheckSecurityQuestion(true);
+        setCheckSecurityAnswer(true);
       });
   };
 
@@ -378,6 +401,44 @@ export default function CreateTicketButton() {
               </DemoContainer>
             </LocalizationProvider>
           </Typography>
+          {type === "Found" && (
+            <>
+              <Typography gutterBottom>
+                <TextField
+                  id="security-question"
+                  label="Security Question"
+                  variant="outlined"
+                  value={securityQuestion}
+                  onChange={(e) => setSecurityQuestion(e.target.value)}
+                  required
+                  error={checksecurityQuestion} // Set error prop based on validation
+                  helperText={checksecurityQuestion ? "Security Question Required" : ""}
+                />
+              </Typography>
+              <Typography gutterBottom>
+                <TextField
+                  id="security-answer"
+                  label="Security Answer"
+                  variant="outlined"
+                  value={securityAnswer}
+                  onChange={(e) => setSecurityAnswer(e.target.value)}
+                  required
+                  error={checksecurityAnswer} // Set error prop based on validation
+                  helperText={checksecurityAnswer ? "Security Answer Required" : ""}
+                />
+              </Typography>
+            </>
+          )}
+
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={isValuableChecked}
+                onChange={(e) => setIsValuableChecked(e.target.checked)}
+              />
+            }
+            label="Is the item valuable?"
+          />
           <Typography gutterBottom>
             <Button
               variant="contained"
