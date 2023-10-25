@@ -19,6 +19,8 @@ class ReportInfo(models.Model):
     location = models.ForeignKey(to='Location', on_delete=models.CASCADE)
     description = models.CharField(max_length=300)
     status = models.ForeignKey(Status, on_delete=models.CASCADE )
+    securityQuestion = models.CharField(max_length=300, blank=True, null=True)
+    securityAnswer = models.CharField(max_length=300, blank=True, null=True)
 
 class Location (models.Model):
     locationID = models.AutoField(primary_key=True)

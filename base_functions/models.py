@@ -10,6 +10,7 @@ class Ticket (models.Model):
     ticketID = models.AutoField(primary_key=True)
     ticketType = models.CharField(max_length=100)
     created_dateTime = models.DateTimeField(auto_now_add=True)
+    isValuable = models.BooleanField(default=False)
 
 class Item (models.Model):
     itemID = models.AutoField(primary_key=True)

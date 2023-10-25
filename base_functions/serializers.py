@@ -32,7 +32,7 @@ class TicketSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ticket
-        fields = ['ticketID', 'ticketType', 'created_dateTime', 'user', 'username']
+        fields = ['ticketID', 'ticketType', 'created_dateTime', 'user', 'username', 'isValuable']
 
 class AlterTicketSerializer(serializers.ModelSerializer):
     class Meta:
