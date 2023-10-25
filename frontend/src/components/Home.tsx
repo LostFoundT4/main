@@ -467,6 +467,10 @@ function Tickets({
 
   // Handle claim item
   const handleClaim = (ticketID: any, userID: any) => {
+    if (!window.confirm("Are you sure you want to claim this ticket?")) {
+        return;
+    }
+
     AxiosInstance.put("/claimTicket/" + ticketID, {
       userID: userID,
     }).then((response) => {
@@ -474,6 +478,9 @@ function Tickets({
         setErrorAlert(true);
       } else {
         setSuccessAlert(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
       }
     });
   };
