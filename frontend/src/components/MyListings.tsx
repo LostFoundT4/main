@@ -42,6 +42,7 @@ interface TabPanelProps {
 interface ReportInfo {
   reportInfoID: number;
   description: string;
+  securityQuestion: string;
   ticket: {
     ticketID: number;
     ticketType: string;
@@ -67,6 +68,7 @@ interface ReportInfo {
     pendingUsers?: {
       id: number;
       user: number;
+      securityAnswer: string;
       username: string;
     }[];
     status: string;
@@ -202,6 +204,7 @@ function Tickets({
   const [reportDetail, setreportDetail] = useState<ReportInfo>({
     reportInfoID: 0,
     description: "",
+    securityQuestion: "",
     ticket: {
       ticketID: 0,
       ticketType: "",
@@ -228,6 +231,7 @@ function Tickets({
         {
           id: 0,
           user: 0,
+          securityAnswer: "",
           username: "",
         },
       ],
@@ -488,7 +492,7 @@ function Tickets({
                     {reportInfo.status.status}
                   </Typography>
                 ) : null}
-                <CardContent sx={{ flexGrow: 1 }}>
+                <CardContent sx={{ flexGrow: 1, paddingBottom: "0" }}>
                   <Typography
                     gutterBottom
                     variant="h5"
@@ -503,40 +507,42 @@ function Tickets({
                   <Typography className="item-description">
                     {reportInfo.description}
                   </Typography>
-                  <Typography align="center" className="item-Status">
-                    {}
-                  </Typography>
                 </CardContent>
                 {activeTab === 1 ? (
-                  <TextField
-                    className="pendingUser-dropdown"
-                    select
-                    label="Select Pending User"
-                    value={
-                      selectedPendingUserId === null
-                        ? ""
-                        : selectedPendingUserId
-                    }
-                    onChange={(e) => {
-                      setSelectedPendingUserId(
-                        e.target.value === "" ? null : Number(e.target.value)
-                      );
-                    }}
-                    variant="outlined"
-                    fullWidth
-                    sx={{ mb: 2 }}
-                  >
-                    {reportInfo.status.pendingUsers &&
-                      reportInfo.status.pendingUsers.map((user) => (
-                        <MenuItem
-                          key={user.id}
-                          value={user.user}
-                          className="pendingUser-item"
-                        >
-                          {user.username}
-                        </MenuItem>
-                      ))}
-                  </TextField>
+                  <CardContent sx={{ flexGrow: 1, paddingTop: "0"}}>
+                    <Typography className="item-category">
+                      Security Question: {reportInfo.securityQuestion}
+                    </Typography>
+                    <TextField
+                      className="pendingUser-dropdown"
+                      select
+                      label="Select Pending User"
+                      value={
+                        selectedPendingUserId === null
+                          ? ""
+                          : selectedPendingUserId
+                      }
+                      onChange={(e) => {
+                        setSelectedPendingUserId(
+                          e.target.value === "" ? null : Number(e.target.value)
+                        );
+                      }}
+                      variant="outlined"
+                      fullWidth
+                      sx={{ mb: 2 }}
+                    >
+                      {reportInfo.status.pendingUsers &&
+                        reportInfo.status.pendingUsers.map((user) => (
+                          <MenuItem
+                            key={user.id}
+                            value={user.user}
+                            className="pendingUser-item"
+                          >
+                            {user.username}, Answer: {user.securityAnswer}
+                          </MenuItem>
+                        ))}
+                    </TextField>
+                  </CardContent>
                 ) : null}
                 <CardActions>
                   <div style={{ margin: "auto" }}>

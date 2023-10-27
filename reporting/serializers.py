@@ -15,7 +15,7 @@ class PendingUsersSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = PendingUsers
-        fields = ['id', 'user', 'username', 'status']
+        fields = ['id', 'user', 'username', 'status', 'securityAnswer']
         
 class StatusSerializer(serializers.ModelSerializer):
     ticket = TicketSerializer()

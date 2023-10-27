@@ -114,7 +114,6 @@ export default function EditTicketButton({
   const [checkcategory, setCheckCategory] = useState(false);
   const [checklocation, setCheckLocation] = useState(false);
   const [checksecurityQuestion, setCheckSecurityQuestion] = useState(false);
-  const [checksecurityAnswer, setCheckSecurityAnswer] = useState(false);
 
   useEffect(() => {
     fetchLocation();
@@ -133,7 +132,6 @@ export default function EditTicketButton({
       setDateTime(dayjs(filtered[0]!.item.found_dateTime));
       SetFile(filtered[0]!.item.image);
       setSecurityQuestion(filtered[0]!.securityQuestion);
-      setSecurityAnswer(filtered[0]!.securityAnswer);
     });
   }, []);
 
@@ -157,11 +155,6 @@ export default function EditTicketButton({
     setCheckSecurityQuestion(false);
     setErrorAlert(false);
   }, [securityQuestion]);
-
-  useEffect(() => {
-    setCheckSecurityAnswer(false);
-    setErrorAlert(false);
-  }, [securityAnswer]);
 
   function handleimage(e: any) {
     SetFile(e.target.files[0]);
@@ -271,7 +264,6 @@ export default function EditTicketButton({
       ticket: filteredReport?.ticket.ticketID,
       status: filteredReport?.status.statusID,
       securityQuestion: securityQuestion,
-      securityAnswer: securityAnswer,
     })
       .then(async (response) => {
         // Create and fill up formData
@@ -453,18 +445,6 @@ export default function EditTicketButton({
                   required
                   error={checksecurityQuestion} // Set error prop based on validation
                   helperText={checksecurityQuestion ? "Security Question Required" : ""}
-                />
-              </Typography>
-              <Typography gutterBottom>
-                <TextField
-                  id="security-answer"
-                  label="Security Answer"
-                  variant="outlined"
-                  value={securityAnswer}
-                  onChange={(e) => setSecurityAnswer(e.target.value)}
-                  required
-                  error={checksecurityAnswer} // Set error prop based on validation
-                  helperText={checksecurityAnswer ? "Security Answer Required" : ""}
                 />
               </Typography>
             </>

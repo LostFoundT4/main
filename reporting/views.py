@@ -196,9 +196,9 @@ def claim_foundItem(request, id, format=None):
 
     if request.method == 'PUT':
         # Check if the security answer matches
-        reportInfo = ReportInfo.objects.get(ticket=ticket.ticketID)
-        if similar(givenAnswer, reportInfo.securityAnswer) < 0.8:
-            return Response(status.HTTP_404_NOT_FOUND)
+        # reportInfo = ReportInfo.objects.get(ticket=ticket.ticketID)
+        # if similar(givenAnswer, reportInfo.securityAnswer) < 0.8:
+        #     return Response(status.HTTP_404_NOT_FOUND)
         
         # userID = ticket.user_id
         user = User.objects.get(pk=userID)
@@ -242,7 +242,7 @@ def claim_foundItem(request, id, format=None):
 
             # User will be flagged
             pendingUser = PendingUsers.objects.create(
-                user=user, status=statusObj)
+                user=user, status=statusObj, securityAnswer=givenAnswer)
             reputationObj.flagged += 1
             reputationObj.save()
 

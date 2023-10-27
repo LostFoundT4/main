@@ -58,7 +58,6 @@ export default function CreateTicketButton() {
   const [description, setDescription] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [securityQuestion, setSecurityQuestion] = useState("");
-  const [securityAnswer, setSecurityAnswer] = useState("");
   const [isValuableChecked, setIsValuableChecked] = useState(false);
   const [file, setFile] = useState<File>();
 
@@ -68,7 +67,6 @@ export default function CreateTicketButton() {
   const [checkcategory, setCheckCategory] = useState(false);
   const [checklocation, setCheckLocation] = useState(false);
   const [checksecurityQuestion, setCheckSecurityQuestion] = useState(false);
-  const [checksecurityAnswer, setCheckSecurityAnswer] = useState(false);
 
   useEffect(() => {
     fetchLocation();
@@ -98,11 +96,6 @@ export default function CreateTicketButton() {
     setCheckSecurityQuestion(false);
     setErrorAlert(false);
   }, [securityQuestion]);
-
-  useEffect(() => {
-    setCheckSecurityAnswer(false);
-    setErrorAlert(false);
-  }, [securityAnswer]);
 
   function handleimage(e: any) {
     setFile(e.target.files[0]);
@@ -235,7 +228,6 @@ export default function CreateTicketButton() {
               description: description,
               status: statusID,
               securityQuestion: securityQuestion,
-              securityAnswer: securityAnswer,
             }).then(async (response) => {
               // Log success and close the form
               if (response.data === 404) {
@@ -265,7 +257,6 @@ export default function CreateTicketButton() {
         setCheckLocation(true);
         setCheckType(true);
         setCheckSecurityQuestion(true);
-        setCheckSecurityAnswer(true);
       });
   };
 
@@ -413,18 +404,6 @@ export default function CreateTicketButton() {
                   required
                   error={checksecurityQuestion} // Set error prop based on validation
                   helperText={checksecurityQuestion ? "Security Question Required" : ""}
-                />
-              </Typography>
-              <Typography gutterBottom>
-                <TextField
-                  id="security-answer"
-                  label="Security Answer"
-                  variant="outlined"
-                  value={securityAnswer}
-                  onChange={(e) => setSecurityAnswer(e.target.value)}
-                  required
-                  error={checksecurityAnswer} // Set error prop based on validation
-                  helperText={checksecurityAnswer ? "Security Answer Required" : ""}
                 />
               </Typography>
             </>
