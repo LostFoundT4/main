@@ -16,6 +16,8 @@ import AxiosInstance from "./utils/axiosInstance";
 import { useEffect, useState } from "react";
 import MyListings from "./components/MyListings";
 import {UserIDContext,UserNameContext} from "./utils/contextConfig"
+import SignUpComplete from "./components/SignUpComplete";
+import SignUpVerification from "./components/SignUpVerification";
 
 export const App = () => {
 
@@ -30,6 +32,8 @@ export const App = () => {
             <Routes>
                 <Route path="/frontend/sign-up" element={<SignUpSide />}></Route>
                 <Route path="/frontend/sign-in" element={<SignInSide />}></Route>
+                <Route path="/frontend/sign-up-complete" element={<SignUpComplete />}></Route>
+                <Route path="/frontend/email-verification" element={<SignUpVerification />}></Route>
                 <Route element = {<ProtectedRoute />}>
                     <Route path="/frontend/home" element={<Home />}></Route>
                     <Route path="/frontend/dashboard" element={<Profile />}></Route>
