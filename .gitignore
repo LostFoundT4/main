@@ -1,20 +1,5 @@
-*.xml
-*.pyc
-*.iml
-**/__pycache__/
 
-#idea folder
-.idea/
-.DS_Store
-*.sqlite3
-#virtual environment file
-.venv
-#frontend file
-node_modules
-frontend/node_modules
-frontend/static/frontend/bundle.js
 # Elastic Beanstalk Files
-.elasticbeanstalk/
+.elasticbeanstalk/*
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
-authentication/ignore.py
