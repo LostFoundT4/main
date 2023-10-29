@@ -21,6 +21,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import AxiosInstance from "../utils/axiosInstance";
+import axios from "axios";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -40,6 +41,9 @@ export default function SignUpComplete() {
     const [emailError, setEmailError] = useState(false);
     const [passwordError, setPasswordError] = useState(false);
     const [phoneError, setPhoneError] = useState(false);
+    const [successMessage, setSuccessMessage] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
+
 
     const emailRegex = /^[A-Za-z0-9._%+-]+@[^@]*smu\.edu\.sg$/;
 
@@ -111,6 +115,28 @@ export default function SignUpComplete() {
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
     };
+
+    // //set email to inputted value
+    // const handleEmailChange = (event) => {
+    //     setEmail(event.target.value);
+    // };
+
+    // //when user clicks the "verify" button
+    // const handleVerifyClick = async () => {
+    //     try {
+    //     const response = await axios.post('/api/send-verification-email', {
+    //         email,
+    //     });
+
+    //     // Display success message on the screen
+    //     setSuccessMessage(`Email sent successfully! ${response.data}`);
+    //     console.log('Email sent successfully!', response.data);
+    //     } catch (error) {
+    //     // Display error message on the screen
+    //     setErrorMessage('Failed to send email. Please try again.');
+    //     console.error('Failed to send email:', error);
+    //     }
+    // };
 
     return (
         <ThemeProvider theme={defaultTheme}>

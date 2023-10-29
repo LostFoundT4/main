@@ -8,5 +8,7 @@ urlpatterns = [
     path('edit-profile', index),
     path('dashboard',index),
     path('profile-page', index),
-    path('my-listings', index)
+    path('my-listings', index),
+    path('sign-up-complete', index),
+    path('email-verification', index),
 ]
