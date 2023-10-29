@@ -58,3 +58,4 @@ wcwidth==0.1.9
 websocket-client==0.59.0
 django-celery-beat==2.5.0
 redis==5.0.1
+django-utils-six==2.0

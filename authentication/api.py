@@ -1,5 +1,8 @@
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
+from django.template.loader import render_to_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from knox.models import AuthToken
@@ -7,6 +10,10 @@ from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, Us
 # from rest_framework.renderers import JSONRenderer
 from knox.settings import CONSTANTS
 from knox.auth import TokenAuthentication
+
+from .tokens import account_activation_token
+from django.core.mail import EmailMessage
+
 
 # Register API
 class RegisterAPI(generics.GenericAPIView):
@@ -16,6 +23,20 @@ class RegisterAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        mail_subject = 'Activate Your Lost And Found Account.'
+        message = render_to_string('acc_active_email.html', {
+        'user': user,
+        'domain': '127.0.0.1:8080',
+        'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+        'token':account_activation_token.make_token(user),
+        })
+        user2 = UserSerializer(user, context=self.get_serializer_context()).data
+        print(user2)
+        to_email = user2.get("email")
+        email = EmailMessage(
+            mail_subject, message, to=[to_email]
+        )
+        email.send()
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
             "token": AuthToken.objects.create(user)[1]

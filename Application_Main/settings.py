@@ -157,8 +157,8 @@ MAILGUN_API_KEY = '27c56135d5921e5c2a3f6d9611f4e1ab-3750a53b-d22445e0'
 MAILGUN_DOMAIN = 'sandboxa986cf647509474da1b274d050c3747b.mailgun.org'
 
 # Email configuration
-DEFAULT_FROM_EMAIL = 'mailgun@sandboxa986cf647509474da1b274d050c3747b.mailgun.org>'
-EMAIL_HOST_USER = 'mailgun@sandboxa986cf647509474da1b274d050c3747b.mailgun.org>'
-EMAIL_HOST_PASSWORD = '27c56135d5921e5c2a3f6d9611f4e1ab-3750a53b-d22445e0'
+DEFAULT_FROM_EMAIL = 'postmaster@findmyitem.app'
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_HOST_USER = 'postmaster@findmyitem.app'
+EMAIL_HOST_PASSWORD = '1c60b965de6e7dcd7c71726e9a2ce597-324e0bb2-8fc2c952'
 EMAIL_PORT = 587
-EMAIL_USE_TLS = True
