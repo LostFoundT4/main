@@ -26,7 +26,7 @@ jobs:
           echo SQL_HOST=${{ secrets.PSQL_HOST }} >> .env
           echo SQL_PORT=${{ secrets.PSQL_PORT }} >> .env
           echo PERSONAL_ACCESS_TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} >> .env
-          run: echo "${{secrets.PSQL_DATABASE}}"
+          echo "${{secrets.PSQL_DATABASE}}"
       - name: Set environment variables
         run: |
           echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )" >> $GITHUB_ENV
