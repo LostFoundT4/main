@@ -290,7 +290,6 @@ video {
   border-radius: 15px !important;
   min-width: 500px !important;
   width: 35% !important;
-  overflow: hidden !important;
 }
 
 .popup-content-container {

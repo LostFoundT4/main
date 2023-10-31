@@ -12,7 +12,6 @@ import {
   Container,
   Box,
   Avatar,
-  CardMedia,
 } from "@mui/material";
 
 function EditProfile() {
@@ -23,9 +22,8 @@ function EditProfile() {
   const [telegramHandle, setTelegramHandle] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [profilePicture, setProfilePicture] = useState(""); // You can use a URL or a file object
-  const [userprofile, setUserProfile] = useState("")
 
-  const[thisfile,setThisFile] = useState<File>();
+  const [thisfile , SetThisFile ] = React.useState<File>()
 
   useEffect(()=>{
     AxiosInstance.get("/api/auth/get-user",{
@@ -34,13 +32,14 @@ function EditProfile() {
       }
     }).then((response) => {
       setID(response.data.id)
-      setUserProfile(response.data.profile[0])
-      AxiosInstance.get("/userProfiles/"+ response.data.profile[0]).
-      then((response)=>{
-        // console.log(response)
-        setPhoneNumber(response.data.userPhoneNumber)
-        setTelegramHandle(response.data.userTelegramID)
-        setProfilePicture(response.data.userProfilePicture)
+      AxiosInstance.get("/userProfiles",{
+        data:{
+          "user":id
+        }
+      }).then((response)=>{
+        setPhoneNumber(response.data[0].userPhoneNumber)
+        setTelegramHandle(response.data[0].userTelegramID)
+        SetThisFile(response.data[0].userProfilePicture)
       }).then(()=>{
         //Somehow preload image
       })
@@ -56,7 +55,7 @@ function EditProfile() {
 
     if (newfile) {
       //Use FileReader to read the selected image and set it as the profile picture
-      setThisFile(newfile)
+      SetThisFile(newfile)
       const reader = new FileReader();
       reader.onload = (event) => {
         const imageDataUrl = event.target?.result as string | null;
@@ -74,11 +73,14 @@ function EditProfile() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(username)
-    console.log(email)
-    console.log(telegramHandle)
-    console.log(phoneNumber)
-    console.log(profilePicture)
+    // Send the updated profile information to the server or update states.
+    // Right now it's just logging the values to the console.
+    // console.log("Updated Profile Information:");
+    // console.log("Username:", username);
+    // console.log("Email:", email);
+    // console.log("Telegram Handle:", telegramHandle);
+    // console.log("Phone Number:", phoneNumber);
+    // console.log("Profile Picture:", profilePicture);
 
     AxiosInstance.put("/api/auth/updateProfile/"+id+"/",{ 
     "username":username,
@@ -86,27 +88,22 @@ function EditProfile() {
     },{
     headers:{
       "Authorization": "Token " + localStorage.getItem("authToken")
-    }
+    },
       }).then((response)=>{
-
-        console.log(response)
-        console.log(telegramHandle)
-        const formData = new FormData();
-        formData.append('userTelegramID', telegramHandle)
-        formData.append('userPhoneNumber', phoneNumber)
-        if(thisfile?.type !== undefined){
-          formData.append('userProfilePicture', thisfile!)
-        }
-
-        console.log(formData)
-
-        AxiosInstance.put("/userProfiles/"+userprofile,formData,{
+        AxiosInstance.get("/userProfiles/",{params:{"user":id}}).then((response)=>{
+          const formData = new FormData();
+          formData.append('userTelegramID', telegramHandle)
+          formData.append('userPhoneNumber', phoneNumber)
+          if(thisfile?.type !== undefined){
+            formData.append('userProfilePicture', thisfile!)
+          }
+          AxiosInstance.put("/userProfiles/"+response.data[0].userProfileNumber,formData,{
           headers: {
             "Content-Type": "multipart/form-data",
           }}).then((response)=>{
             window.location.reload()
+          })
         })
-
       }).catch((error)=>{
         console.log("failed")
       })
@@ -142,16 +139,11 @@ function EditProfile() {
                   }}
                   className="edit-profile-container"
                 >
-                <CardMedia
-                  component="div"
-                  sx={{ width: 100, height: 100 }}
-                  image={profilePicture}
-                />
-                  {/* <Avatar
+                  <Avatar
                     sx={{ width: 100, height: 100 }}
-                    ={profilePicture}
+                    src={profilePicture}
                     alt="Profile"
-                  /> */}
+                  />
                   <Typography variant="h5" mt={2}>
                     EDIT PROFILE
                   </Typography>
