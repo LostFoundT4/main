@@ -47,6 +47,12 @@ export default function SignUpComplete() {
 
     const emailRegex = /^[A-Za-z0-9._%+-]+@[^@]*smu\.edu\.sg$/;
 
+    useEffect(() => {
+        if (!window.confirm("Please check your email for the verification link!")) {
+          return;
+        }
+      }, []);
+    
     useEffect(()=>{
         setEmailError(false)
     },[email])
