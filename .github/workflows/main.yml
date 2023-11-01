@@ -20,6 +20,7 @@ jobs:
           echo SQL_ENGINE=django.db.backends.postgresql >> .env
           echo SQL_DATABASE=${{ secrets.PSQL_DATABASE }} >> .env
           echo SQL_USER=${{ secrets.PSQL_USER }} >> .env
+          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
       - name: Set environment variables
         run: |
           echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )" >> $GITHUB_ENV
