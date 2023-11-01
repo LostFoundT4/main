@@ -2,6 +2,10 @@ name: Continuous Integration and Delivery
 
 on: [push]
 
+env:
+  WEB_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/web
+  NGINX_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/nginx
+
 jobs:
 
   build:
@@ -13,16 +17,6 @@ jobs:
       - name: Add environment variables to .env
         run: |
           echo DEBUG=0 >> .env
-          echo SQL_ENGINE=django.db.backends.postgresql >> .env
-          echo DATABASE=django >> .env
-          echo SECRET_KEY=${{ secrets.SECRET_KEY }} >> .env
-          echo SQL_DATABASE=${{ secrets.PSQL_DATABASE }} >> .env
-          echo SQL_USER=${{ secrets.PSQL_USER }} >> .env
-          echo SQL_PASSWORD=${{ secrets.PSQL_PASSWORD }} >> .env
-          echo SQL_HOST=${{ secrets.PSQL_HOST }} >> .env
-          echo SQL_PORT=${{ secrets.PSQL_PORT }} >> .env
-          echo PERSONAL_ACCESS_TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} >> .env
-          echo "Hello"
       - name: Set environment variables
         run: |
           echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )" >> $GITHUB_ENV
