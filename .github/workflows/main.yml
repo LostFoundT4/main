@@ -80,4 +80,5 @@ jobs:
             cd /app
             echo "$PWD"
             source .env
+            docker login ghcr.io -u $NAMESPACE -p ${{ secrets.PERSONAL_ACCESS_TOKEN }}
           ENDSSH
