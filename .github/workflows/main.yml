@@ -76,15 +76,4 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           scp  -o StrictHostKeyChecking=no -r ./.env compose.yaml root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}:/app 
-          ssh -o StrictHostKeyChecking=no root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }} << 'ENDSSH'
-            cd /app
-            source .env
-            echo $PERSONAL_ACCESS_TOKEN
-            docker login ghcr.io -u $NAMESPACE -p ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-            docker pull $WEB_IMAGE
-            echo "Hello"
-            pwd
-            cd /main
-            docker build -f Dockerfile .
-            docker compose -f compose.yaml up -d
           ENDSSH
