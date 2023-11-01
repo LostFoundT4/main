@@ -41,5 +41,5 @@ jobs:
           docker-compose -f compose.yaml up -d
       - name: Push images
         run: |
-          docker tag ${{ env.WEB_IMAGE }}  ${{ env.WEB_IMAGE }}:latest
-          docker push ${{ env.WEB_IMAGE }}
+          docker tag ${{ env.WEB_IMAGE }}  ${{ env.WEB_IMAGE }}:${{ github.sha }}
+          docker push ${{ env.WEB_IMAGE }}.${{ github.sha }}
