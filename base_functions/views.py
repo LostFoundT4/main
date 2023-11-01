@@ -220,4 +220,4 @@ def index(request):
     return HttpResponse("Hello, world. You're at the polls indexes:p")
 
 def hello2(request):
-    return HttpResponse("Testing Hello223")
+    return HttpResponse("Testing Hello")
