@@ -14,8 +14,9 @@ ENV PYTHONDONTWRITEBYTECODE=1
 # the application crashes without emitting any logs due to buffering.
 ENV PYTHONUNBUFFERED=1
 
+
 RUN pip install --upgrade pip
-COPY ./requirements.txt /usr/bin
+COPY ../requirements.txt /usr/bin
 RUN chmod +x /usr/bin/requirements.txt
 RUN pip install -r /usr/bin/requirements.txt
 
