@@ -41,5 +41,4 @@ jobs:
           docker build -f Dockerfile -t ${{ env.WEB_IMAGE }}:${{ github.sha }} .
       - name: Push images
         run: |
-          docker tag ${{ env.WEB_IMAGE }}  ${{ env.WEB_IMAGE }}:${{ github.sha }}
           docker push ${{ env.WEB_IMAGE }}:${{ github.sha }}
