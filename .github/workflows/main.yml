@@ -41,4 +41,4 @@ jobs:
           docker-compose -f compose.yaml up -d
       - name: Push images
         run: |
-          docker push ${{ env.WEB_IMAGE }}s
+          docker push ${{ env.WEB_IMAGE }}
