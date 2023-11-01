@@ -195,12 +195,6 @@ def claim_foundItem(request, id, format=None):
         return Response(status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
-        # Check if the security answer matches
-        # reportInfo = ReportInfo.objects.get(ticket=ticket.ticketID)
-        # if similar(givenAnswer, reportInfo.securityAnswer) < 0.8:
-        #     return Response(status.HTTP_404_NOT_FOUND)
-        
-        # userID = ticket.user_id
         user = User.objects.get(pk=userID)
 
         reputationObj = Reputation.objects.get(user=userID)
@@ -263,7 +257,7 @@ def claim_foundItem(request, id, format=None):
             Blacklist.objects.create(user=user, timestamp=datetime.now())
             falseClaimList = PendingUsers.objects.filter(user=user)
             
-            # # (not done)Change the status of the pending items back to unclaimed if no other pending users and reduce the counter
+            # Change the status of the pending items back to unclaimed if no other pending users and reduce the counter
             for claimer in falseClaimList:
                 statusID = claimer.status_id
                 statusObj = Status.objects.get(pk=statusID)
@@ -284,7 +278,7 @@ def claim_foundItem(request, id, format=None):
 
 
 @api_view(['PUT'])
-def confirm_claimedFoundItem(request, id, format=None):
+def endorsed_foundItem(request, id, format=None):
     endorsedUserID = request.data['endorsedUserID']
 
     try:

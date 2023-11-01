@@ -29,7 +29,7 @@ urlpatterns = [
     #Authentication APIs Here
     path('', include('authentication.urls')),
 
-    # CRUD for base_functions
+    # API for base_functions
     path('tickets/', base_views.ticket_list),
     path('tickets/<int:id>', base_views.ticket_detail),
     path('items/', base_views.item_list),
@@ -43,7 +43,7 @@ urlpatterns = [
     path('blacklist/', base_views.blacklist_list),
     path('blacklist/<int:id>', base_views.blacklist_detail),
 
-    # CRUD for reporting
+    # API for reporting
     path('locations/', reporting_views.location_list),
     path('locations/<int:id>', reporting_views.location_detail),
     path('reportInfos/', reporting_views.reportInfo_list),
@@ -53,7 +53,7 @@ urlpatterns = [
     path('pendingUsers/', reporting_views.pendingUsers_list),
     path('pendingUsers/<int:id>', reporting_views.pendingUsers_detail),
     path('claimTicket/<int:id>', reporting_views.claim_foundItem),
-    path('endorseTicket/<int:id>', reporting_views.confirm_claimedFoundItem),
+    path('endorseTicket/<int:id>', reporting_views.endorsed_foundItem),
     path('closeTicket/<int:id>', reporting_views.close_ticket)
 
 
