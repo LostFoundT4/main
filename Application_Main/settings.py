@@ -22,12 +22,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-wb6120-+q+v7k4flhc*mcv1b!53(1*g(1(fq6pz41a1_(2+4*j'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = int(os.environ.get('DEBUG', default=0))
 
-ALLOWED_HOSTS = ['cs203-lostandfound-app-dev.us-east-1.elasticbeanstalk.com', '127.0.0.1', '172.31.39.65', 'localhost']
+ALLOWED_HOSTS = ['147.182.247.167','cs203-lostandfound-app-dev.us-east-1.elasticbeanstalk.com', '127.0.0.1', '172.31.39.65', 'localhost']
 
 
 # Application definition
@@ -87,13 +87,13 @@ WSGI_APPLICATION = 'Application_Main.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "django",
-        "USER": "postgres",
-        "PASSWORD": "p0987%6&*shs?]098-+214$%^&",
-        "HOST": "db",
-        "PORT": 5432,
+    'default': {
+        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.postgresql'),
+        'NAME': os.environ.get('SQL_DATABASE', 'django'),
+        'USER': os.environ.get('SQL_USER', 'postgres'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD', 'p0987%6&*shs?]098-+214$%^&'),
+        'HOST': os.environ.get('SQL_HOST', 'db'),
+        'PORT': os.environ.get('SQL_PORT', '5432'),
     }
 }
 
@@ -122,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Singapore'
 
 USE_I18N = True
 
