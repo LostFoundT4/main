@@ -79,4 +79,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }} << 'ENDSSH'
             cd /app
             echo "$PWD"
+            source .env
           ENDSSH
