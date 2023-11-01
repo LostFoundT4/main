@@ -82,5 +82,6 @@ jobs:
             source .env
             docker login ghcr.io -u $NAMESPACE -p ${{ secrets.PERSONAL_ACCESS_TOKEN }}
             docker pull $WEB_IMAGE
+            apt install docker-compose
             docker-compose -f compose.yaml up -d
           ENDSSH
