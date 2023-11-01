@@ -36,11 +36,9 @@ jobs:
       - name: Pull images
         run: |
           docker pull ${{ env.WEB_IMAGE }} || true
-          docker pull ${{ env.NGINX_IMAGE }} || true
       - name: Build images
         run: |
           docker-compose -f compose.yaml up -d
       - name: Push images
         run: |
-          docker push ${{ env.WEB_IMAGE }}
-          docker push ${{ env.NGINX_IMAGE }}
+          docker push ${{ env.WEB_IMAGE }}s
