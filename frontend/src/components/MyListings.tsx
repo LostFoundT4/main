@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useState , useContext} from "react";
 import {
   CssBaseline,
   Box,
@@ -30,7 +30,8 @@ import CreateTicketButton from "./ticket_component/CreateTicketButton";
 import EditTicketButton from "./ticket_component/EditTicketButton";
 import { UserIDContext, UserNameContext } from "../utils/contextConfig";
 import AxiosInstance from "../utils/axiosInstance";
-
+import {SuccessAlert} from "./effect_components/successAlert"
+import {ErrorAlert} from "./effect_components/errorAlert"
 // MyListings: Page where users can only see, add, edit, and delete their OWN items, not others
 
 interface TabPanelProps {
@@ -167,7 +168,10 @@ function Tickets({
   };
 
   // State to hold the user
-  const { contextID, setContextID } = React.useContext(UserIDContext);
+  const { contextID, setContextID } = useContext(UserIDContext);
+
+  const [openErrorAlert, setErrorAlert] = React.useState(false);
+  const [openSuccessAlert, setSuccessAlert] = React.useState(false);
 
   useEffect(() => {
     // Fetch items that belong to the user
@@ -331,6 +335,7 @@ function Tickets({
   >(null);
 
   const endorseTicket = (ticketID: any) => {
+
     if (selectedPendingUserId) {
       AxiosInstance.put("/endorseTicket/" + ticketID, {
         endorsedUserID: selectedPendingUserId,
@@ -349,74 +354,6 @@ function Tickets({
           setErrorAlert(true);
         });
     }
-  };
-
-  // Success Alert
-  const [openSuccessAlert, setSuccessAlert] = React.useState(false);
-  const handleCloseSuccessAlert = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSuccessAlert(false);
-  };
-  const SuccessAlert = () => {
-    return (
-      <Snackbar
-        open={openSuccessAlert}
-        autoHideDuration={5000}
-        onClose={handleCloseSuccessAlert}
-      >
-        {activeTab === 1 ? (
-          <Alert
-            onClose={handleCloseSuccessAlert}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            Ticket endorsed successfully!
-          </Alert>
-        ) : (
-          <Alert
-            onClose={handleCloseSuccessAlert}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            Ticket closed successfully!
-          </Alert>
-        )}
-      </Snackbar>
-    );
-  };
-
-  // Error Alert
-  const [openErrorAlert, setErrorAlert] = React.useState(false);
-  const handleCloseErrorAlert = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setErrorAlert(false);
-  };
-  const ErrorAlert = () => {
-    return (
-      <Snackbar
-        open={openErrorAlert}
-        autoHideDuration={5000}
-        onClose={handleCloseErrorAlert}
-      >
-        <Alert
-          onClose={handleCloseErrorAlert}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
-          An unexpected error has occurred!
-        </Alert>
-      </Snackbar>
-    );
   };
 
   return (
@@ -441,8 +378,8 @@ function Tickets({
         onChange={handleSearchChange}
       />
       <CustomModal />
-      <SuccessAlert />
-      <ErrorAlert />
+      {openSuccessAlert ? <SuccessAlert/> : ""}
+      {openErrorAlert ? <ErrorAlert /> : ""}
       <Grid container spacing={4}>
         {filteredReportInfos.length > 0 ? (
           filteredReportInfos.map((reportInfo) => (

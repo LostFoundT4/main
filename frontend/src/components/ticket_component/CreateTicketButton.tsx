@@ -28,6 +28,8 @@ import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import AxiosInstance from "../../utils/axiosInstance";
 import { UserIDContext, UserNameContext } from "../../utils/contextConfig";
 import { useContext, useEffect, useState } from "react";
+import { ErrorAlert } from "../effect_components/errorAlert";
+import { SuccessAlert } from "../effect_components/successAlert";
 
 const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   "& .MuiDialogContent-root": {
@@ -67,6 +69,9 @@ export default function CreateTicketButton() {
   const [checkcategory, setCheckCategory] = useState(false);
   const [checklocation, setCheckLocation] = useState(false);
   const [checksecurityQuestion, setCheckSecurityQuestion] = useState(false);
+
+  const [openErrorAlert, setErrorAlert] = React.useState(false);
+  const [openSuccessAlert, setSuccessAlert] = React.useState(false);
 
   useEffect(() => {
     fetchLocation();
@@ -117,64 +122,6 @@ export default function CreateTicketButton() {
     await AxiosInstance.get("/locations/").then((response) => {
       setLocation(response.data);
     });
-  };
-
-  // Success Alert
-  const [openSuccessAlert, setSuccessAlert] = React.useState(false);
-  const handleCloseSuccessAlert = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSuccessAlert(false);
-  };
-  const SuccessAlert = () => {
-    return (
-      <Snackbar
-        open={openSuccessAlert}
-        autoHideDuration={5000}
-        onClose={handleCloseSuccessAlert}
-      >
-        <Alert
-          onClose={handleCloseSuccessAlert}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Ticket has been created!
-        </Alert>
-      </Snackbar>
-    );
-  };
-
-  // Error Alert
-  const [openErrorAlert, setErrorAlert] = React.useState(false);
-  const handleCloseErrorAlert = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setErrorAlert(false);
-  };
-  const ErrorAlert = () => {
-    return (
-      <Snackbar
-        open={openErrorAlert}
-        autoHideDuration={5000}
-        onClose={handleCloseErrorAlert}
-      >
-        <Alert
-          onClose={handleCloseErrorAlert}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
-          An unexpected error has occurred!
-        </Alert>
-      </Snackbar>
-    );
   };
 
   const handleProceed = async () => {
@@ -232,9 +179,10 @@ export default function CreateTicketButton() {
               // Log success and close the form
               if (response.data === 404) {
                 console.log("Failed to create a report info");
-                setErrorAlert(true);
+                setErrorAlert(true)
               } else {
-                setSuccessAlert(true);
+                setSuccessAlert(true)
+                console.log("here");
                 if (isValuableChecked && type === "Found") {
                   alert(
                     "Please pass the item to the nearest security counter."
@@ -251,7 +199,7 @@ export default function CreateTicketButton() {
       .catch((error) => {
         // Log failure and set flags for validation checks
         console.log("Failed to create a ticket");
-        setErrorAlert(true);
+        setErrorAlert(true)
         setCheckItemName(true);
         setCheckCategory(true);
         setCheckLocation(true);
@@ -262,8 +210,8 @@ export default function CreateTicketButton() {
 
   return (
     <div>
-      <SuccessAlert />
-      <ErrorAlert />
+      {openSuccessAlert ? <SuccessAlert/> : ""}
+      {openErrorAlert ? <ErrorAlert /> : ""}
       <Button
         variant="contained"
         className="add-item-button"
