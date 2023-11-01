@@ -76,4 +76,3 @@ jobs:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock
         run: |
           scp  -o StrictHostKeyChecking=no -r ./.env compose.yaml root@${{ secrets.DIGITAL_OCEAN_IP_ADDRESS }}:/app 
-          ENDSSH
