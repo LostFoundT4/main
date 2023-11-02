@@ -12,12 +12,15 @@ services:
   nginx:
     image: "${NGINX_IMAGE}"
     volumes:
-      - ./nginx:/etc/nginx/conf.d
       - static:/main/static
     ports:
       - 80:80
     depends_on:
       - web
+networks:
+  network1:
+    name: application_connect
+    external: true
 
 volumes:
   static:
