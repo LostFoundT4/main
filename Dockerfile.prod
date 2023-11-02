@@ -59,8 +59,10 @@ RUN python -m pip install redis
 # Expose the port for access
 EXPOSE 80/tcp
 
+RUN echo pwd
+# Copy the source code into the container.
+COPY . /usr/src/app/
+
 # Switch to the non-privileged user to run the application.
 USER appuser
 
-# Copy the source code into the container.
-COPY . /usr/src/app/
