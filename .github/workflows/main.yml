@@ -38,11 +38,10 @@ jobs:
       - name: Pull Web images
         run: |
           docker pull ${{ env.WEB_IMAGE }} || true
-          docker pull ${{ env.NGINX_IMAGE }} || true
       - name: Build Web images
         run: |
           echo "HELLO !"
-          docker compose -f docker-compose.ci.yaml build
+          docker compose -f docker-compose-web.ci.yaml build
           echo "HELLO@"
 
         env:
