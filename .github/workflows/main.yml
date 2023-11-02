@@ -58,17 +58,7 @@ jobs:
         env:
           GITHUB_SHA: ${{ github.sha }}
 
-      - name: Pull Redis Image
-        run: |
-          docker pull ${{ env.REDIS_IMAGE }} || true
-      - name: Build Nginx images
-        run: |
-          docker compose -f docker-compose-redis.ci.yaml build
-          docker tag ${{ env.REDIS_IMAGE }} ${{ env.REDIS_IMAGE }}:${{ github.sha }}
-        env:
-          GITHUB_SHA: ${{ github.sha }}
-
-      - name: Push Web, Nginx, Redis, Celery Image
+      - name: Push Web, Nginx
         run: |
           echo "HELLO $"
           docker tag ${{ env.WEB_IMAGE }} ${{ env.WEB_IMAGE }}:${{ github.sha }}
