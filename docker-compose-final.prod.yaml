@@ -8,6 +8,8 @@ services:
     ports:
       - 8000:8000
     env_file: .env
+    networks:
+      - application_connect
 
   nginx:
     image: "${NGINX_IMAGE}"
@@ -17,10 +19,11 @@ services:
       - 80:80
     depends_on:
       - web
+    networks:
+      - application_connect
+
 networks:
-  network1:
-    name: application_connect
-    external: true
+  application_connect:
 
 volumes:
   static:
