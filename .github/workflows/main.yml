@@ -60,7 +60,9 @@ jobs:
 
       - name: Push images
         run: |
+          echo "HELLO $"
           docker push ${{ env.WEB_IMAGE }}:${{ github.sha }}
+          echo "HELLO %"
           docker push ${{ env.NGINX_IMAGE }}:${{ github.sha }}
 
   deploy:
