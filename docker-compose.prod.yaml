@@ -48,7 +48,7 @@ services:
   #     file: db/password.txt
 
   nginx:
-    build: nginx
+    build: ./nginx
     ports:
       - 1337:80
     volumes:
