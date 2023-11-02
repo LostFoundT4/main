@@ -8,9 +8,7 @@ services:
     ports:
       - 80:80
     volumes:
-      - ./nginx:/etc/nginx/conf.d
       - static:/main/static
 
 volumes:
-  db-data:
   static:
