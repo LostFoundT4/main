@@ -95,7 +95,7 @@ services:
   celery:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.prod
     command: "celery -A Application_Main worker"
     depends_on:
       - web
