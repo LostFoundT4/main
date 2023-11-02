@@ -111,5 +111,5 @@ jobs:
             docker pull $NGINX_IMAGE:$GITHUB_SHA
             echo "HELLO WORLD"
             docker network create application_connect
-            docker-compose -f docker-compose-final.prod.yaml up -d
+            docker-compose -f docker-compose-final.prod.yaml up -d --build
           ENDSSH
