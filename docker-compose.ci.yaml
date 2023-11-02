@@ -1,0 +1,113 @@
+services:
+  #server:
+  #  build:
+  #    context: .
+  #  ports:
+  #    - 8080:8080
+
+  # The commented out section below is an example of how to define a PostgreSQL
+  # database that your application can use. `depends_on` tells Docker Compose to
+  # start the database before your application. The `db-data` volume persists the
+  # database data between container restarts. The `db-password` secret is used
+  # to set the database password. You must create `db/password.txt` and add
+  # a password of your choosing to it before running `docker compose up`.
+  #     depends_on:
+  #       db:
+  #         condition: service_healthy
+  #   db:
+  #     image: postgres
+  #     restart: always
+  #     user: postgres
+  #     secrets:
+  #       - db-password
+  #     volumes:
+  #       - db-data:/var/lib/postgresql/data
+  #     environment:
+  #       - POSTGRES_DB=example
+  #       - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+  #     expose:
+  #       - 5432
+  #     healthcheck:
+  #       test: [ "CMD", "pg_isready" ]
+  #       interval: 10s
+  #       timeout: 5s
+  #       retries: 5
+  # volumes:
+  #   db-data:
+  # secrets:
+  #   db-password:
+  #     file: db/password.txt
+
+  nginx:
+    build:
+      context: ./nginx
+      cache_from:
+        - "${NGINX_IMAGE}"
+    image: "${NGINX_IMAGE}"
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static:/main/static
+    depends_on:
+      - web
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    command: gunicorn Application_Main.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static:/main/static
+    expose:
+      - 8000
+    depends_on:
+      - db
+      - redis
+
+  db:
+    image: postgres
+    restart: always
+    user: postgres
+    secrets:
+      - db-password
+    volumes:
+      - db-data:/var/lib/postgresql/data2
+    environment:
+      - POSTGRES_DB=django
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+    expose:
+      - 5432
+    healthcheck:
+      test: [ "CMD", "pg_isready" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    restart: always
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: "celery -A Application_Main worker"
+    depends_on:
+      - web
+      - redis
+      - db
+    restart: on-failure
+
+volumes:
+  db-data:
+  static:
+  redisdata:
+
+secrets:
+  db-password:
+    file: db/password.txt
