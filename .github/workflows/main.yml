@@ -87,5 +87,5 @@ jobs:
             echo "$GITHUB_SHA"
             docker pull $WEB_IMAGE:$GITHUB_SHA
             echo "HELLO WORLD"
-            docker compose -f compose.yaml up -d
+            docker compose -f docker-compose.prod.yaml up -d
           ENDSSH
