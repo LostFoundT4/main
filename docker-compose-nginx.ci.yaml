@@ -10,5 +10,13 @@ services:
     volumes:
       - static:/main/static
 
+    networks:
+      - application_connect
+
+networks:
+  application_connect:
+    external: true
+
+
 volumes:
   static:
