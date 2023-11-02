@@ -71,11 +71,10 @@ jobs:
       - name: Push Web, Nginx, Redis, Celery Image
         run: |
           echo "HELLO $"
-          docker push ${{ env.WEB_IMAGE }}
-          docker tag ${{ env.WEB_IMAGE }}:${{ github.sha }} ${{ env.WEB_IMAGE }}:${{ github.sha }}
+          docker tag ${{ env.WEB_IMAGE }} ${{ env.WEB_IMAGE }}:${{ github.sha }}
+          docker push ${{ env.WEB_IMAGE }}:${{ github.sha }}
           echo "HELLO %"
           docker push ${{ env.NGINX_IMAGE }}:${{ github.sha }}
-          docker push ${{ env.REDIS_IMAGE }}:${{ github.sha }}
 
   deploy:
     name: Deploy to DigitalOcean
