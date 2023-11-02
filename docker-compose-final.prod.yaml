@@ -1,7 +1,7 @@
 
 services:
   web:
-    image: "${WEB_IMAGE}"
+    image: "${WEB_IMAGE}:${GITHUB_SHA}"
     command: gunicorn hello_django.wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static:/main/static
@@ -12,7 +12,7 @@ services:
       - application_connect
 
   nginx:
-    image: "${NGINX_IMAGE}"
+    image: "${NGINX_IMAGE}:${GITHUB_SHA}"
     volumes:
       - static:/main/static
     ports:
