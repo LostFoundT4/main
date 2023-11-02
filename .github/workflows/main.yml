@@ -38,10 +38,14 @@ jobs:
       - name: Pull Web images
         run: |
           docker pull ${{ env.WEB_IMAGE }} || true
+          docker pull ${{ env.NGINX_IMAGE }} || true
       - name: Build Web images
         run: |
+          echo "HELLO !"
           docker compose -f docker-compose.ci.yaml build
+          echo "HELLO@"
           docker tag ${{ env.WEB_IMAGE }} ${{ env.WEB_IMAGE }}:${{ github.sha }}
+
         env:
           GITHUB_SHA: ${{ github.sha }}
 
