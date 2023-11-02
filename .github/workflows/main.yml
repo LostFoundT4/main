@@ -39,6 +39,8 @@ jobs:
       - name: Build images
         run: |
           docker build -f Dockerfile -t ${{ env.WEB_IMAGE }}:${{ github.sha }} .
+        env:
+          GITHUB_SHA: ${{ github.sha }}
       - name: Push images
         run: |
           docker push ${{ env.WEB_IMAGE }}:${{ github.sha }}
@@ -81,6 +83,6 @@ jobs:
             echo "$PWD"
             source .env
             docker login ghcr.io -u $NAMESPACE -p ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-            docker pull $WEB_IMAGE
+            docker pull $WEB_IMAGE:${{ env.GITHUB_SHA }}
             docker compose -f compose.yaml up -d
           ENDSSH
