@@ -4,7 +4,7 @@ services:
     image: "${WEB_IMAGE}:${GITHUB_SHA}"
     command: gunicorn Application_Main.wsgi:application --bind 0.0.0.0:8000
     volumes:
-      - static:/main/static
+      - static:/usr/src/app/static
       - .:/usr/src/app
     ports:
       - 8000:8000
@@ -15,7 +15,7 @@ services:
   nginx:
     image: "${NGINX_IMAGE}:${GITHUB_SHA}"
     volumes:
-      - static:/main/static
+      - static:/usr/src/app/static
     ports:
       - 80:80
     depends_on:
