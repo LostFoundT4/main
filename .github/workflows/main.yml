@@ -44,7 +44,6 @@ jobs:
           echo "HELLO !"
           docker compose -f docker-compose.ci.yaml build
           echo "HELLO@"
-          docker tag ${{ env.WEB_IMAGE }} ${{ env.WEB_IMAGE }}:${{ github.sha }}
 
         env:
           GITHUB_SHA: ${{ github.sha }}
