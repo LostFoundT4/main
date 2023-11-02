@@ -41,7 +41,6 @@ services:
     depends_on:
       - web
       - redis
-      - db
     restart: on-failure
 
 volumes:
