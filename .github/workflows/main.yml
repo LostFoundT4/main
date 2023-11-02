@@ -86,5 +86,6 @@ jobs:
             docker login ghcr.io -u $NAMESPACE -p ${{ secrets.PERSONAL_ACCESS_TOKEN }}
             echo "$GITHUB_SHA"
             docker pull $WEB_IMAGE:$GITHUB_SHA
+            echo "HELLO WORLD"
             docker compose -f compose.yaml up -d
           ENDSSH
