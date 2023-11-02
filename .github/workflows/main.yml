@@ -41,7 +41,7 @@ jobs:
       - name: Build Web images
         run: |
           echo "HELLO !"
-          docker compose -f docker-compose-web.ci.yaml build
+          docker build -f Dockerfile-web.ci -t ${{ env.WEB_IMAGE }}:${{ github.sha }} -t ${{ env.WEB_IMAGE }}:latest .
           echo "HELLO@"
 
         env:
