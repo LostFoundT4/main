@@ -61,6 +61,7 @@ jobs:
       - name: Push images
         run: |
           echo "HELLO $"
+          docker tag ${{ env.WEB_IMAGE }} ${{ env.WEB_IMAGE }}:${{ github.sha }}
           docker push ${{ env.WEB_IMAGE }}:${{ github.sha }}
           echo "HELLO %"
           docker push ${{ env.NGINX_IMAGE }}:${{ github.sha }}
