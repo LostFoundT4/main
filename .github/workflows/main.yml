@@ -5,6 +5,7 @@ on: [push]
 env:
   WEB_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/web
   NGINX_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/nginx
+  REDIS_IMAGE: ghcr.io/$(echo $GITHUB_REPOSITORY | tr '[:upper:]' '[:lower:]')/redis
 
 jobs:
 
@@ -47,23 +48,34 @@ jobs:
         env:
           GITHUB_SHA: ${{ github.sha }}
 
-      - name: Pull nginx image
+      - name: Pull Nginx Image
         run: |
           docker pull ${{ env.NGINX_IMAGE }} || true
-      - name: Build nginx images
+      - name: Build Nginx images
         run: |
-          docker compose -f docker-compose.ci.yaml build
+          docker compose -f docker-compose-nginx.ci.yaml build
           docker tag ${{ env.NGINX_IMAGE }} ${{ env.NGINX_IMAGE }}:${{ github.sha }}
         env:
           GITHUB_SHA: ${{ github.sha }}
 
-      - name: Push images
+      - name: Pull Redis Image
+        run: |
+          docker pull ${{ env.REDIS_IMAGE }} || true
+      - name: Build Nginx images
+        run: |
+          docker compose -f docker-compose-redis.ci.yaml build
+          docker tag ${{ env.REDIS_IMAGE }} ${{ env.REDIS_IMAGE }}:${{ github.sha }}
+        env:
+          GITHUB_SHA: ${{ github.sha }}
+
+      - name: Push Web, Nginx, Redis, Celery Image
         run: |
           echo "HELLO $"
           docker push ${{ env.WEB_IMAGE }}
           docker tag ${{ env.WEB_IMAGE }}:${{ github.sha }} ${{ env.WEB_IMAGE }}:${{ github.sha }}
           echo "HELLO %"
           docker push ${{ env.NGINX_IMAGE }}:${{ github.sha }}
+          docker push ${{ env.REDIS_IMAGE }}:${{ github.sha }}
 
   deploy:
     name: Deploy to DigitalOcean

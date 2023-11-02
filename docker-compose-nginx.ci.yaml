@@ -1,0 +1,16 @@
+services:
+  nginx:
+    build:
+      context: ./nginx
+      cache_from:
+        - "${NGINX_IMAGE}"
+    image: "${NGINX_IMAGE}"
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - static:/main/static
+
+volumes:
+  db-data:
+  static:
