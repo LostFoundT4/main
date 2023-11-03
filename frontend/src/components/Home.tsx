@@ -31,6 +31,8 @@ import { UserIDContext, UserNameContext } from "../utils/contextConfig";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { WindowSharp } from "@mui/icons-material";
+import { ErrorAlert } from "./effect_components/errorAlert";
+import { SuccessAlert } from "./effect_components/successAlert";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -185,6 +187,8 @@ function Tickets({
   currentUser: string | null;
 }) {
   const [reportInfos, setItems] = useState<ReportInfo[]>([]);
+  const [openErrorAlert, setErrorAlert] = React.useState(false);
+  const [openSuccessAlert, setSuccessAlert] = React.useState(false);
 
   // Handle search input change
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -226,6 +230,7 @@ function Tickets({
   // Pop Up Modal for Item details
   const [open, setOpen] = React.useState(false);
   const handleClose = () => setOpen(false);
+
   const [reportDetail, setreportDetail] = useState<ReportInfo>({
     reportInfoID: 0,
     description: "",
@@ -491,64 +496,6 @@ function Tickets({
     });
   };
 
-  // Success Alert
-  const [openSuccessAlert, setSuccessAlert] = React.useState(false);
-  const handleCloseSuccessAlert = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSuccessAlert(false);
-  };
-  const SuccessAlert = () => {
-    return (
-      <Snackbar
-        open={openSuccessAlert}
-        autoHideDuration={5000}
-        onClose={handleCloseSuccessAlert}
-      >
-        <Alert
-          onClose={handleCloseSuccessAlert}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Claim request has been sent!
-        </Alert>
-      </Snackbar>
-    );
-  };
-
-  // Error Alert
-  const [openErrorAlert, setErrorAlert] = React.useState(false);
-  const handleCloseErrorAlert = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setErrorAlert(false);
-  };
-  const ErrorAlert = () => {
-    return (
-      <Snackbar
-        open={openErrorAlert}
-        autoHideDuration={5000}
-        onClose={handleCloseErrorAlert}
-      >
-        <Alert
-          onClose={handleCloseErrorAlert}
-          severity="error"
-          sx={{ width: "100%" }}
-        >
-          An unexpected error has occurred!
-        </Alert>
-      </Snackbar>
-    );
-  };
-
   return (
     <div>
       <TextField
@@ -572,8 +519,8 @@ function Tickets({
       />
       <CustomModal />
       <UserInfoModal />
-      <SuccessAlert />
-      <ErrorAlert />
+      {openSuccessAlert ? <SuccessAlert/> : ""}
+      {openErrorAlert ? <ErrorAlert /> : ""}
       <Grid container spacing={4}>
         {filteredReportInfos.length > 0 ? (
           filteredReportInfos.map((reportInfo) => (
