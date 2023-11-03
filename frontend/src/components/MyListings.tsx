@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useEffect, useState , useContext} from "react";
+import { useEffect, useState, useContext } from "react";
 import {
   CssBaseline,
   Box,
@@ -30,8 +30,8 @@ import CreateTicketButton from "./ticket_component/CreateTicketButton";
 import EditTicketButton from "./ticket_component/EditTicketButton";
 import { UserIDContext, UserNameContext } from "../utils/contextConfig";
 import AxiosInstance from "../utils/axiosInstance";
-import {SuccessAlert} from "./effect_components/successAlert"
-import {ErrorAlert} from "./effect_components/errorAlert"
+import { SuccessAlert } from "./effect_components/successAlert";
+import { ErrorAlert } from "./effect_components/errorAlert";
 // MyListings: Page where users can only see, add, edit, and delete their OWN items, not others
 
 interface TabPanelProps {
@@ -72,9 +72,11 @@ interface ReportInfo {
       securityAnswer: string;
       username: string;
       phoneNumber: string;
+      score: number;
     }[];
     status: string;
     endorsedUserID: number;
+    endorsedUsername: string;
   };
 }
 
@@ -239,10 +241,12 @@ function Tickets({
           securityAnswer: "",
           username: "",
           phoneNumber: "",
+          score: 0,
         },
       ],
       status: "",
       endorsedUserID: 0,
+      endorsedUsername: "",
     },
   });
 
@@ -295,6 +299,12 @@ function Tickets({
                 Last seen/found at: {reportDetail.location.building}{" "}
                 {reportDetail.location.room} on {date} {time} hrs
               </Typography>
+              {reportDetail.status.status === "Claimed" ? (
+                <Typography className="item-description">
+                  Claimed by: {reportDetail.status.endorsedUsername}
+                </Typography>
+              ) : null}
+
               <EditTicketButton
                 myTicket={reportDetail.ticket}
                 myItemID={reportDetail.item.itemID}
@@ -337,7 +347,6 @@ function Tickets({
   >(null);
 
   const endorseTicket = (ticketID: any) => {
-
     if (selectedPendingUserId) {
       AxiosInstance.put("/endorseTicket/" + ticketID, {
         endorsedUserID: selectedPendingUserId,
@@ -380,7 +389,7 @@ function Tickets({
         onChange={handleSearchChange}
       />
       <CustomModal />
-      {openSuccessAlert ? <SuccessAlert/> : ""}
+      {openSuccessAlert ? <SuccessAlert /> : ""}
       {openErrorAlert ? <ErrorAlert /> : ""}
       <Grid container spacing={4}>
         {filteredReportInfos.length > 0 ? (
@@ -447,11 +456,12 @@ function Tickets({
                     {reportInfo.description}
                   </Typography>
                 </CardContent>
-                {activeTab === 1 ? (
-                  <CardContent sx={{ flexGrow: 1, paddingTop: "0"}}>
+                
+                  <CardContent sx={{ flexGrow: 1, paddingTop: "0" }}>
                     <Typography className="item-category">
                       Security Question: {reportInfo.securityQuestion}
                     </Typography>
+                    {activeTab === 1 && reportInfo.status.status !== "Claimed"? (
                     <TextField
                       className="pendingUser-dropdown"
                       select
@@ -477,12 +487,14 @@ function Tickets({
                             value={user.user}
                             className="pendingUser-item"
                           >
-                            {user.username}, +65{user.phoneNumber} <br /> Answer: {user.securityAnswer}
+                            {user.username}, Reputation: {user.score}/5 <br />{" "}
+                            +65{user.phoneNumber} <br /> Answer:{" "}
+                            {user.securityAnswer}
                           </MenuItem>
                         ))}
                     </TextField>
+                     ) : null}
                   </CardContent>
-                ) : null}
                 <CardActions>
                   <div style={{ margin: "auto" }}>
                     {activeTab === 1 ? ( // Check if it's the 'Found Items' tab

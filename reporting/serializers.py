@@ -1,8 +1,8 @@
 from asyncore import read
 from rest_framework import serializers
 from .models import ReportInfo, Status, Location, PendingUsers
-from base_functions.models import UserAdditionalProfile
-from base_functions.serializers import TicketSerializer, ItemSerializer, CurrentUserSerializer, CurrentUserProfileSerializer
+from base_functions.models import UserAdditionalProfile, Reputation
+from base_functions.serializers import TicketSerializer, ItemSerializer
 from django.contrib.auth.models import User
 
 class LocationSerializer(serializers.ModelSerializer):
@@ -14,23 +14,36 @@ class PendingUsersSerializer(serializers.ModelSerializer):
     # user = CurrentUserSerializer()
     username = serializers.CharField(source="user.username")
     phoneNumber = serializers.SerializerMethodField('phone_number')
+    score = serializers.SerializerMethodField('reputation_score')
 
     class Meta:
         model = PendingUsers
-        fields = ['id', 'user', 'username', 'status', 'securityAnswer', 'phoneNumber']
+        fields = ['id', 'user', 'username', 'status', 'securityAnswer', 'phoneNumber', 'score']
     
     def phone_number(self,obj):
         userDetails = UserAdditionalProfile.objects.get(user=obj.user_id)
         return userDetails.userPhoneNumber
+    
+    def reputation_score(self,obj):
+        reputation = Reputation.objects.get(user=obj.user_id)
+        return reputation.score
         
 class StatusSerializer(serializers.ModelSerializer):
     ticket = TicketSerializer()
     pendingUsers = PendingUsersSerializer(read_only=True, many=True)
+    endorsedUsername = serializers.SerializerMethodField('endorseUser_ID')
 
     class Meta:
         model = Status
-        fields = "__all__"
+        fields = ['statusID', 'ticket', 'pendingUsers', 'status', 'endorsedUserID', 'counter', 'previous_counter', 'endorsedUsername']
 
+    def endorseUser_ID(self,obj):
+        if obj.endorsedUserID != None:
+            userDetails = User.objects.get(pk=obj.endorsedUserID)
+            return userDetails.username
+        else:
+            return None
+    
 class ReportSerializer(serializers.ModelSerializer):
     ticket = TicketSerializer()
     location = LocationSerializer()
