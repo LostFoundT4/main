@@ -10,35 +10,50 @@ from authentication.tokens import account_activation_token
 # Create your views here.
 def activate(request, uidb64, token):
     component_content = """
-    <head>
-        <style>
-            /* Center the message both horizontally and vertically */
-            .email-confirmation {
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
-                text-align: center;
-                font-family: "Lexend Deca", "Montserrat", sans-serif;
-                color: #000; /* Font color is black */
-            }
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Set the background color for the entire page */
+        body {
+            background-color: #000; /* Background color is black */
+        }
 
-            h1 {
-                font-size: 24px;
-            }
+        /* Center the message both horizontally and vertically */
+        .email-confirmation {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-family: "Lexend Deca", "Montserrat", sans-serif;
+            color: #6cf3c3; /* Font color is green */
+        }
 
-            p {
-                font-size: 16px;
-                color: #000; /* Font color is black */
-            }
-        </style>
-    </head>
-    <body>
-        <div class="email-confirmation">
-            <h1>Thank you for your email confirmation</h1>
-            <p>Now you can login to your account.</p>
-        </div>
-    </body>
+        h1 {
+            font-size: 24px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #6cf3c3; /* Font color is green */
+        }
+
+        /* Style the hyperlink */
+        a {
+            color: #6cf3c3; /* Font color is green for the link */
+            text-decoration: underline; /* Underline the link text */
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Lexend+Deca" rel="stylesheet">
+</head>
+<body>
+    <div class="email-confirmation">
+        <h1>Thank you for your email confirmation</h1>
+        <p>Now you can <a href="/frontend/sign-in">log in</a> to your account.</p>
+    </div>
+</body>
+</html>
     """
     
     try:
