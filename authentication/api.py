@@ -23,7 +23,7 @@ class RegisterAPI(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
-        mail_subject = 'Activate Your Lost And Found Account.'
+        mail_subject = 'Verify your Lost And Found account email.'
         message = render_to_string('acc_active_email.html', {
         'user': user,
         'domain': '127.0.0.1:8080',
