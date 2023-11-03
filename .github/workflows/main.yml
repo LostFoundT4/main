@@ -106,6 +106,7 @@ jobs:
             echo "$PWD"
             source .env
             docker login ghcr.io -u $NAMESPACE -p ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+            rm -r /usr/src/app/static/frontend/
             echo "$GITHUB_SHA"
             docker pull $WEB_IMAGE:$GITHUB_SHA
             docker pull $NGINX_IMAGE:$GITHUB_SHA
