@@ -9,12 +9,36 @@ from authentication.tokens import account_activation_token
 
 # Create your views here.
 def activate(request, uidb64, token):
-    
     component_content = """
-    <div>
-        <h1>Hello, World!</h1>
-        <p>This is a simple HTML component.</p>
-    </div>
+    <head>
+        <style>
+            /* Center the message both horizontally and vertically */
+            .email-confirmation {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                text-align: center;
+                font-family: "Lexend Deca", "Montserrat", sans-serif;
+                color: #000; /* Font color is black */
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+
+            p {
+                font-size: 16px;
+                color: #000; /* Font color is black */
+            }
+        </style>
+    </head>
+    <body>
+        <div class="email-confirmation">
+            <h1>Thank you for your email confirmation</h1>
+            <p>Now you can login to your account.</p>
+        </div>
+    </body>
     """
     
     try:
@@ -25,6 +49,6 @@ def activate(request, uidb64, token):
     if user is not None and account_activation_token.check_token(user, token):
         login(request, user)
         #return HttpResponse('Thank you for your email confirmation. Now you can login your account.')
-        return HttpResponse(component_content)
+        return HttpResponse(component_content, content_type="text/html")
     else:
         return HttpResponse('Activation link is invalid!')
