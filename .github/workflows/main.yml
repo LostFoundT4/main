@@ -48,7 +48,7 @@ jobs:
       - name: Build Web images
         run: |
           echo "HELLO !"
-          docker build -f Dockerfile-web.ci -t ${{ env.WEB_IMAGE }}:${{ github.sha }} -t ${{ env.WEB_IMAGE }}:latest .
+          docker build -f Dockerfile-web.ci -t ${{ env.WEB_IMAGE }}:${{ github.sha }} -t ${{ env.WEB_IMAGE }}:latest --no-cache .
           echo "HELLO@"
 
         env:
