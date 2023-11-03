@@ -88,9 +88,8 @@ def reportInfo_detail(request, id, format=None):
         reportInfo.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 # CRUD for Status
-
-
 @api_view(['GET', 'POST'])
 def status_list(request):
 
@@ -127,9 +126,8 @@ def status_detail(request, id, format=None):
         statusObj.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+
 # CRUD for PendingUsers
-
-
 @api_view(['GET', 'POST'])
 def pendingUsers_list(request):
 

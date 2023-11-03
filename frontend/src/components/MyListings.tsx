@@ -71,6 +71,7 @@ interface ReportInfo {
       user: number;
       securityAnswer: string;
       username: string;
+      phoneNumber: string;
     }[];
     status: string;
     endorsedUserID: number;
@@ -237,6 +238,7 @@ function Tickets({
           user: 0,
           securityAnswer: "",
           username: "",
+          phoneNumber: "",
         },
       ],
       status: "",
@@ -475,7 +477,7 @@ function Tickets({
                             value={user.user}
                             className="pendingUser-item"
                           >
-                            {user.username}, Answer: {user.securityAnswer}
+                            {user.username}, +65{user.phoneNumber} <br /> Answer: {user.securityAnswer}
                           </MenuItem>
                         ))}
                     </TextField>
