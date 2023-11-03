@@ -5,7 +5,7 @@ services:
     command: gunicorn "Application_Main".wsgi:application --bind 0.0.0.0:8000
     volumes:
       - static:/usr/src/app/static
-      - .:/usr/src/app
+      - base:/usr/src/app
     ports:
       - 8000:8000
     env_file: .env
@@ -29,3 +29,4 @@ networks:
 
 volumes:
   static:
+  base:
