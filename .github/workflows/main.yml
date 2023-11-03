@@ -38,7 +38,7 @@ jobs:
 
       - name: Get The Previous Commit Hash
         run: |
-          echo "$(git rev-parse --short HEAD)"
+          echo "${{ github.event.before }}"
         env:
           GITHUB_CONTEXT: ${{ toJson(github) }}
 
