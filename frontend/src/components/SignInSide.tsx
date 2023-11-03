@@ -52,7 +52,7 @@ export default function SignInSide() {
                 localStorage.clear();
                 localStorage.setItem("authToken", response.data.token);
 
-                navigate("/frontend/home");
+                navigate("/home");
             })
             .catch((error) => {
                 setisCorrectCred(false);

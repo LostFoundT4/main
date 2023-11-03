@@ -154,7 +154,7 @@ export default function AppDrawer() {
                 textDecoration: "none",
                 color: "white"
               }}
-              href="/frontend/edit-profile"
+              href="/edit-profile"
             >
               <Rating
                 name="half-rating-read"

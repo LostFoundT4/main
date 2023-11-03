@@ -25,5 +25,5 @@ const useAuth  = () =>{
 
 export default function ProtectedRoutes(){
     const isAuth = useAuth()
-    return isAuth ? <Outlet /> : <Navigate to="/frontend/sign-in" />
+    return isAuth ? <Outlet /> : <Navigate to="/sign-in" />
 }

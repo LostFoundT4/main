@@ -23,12 +23,13 @@ export const App = () => {
             <UserIDContext.Provider value={{contextID, setContextID}}>
             <UserNameContext.Provider value={{contextName, setContextName}}>
             <Routes>
-                <Route path="/frontend/sign-up" element={<SignUpSide />}></Route>
-                <Route path="/frontend/sign-in" element={<SignInSide />}></Route>
+                <Route path="" element={<SignUpSide />}></Route>
+                <Route path="/sign-up" element={<SignUpSide />}></Route>
+                <Route path="/sign-in" element={<SignInSide />}></Route>
                 <Route element = {<ProtectedRoute />}>
-                    <Route path="/frontend/home" element={<Home />}></Route>
-                    <Route path="/frontend/edit-profile" element={<EditProfile />}></Route>
-                    <Route path="/frontend/my-listings" element={<MyListings />}></Route>
+                    <Route path="/home" element={<Home />}></Route>
+                    <Route path="/edit-profile" element={<EditProfile />}></Route>
+                    <Route path="/my-listings" element={<MyListings />}></Route>
                 </Route>
             </Routes>
             </UserNameContext.Provider>

@@ -2,15 +2,19 @@ import { Fragment } from "react";
 import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { ShoppingCart, Settings, Logout, Home } from "@mui/icons-material";
 
+const handleLogout = () => {
+    localStorage.removeItem('authToken')
+}
+
 export const mainListItems = (
     <Fragment>
-        <ListItemButton href="/frontend/home">
+        <ListItemButton href="/home">
             <ListItemIcon>
                 <Home />
             </ListItemIcon>
             <ListItemText primary="Home" />
         </ListItemButton>
-        <ListItemButton href="/frontend/my-listings">
+        <ListItemButton href="/my-listings">
             <ListItemIcon>
                 <ShoppingCart />
             </ListItemIcon>
@@ -19,19 +23,15 @@ export const mainListItems = (
     </Fragment>
 );
 
-const handleLogout = () => {
-    localStorage.removeItem('authToken')
-}
-
 export const secondaryListItems = (
     <Fragment>
-        <ListItemButton href="/frontend/edit-profile">
+        <ListItemButton href="/edit-profile">
             <ListItemIcon>
                 <Settings />
             </ListItemIcon>
             <ListItemText primary="My Profile" />
         </ListItemButton>
-        <ListItemButton onClick={handleLogout} href="/frontend/sign-in">
+        <ListItemButton onClick={handleLogout} href="/sign-in">
             <ListItemIcon>
                 <Logout />
             </ListItemIcon>

@@ -98,7 +98,7 @@ export default function SignUpSide() {
                         userTelegramID: tele,
                         userPhoneNumber: phoneNo,
                     }).then((response) => {
-                        navigate("/frontend/sign-in");
+                        navigate("/sign-in");
                     });
                 });
             })
