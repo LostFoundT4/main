@@ -42,8 +42,10 @@ export default function ForgotPassword() {
             setEmailError(true);
             return; // Do not proceed with form submission
         }
-
         // If email is valid, proceed with form submission
+
+        // Need backend implementation??
+
         setUsr("");
         setEmail("");
         setEmailError(false);

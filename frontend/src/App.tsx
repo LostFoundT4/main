@@ -33,7 +33,7 @@ export const App = () => {
             <Routes>
                 <Route path="/frontend/sign-up" element={<SignUpSide />}></Route>
                 <Route path="/frontend/sign-in" element={<SignInSide />}></Route>
-                <Route path="/frontend/sign-up-complete" element={<SignUpComplete />}></Route>
+                {/* <Route path="/frontend/sign-up-complete" element={<SignUpComplete />}></Route> */}
                 <Route path="/frontend/email-verification" element={<SignUpVerification />}></Route>
                 <Route path="/frontend/forgot-password" element={<ForgotPassword />}></Route>
                 <Route element = {<ProtectedRoute />}>

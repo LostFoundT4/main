@@ -98,7 +98,13 @@ export default function SignUpSide() {
                         "userTelegramID": tele,
                         "userPhoneNumber": phoneNo
                     }).then((response)=>{
-                        navigate("/frontend/sign-up-complete")
+                        setEmail("");
+                        setPwd("");
+                        setUsr("");
+                        setPhoneNo("");
+                        setTele("");
+                        setEmailError(false);
+                        !window.confirm("Please check your email for the verification link!")
                     })
                 })
             }
