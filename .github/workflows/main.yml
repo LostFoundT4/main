@@ -38,7 +38,7 @@ jobs:
 
       - name: Pull Web images
         run: |
-          docker pull ${{ env.WEB_IMAGE }}:${{ github.sha }} || true
+          docker pull ${{ env.WEB_IMAGE }}:${{ github.event.pull_request.head.sha }} || true
       - name: Build Web images
         run: |
           echo "HELLO !"
