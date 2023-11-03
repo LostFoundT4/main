@@ -166,13 +166,12 @@ export default function CreateTicketButton() {
             previous_counter: 0,
           }).then(async (response) => {
             // Create a report info associated with the item
-            console.log(description);
             const statusID = response.data.statusID;
             await AxiosInstance.post("/reportInfos/", {
               ticket: response.data.ticket,
               item: parseInt(itemID),
               location: parseInt(selectedLocation),
-              description: description,
+              description: (description === null || description === "" ? "Nil" : description),
               status: statusID,
               securityQuestion: securityQuestion,
             }).then(async (response) => {

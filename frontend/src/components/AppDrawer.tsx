@@ -81,7 +81,6 @@ const defaultTheme = createTheme();
 
 export default function AppDrawer() {
   const [open, setOpen] = React.useState(true);
-  const [value, setValue] = React.useState(0); // Initialize the selected tab index
   const { contextName, setContextName } = React.useContext(UserNameContext);
 
   const toggleDrawer = () => {
