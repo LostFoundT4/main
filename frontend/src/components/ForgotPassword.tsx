@@ -49,8 +49,14 @@ export default function ForgotPassword() {
         setUsr("");
         setEmail("");
         setEmailError(false);
-        !window.confirm("Please check your email for the password reset link!")
-        
+
+        await AxiosInstance.post('/api/auth/password_reset',{
+            "username": usr,
+            "email":email
+            },
+            ).then(async(response)=> {
+                !window.confirm("Please check your email for the password reset link!")
+            })
     }
 
     return (

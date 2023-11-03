@@ -314,10 +314,26 @@ def password_reset(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
-    except(TypeError, ValueError, OverflowError, User.DoesNotExist):
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
-    if user is not None and account_activation_token.check_token(user, token):
-        login(request, user)
-        return HttpResponse(reset_success, content_type="text/html")
-    else:
-        return HttpResponse(reset_failure, content_type="text/html")
+
+    if request.method == 'POST':
+        # Handle the password reset form submission here
+        password = request.POST.get('password')
+        confirm_password = request.POST.get('confirm_password')
+
+        if user is not None and account_activation_token.check_token(user, token):
+            # Check if the passwords match and update the user's password
+            if password == confirm_password:
+                user.set_password(password)
+                user.save()
+                login(request, user)
+                return HttpResponse(reset_success, content_type="text/html")
+            else:
+                # Passwords don't match, show an error message or redirect to reset_setup
+                return HttpResponse(reset_setup, content_type="text/html")
+        else:
+            return HttpResponse(reset_failure, content_type="text/html")
+
+    # If it's a GET request, simply show the reset_setup page
+    return HttpResponse(reset_setup, content_type="text/html")

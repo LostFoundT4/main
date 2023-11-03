@@ -6,7 +6,7 @@ from django.utils.http import urlsafe_base64_encode
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from knox.models import AuthToken
-from .serializers import UserSerializer, RegisterSerializer, LoginSerializer, UserProfileUpdaterSerializer
+from .serializers import PasswordResetSerializer, UserSerializer, RegisterSerializer, LoginSerializer, UserProfileUpdaterSerializer
 # from rest_framework.renderers import JSONRenderer
 from knox.settings import CONSTANTS
 from knox.auth import TokenAuthentication
@@ -79,3 +79,30 @@ class UpdateProfileView(generics.UpdateAPIView):
     queryset = User.objects.all()
     permission_classes = (permissions.IsAuthenticated,)
     serializer_class = UserProfileUpdaterSerializer
+
+# PasswordReset API
+class PasswordResetAPI(generics.GenericAPIView):
+    serializer_class = PasswordResetSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        mail_subject = 'Reset your Lost And Found account password.'
+        message = render_to_string('password_reset.html', {
+        'user': user,
+        'domain': '127.0.0.1:8080',
+        'uid':urlsafe_base64_encode(force_bytes(user.pk)),
+        'token':account_activation_token.make_token(user),
+        })
+        user2 = UserSerializer(user, context=self.get_serializer_context()).data
+        print(user2)
+        to_email = user2.get("email")
+        email = EmailMessage(
+            mail_subject, message, to=[to_email]
+        )
+        email.send()
+        return Response({
+            "user": UserSerializer(user, context=self.get_serializer_context()).data,
+            "token": AuthToken.objects.create(user)[1]
+        })
