@@ -18,6 +18,7 @@ import MyListings from "./components/MyListings";
 import {UserIDContext,UserNameContext} from "./utils/contextConfig"
 import SignUpComplete from "./components/SignUpComplete";
 import SignUpVerification from "./components/SignUpVerification";
+import ForgotPassword from "./components/ForgotPassword";
 
 export const App = () => {
 
@@ -34,6 +35,7 @@ export const App = () => {
                 <Route path="/frontend/sign-in" element={<SignInSide />}></Route>
                 <Route path="/frontend/sign-up-complete" element={<SignUpComplete />}></Route>
                 <Route path="/frontend/email-verification" element={<SignUpVerification />}></Route>
+                <Route path="/frontend/forgot-password" element={<ForgotPassword />}></Route>
                 <Route element = {<ProtectedRoute />}>
                     <Route path="/frontend/home" element={<Home />}></Route>
                     <Route path="/frontend/dashboard" element={<Profile />}></Route>

@@ -11,4 +11,5 @@ urlpatterns = [
     path('my-listings', index),
     path('sign-up-complete', index),
     path('email-verification', index),
+    path('forgot-password', index),
 ]
