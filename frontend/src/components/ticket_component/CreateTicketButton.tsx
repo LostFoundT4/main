@@ -173,7 +173,7 @@ export default function CreateTicketButton() {
               location: parseInt(selectedLocation),
               description: (description === null || description === "" ? "Nil" : description),
               status: statusID,
-              securityQuestion: securityQuestion,
+              securityQuestion: (securityQuestion === null || securityQuestion === "" ? "No Security Question Given" : securityQuestion),
             }).then(async (response) => {
               // Log success and close the form
               if (response.data === 404) {
