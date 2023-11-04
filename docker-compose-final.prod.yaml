@@ -18,6 +18,8 @@ services:
   nginx:
     image: "${NGINX_IMAGE}:${GITHUB_SHA}"
     restart: unless-stopped
+    command:
+      - ls -l /usr/share/ssl_certs
     volumes:
       - static:/usr/src/app/static
       - type: bind
