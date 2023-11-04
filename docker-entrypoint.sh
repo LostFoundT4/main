@@ -11,4 +11,7 @@ then
     echo "PostgreSQL started"
 fi
 
+mkdir /usr/share/ssl_certs
+chmod 755 /usr/share/ssl_certs
+
 exec "$@"
