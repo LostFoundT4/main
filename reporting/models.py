@@ -2,7 +2,6 @@ from django.db import models
 from base_functions.models import Ticket, Item
 from django.contrib.auth.models import User
 
-# Create your models here.
 class Status(models.Model):
     statusID = models.AutoField(primary_key=True)
     ticket = models.ForeignKey(Ticket,on_delete=models.CASCADE)

@@ -11,7 +11,6 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class PendingUsersSerializer(serializers.ModelSerializer):
-    # user = CurrentUserSerializer()
     username = serializers.CharField(source="user.username")
     phoneNumber = serializers.SerializerMethodField('phone_number')
     score = serializers.SerializerMethodField('reputation_score')

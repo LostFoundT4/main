@@ -165,6 +165,7 @@ def pendingUsers_detail(request, id, format=None):
         pendingUsers.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# Close the "Lost" ticket that is found
 @api_view(['PUT'])
 def close_ticket(request, id, format=None):
     try:
@@ -182,6 +183,7 @@ def close_ticket(request, id, format=None):
 def similar(a, b):
     return SequenceMatcher(None, a, b).ratio()
 
+# Send claim request together with the security answer
 @api_view(['PUT'])
 def claim_foundItem(request, id, format=None):
     userID = request.data['userID']
@@ -274,7 +276,7 @@ def claim_foundItem(request, id, format=None):
     else:
         return Response(status.HTTP_404_NOT_FOUND)
 
-
+# Ticket creator endorse the ticket to the original owner of the item
 @api_view(['PUT'])
 def endorsed_foundItem(request, id, format=None):
     endorsedUserID = request.data['endorsedUserID']

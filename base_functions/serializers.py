@@ -26,7 +26,6 @@ class BlacklistSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TicketSerializer(serializers.ModelSerializer):
-    # items = ItemSerializer(many=True)
     user = CurrentUserSerializer
     username = serializers.CharField(source="user.username")
 
