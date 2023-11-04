@@ -14,6 +14,7 @@ services:
 
   nginx:
     image: "${NGINX_IMAGE}:${GITHUB_SHA}"
+    restart: unless-stopped
     volumes:
       - static:/usr/src/app/static
       - type: bind
