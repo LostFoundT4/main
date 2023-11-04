@@ -25,9 +25,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get('DEBUG', default=0))
+#DEBUG = int(os.environ.get('DEBUG', default=0))
+DEBUG = True
 
-ALLOWED_HOSTS = ['findmyitem.app','147.182.247.167','cs203-lostandfound-app-dev.us-east-1.elasticbeanstalk.com', '127.0.0.1', '172.31.39.65', 'localhost']
+ALLOWED_HOSTS = ['www.findmyitem.app','147.182.247.167','cs203-lostandfound-app-dev.us-east-1.elasticbeanstalk.com', '127.0.0.1', '172.31.39.65', 'localhost']
 
 
 # Application definition
