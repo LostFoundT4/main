@@ -59,8 +59,8 @@ jobs:
           docker pull ${{ env.NGINX_IMAGE }}:${{ github.event.before }} || true
       - name: Build Nginx images
         run: |
-          docker compose -f docker-compose-nginx.ci.yaml build
           docker tag ${{ env.NGINX_IMAGE }} ${{ env.NGINX_IMAGE }}:${{ github.sha }}
+          docker compose -f docker-compose-nginx.ci.yaml build
         env:
           GITHUB_SHA: ${{ github.sha }}
           GITHUB_PREVIOUS_SHA: ${{ github.event.before }}
