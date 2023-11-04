@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        /* Set the background color for the entire page */
+        body {
+            background-color: #000; /* Background color is black */
+        }
+
+        /* Center the message both horizontally and vertically */
+        .password-reset-failure {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            font-family: "Lexend Deca", "Montserrat", sans-serif;
+            color: #6cf3c3; /* Font color is green */
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        p {
+            font-size: 16px;
+            color: #6cf3c3; /* Font color is green */
+        }
+
+        /* Style the submit button */
+        .submit-button {
+            background-color: #6cf3c3;
+            color: #000; /* Font color is black */
+            text-decoration: none; /* Remove underline */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.4s;
+        }
+
+        .submit-button:hover {
+            background-color: #2dd197; /* Hover background color */
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css?family=Lexend+Deca" rel="stylesheet">
+</head>
+<body>
+    <div class="password-reset-failure">
+        <h1>Failed to Reset Password</h1>
+        <p>Your password reset request has failed.</p>
+        <a href="/frontend/sign-in" class="submit-button">Try again here</a>
+    </div>
+</body>
+</html>
