@@ -7,14 +7,14 @@ from base_functions.models import Ticket, Item, Reputation, Blacklist
 from base_functions.serializers import ReputationSerializer
 from django.contrib.auth.models import User
 from .serializers import LocationSerializer, ReportSerializer, StatusSerializer, AlterReportSerializer, AlterStatusSerializer, PendingUsersSerializer, AlterPendingUsersSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 from django.utils import timezone
-from difflib import SequenceMatcher
 
 # CRUD for Location
 @api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
 def location_list(request):
 
     if request.method == 'GET':
@@ -30,6 +30,7 @@ def location_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
 def location_detail(request, id, format=None):
 
     try:
@@ -53,6 +54,7 @@ def location_detail(request, id, format=None):
 
 # CRUD for ReportInfo
 @api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
 def reportInfo_list(request):
 
     if request.method == 'GET':
@@ -68,6 +70,7 @@ def reportInfo_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
 def reportInfo_detail(request, id, format=None):
 
     try:
@@ -91,6 +94,7 @@ def reportInfo_detail(request, id, format=None):
 
 # CRUD for Status
 @api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
 def status_list(request):
 
     if request.method == 'GET':
@@ -106,6 +110,7 @@ def status_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
 def status_detail(request, id, format=None):
 
     try:
@@ -129,6 +134,7 @@ def status_detail(request, id, format=None):
 
 # CRUD for PendingUsers
 @api_view(['GET', 'POST'])
+@permission_classes([permissions.IsAuthenticated])
 def pendingUsers_list(request):
 
     if request.method == 'GET':
@@ -144,6 +150,7 @@ def pendingUsers_list(request):
 
 
 @api_view(['GET', 'PUT', 'DELETE'])
+@permission_classes([permissions.IsAuthenticated])
 def pendingUsers_detail(request, id, format=None):
 
     try:
@@ -167,6 +174,7 @@ def pendingUsers_detail(request, id, format=None):
 
 # Close the "Lost" ticket that is found
 @api_view(['PUT'])
+@permission_classes([permissions.IsAuthenticated])
 def close_ticket(request, id, format=None):
     try:
         statusObj = Status.objects.get(pk=id)
@@ -180,11 +188,9 @@ def close_ticket(request, id, format=None):
 
     return Response(status.HTTP_400_BAD_REQUEST)
 
-def similar(a, b):
-    return SequenceMatcher(None, a, b).ratio()
-
 # Send claim request together with the security answer
 @api_view(['PUT'])
+@permission_classes([permissions.IsAuthenticated])
 def claim_foundItem(request, id, format=None):
     userID = request.data['userID']
     givenAnswer = request.data['securityAnswer']
@@ -278,6 +284,7 @@ def claim_foundItem(request, id, format=None):
 
 # Ticket creator endorse the ticket to the original owner of the item
 @api_view(['PUT'])
+@permission_classes([permissions.IsAuthenticated])
 def endorsed_foundItem(request, id, format=None):
     endorsedUserID = request.data['endorsedUserID']
 
