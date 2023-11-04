@@ -117,7 +117,9 @@ jobs:
             docker pull $WEB_IMAGE:$GITHUB_SHA
             docker pull $NGINX_IMAGE:$GITHUB_SHA
             echo "HELLO WORLD"
-            docker-compose down -v
+            docker stop $(docker ps -a -q)
+            docker rm $(docker ps -a -q)
+            docker volume rm $(docker volume ls -q)
             docker network create application_connect
             docker-compose -f docker-compose-final.prod.yaml up -d --build --force-recreate --renew-anon-volumes
           ENDSSH
