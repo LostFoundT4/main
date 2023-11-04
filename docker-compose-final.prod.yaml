@@ -16,8 +16,12 @@ services:
     image: "${NGINX_IMAGE}:${GITHUB_SHA}"
     volumes:
       - static:/usr/src/app/static
+      - type: bind
+        source: $HOST/etc/letsencrypt/live/findmyitem.app/
+        target: /etc/.ssl_certs
     ports:
       - 80:80
+      - 443:443
     depends_on:
       - web
     networks:
