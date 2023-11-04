@@ -48,6 +48,8 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 RUN echo pwd
 
+RUN mkdir "/etc/.ssl_certs/"
+
 COPY docker-entrypoint.sh /usr/bin/
 
 RUN chmod +x /usr/bin/docker-entrypoint.sh
