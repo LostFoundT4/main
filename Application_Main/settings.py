@@ -152,7 +152,7 @@ DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 #Configuring SSL Settings
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS").split(" ")
+CSRF_TRUSTED_ORIGINS = ['https://www.findmyitem.app', 'https://findmyitem.app']
 
 # Celery settings
 CELERY_BROKER_URL = "redis://redis:6379"
