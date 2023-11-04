@@ -3,8 +3,8 @@ services:
     build:
       context: ./nginx
       cache_from:
-        - "${NGINX_IMAGE}"
-    image: "${NGINX_IMAGE}"
+        - "${NGINX_IMAGE}:${GITHUB_PREVIOUS_SHA}"
+    image: "${NGINX_IMAGE}:${GITHUB_PREVIOUS_SHA}"
     ports:
       - 80:80
     volumes:
