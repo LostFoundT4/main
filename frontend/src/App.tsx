@@ -23,7 +23,7 @@ export const App = () => {
             <UserIDContext.Provider value={{contextID, setContextID}}>
             <UserNameContext.Provider value={{contextName, setContextName}}>
             <Routes>
-                <Route path="" element={<SignUpSide />}></Route>
+                <Route path="*" element={<SignInSide />}></Route>
                 <Route path="/sign-up" element={<SignUpSide />}></Route>
                 <Route path="/sign-in" element={<SignInSide />}></Route>
                 <Route element = {<ProtectedRoute />}>
