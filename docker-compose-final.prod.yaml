@@ -2,7 +2,7 @@
 services:
   web:
     image: "${WEB_IMAGE}:${GITHUB_SHA}"
-    command: gunicorn "Application_Main".wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn "Application_Main".wsgi:application --bind 0.0.0.0:8000 && python manage.py migrate
     volumes:
       - static:/usr/src/app/static
       - base:/usr/src/app
