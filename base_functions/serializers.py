@@ -49,3 +49,27 @@ class AlterCurrentUserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserAdditionalProfile
         fields = '__all__'
+
+
+class UserAdditionalDataSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAdditionalProfile
+        fields = ['user', 'userVerifiedStatus']  # Include other fields as needed
+
+    def validate_user_id(self, user_id):
+        # Query to check if the email verification field is true or false for a given user ID
+        try:
+            user_additional_data = UserAdditionalProfile.objects.get(user__id=user_id)
+            return user_additional_data.userVerifiedStatus
+        except UserAdditionalProfile.DoesNotExist:
+            raise serializers.ValidationError("User ID doesn't exist")
+
+class UpdateEmailVerificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserAdditionalProfile
+        fields = ['userVerifiedStatus']  # Only include the field that should be updated
+
+    def update(self, instance, validated_data):
+        instance.emailVerificationField = validated_data.get('userVerifiedStatus', instance.userVerifiedStatus)
+        instance.save()
+        return instance
