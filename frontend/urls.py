@@ -12,4 +12,5 @@ urlpatterns = [
     path('sign-up-complete', index),
     path('email-verification', index),
     path('forgot-password', index),
+    path('password-reset', index),
 ]
