@@ -18,9 +18,6 @@ services:
   nginx:
     image: "${NGINX_IMAGE}:${GITHUB_SHA}"
     restart: unless-stopped
-    command:
-      - mkdir /usr/share/ssl_certs/ && chmod 755 /usr/share/ssl_certs
-      - ls -l /usr/share/ssl_certs
     volumes:
       - static:/usr/src/app/static
       - type: bind
