@@ -2,13 +2,12 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import Ticket, Item, UserAdditionalProfile, Reputation, Blacklist
 from .serializers import ReputationSerializer, TicketSerializer, ItemSerializer , AlterTicketSerializer, CurrentUserProfileSerializer, BlacklistSerializer, AlterCurrentUserProfileSerializer
-from rest_framework.decorators import api_view, permission_classes
+from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status, permissions
+from rest_framework import status
 
 
 @api_view(['GET', 'POST'])
-@permission_classes([permissions.IsAuthenticated])
 def ticket_list(request):
 
     if request.method == 'GET':
@@ -23,7 +22,6 @@ def ticket_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([permissions.IsAuthenticated])
 def ticket_detail(request, id, format=None):
 
     try:
@@ -48,7 +46,6 @@ def ticket_detail(request, id, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
-@permission_classes([permissions.IsAuthenticated])
 def item_list(request):
 
     if request.method == 'GET':
@@ -63,7 +60,6 @@ def item_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([permissions.IsAuthenticated])
 def item_detail(request, id, format=None):
 
     try:
@@ -85,7 +81,6 @@ def item_detail(request, id, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
-@permission_classes([permissions.IsAuthenticated])
 def userprofile_list(request):
 
     if request.method == 'GET':
@@ -100,7 +95,6 @@ def userprofile_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([permissions.IsAuthenticated])
 def userprofile_detail(request, id, format=None):
 
     try:
@@ -122,7 +116,6 @@ def userprofile_detail(request, id, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
 def userprofile_detail_withUserID(request, id, format=None):
 
     try:
@@ -135,9 +128,9 @@ def userprofile_detail_withUserID(request, id, format=None):
         return Response(serializer.data)
     else:
         return Response(status=status.HTTP_204_NO_CONTENT)
+        
 
 @api_view(['GET', 'POST'])
-@permission_classes([permissions.IsAuthenticated])
 def reputation_list(request):
 
     if request.method == 'GET':
@@ -152,7 +145,6 @@ def reputation_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([permissions.IsAuthenticated])
 def reputation_detail(request, id, format=None):
 
     try:
@@ -174,7 +166,6 @@ def reputation_detail(request, id, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
-@permission_classes([permissions.IsAuthenticated])
 def reputation_detail_withUserID(request, id, format=None):
 
     try:
@@ -189,7 +180,6 @@ def reputation_detail_withUserID(request, id, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET', 'POST'])
-@permission_classes([permissions.IsAuthenticated])
 def blacklist_list(request):
 
     if request.method == 'GET':
@@ -204,7 +194,6 @@ def blacklist_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([permissions.IsAuthenticated])
 def blacklist_detail(request, id, format=None):
 
     try:
