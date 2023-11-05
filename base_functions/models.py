@@ -25,7 +25,7 @@ class UserAdditionalProfile(models.Model):
     userTelegramID = models.CharField(max_length=100, blank=True, null=True)
     userProfilePicture = models.ImageField(upload_to='profile-images/', blank=True, null=True, default='profile-images/default')
     userPhoneNumber = models.CharField(max_length=8, blank=True)
-
+    userVerifiedStatus = models.BooleanField(default=False)
 class Reputation(models.Model):
     reputationID = models.AutoField(primary_key = True)
     user = models.ForeignKey(User, related_name='reputation', on_delete=models.CASCADE, default=None)
