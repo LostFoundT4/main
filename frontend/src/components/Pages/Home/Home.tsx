@@ -198,11 +198,7 @@ function Tickets({
   };
 
   useEffect(() => {
-    AxiosInstance.get("/reportInfos/", {
-      headers: {
-        Authorization: "Token " + localStorage.getItem("authToken"),
-      },
-    }).then((response) => {
+    AxiosInstance.get("/reportInfos/").then((response) => {
         // Filter items based on the provided ticketTypeFilter
         const filteredItems = response.data.filter(
           (reportInfo: ReportInfo) =>
@@ -287,11 +283,7 @@ function Tickets({
     const [reputation, setReputation] = useState("");
 
     if (reportDetail.ticket.user !== 0){
-      AxiosInstance.get("/reputationwithUserID/" + reportDetail.ticket.user, {
-        headers: {
-          Authorization: "Token " + localStorage.getItem("authToken"),
-        },
-      }).then(
+      AxiosInstance.get("/reputationwithUserID/" + reportDetail.ticket.user).then(
         (response) => {
           setReputation(response.data.score);
         }
@@ -409,11 +401,7 @@ function Tickets({
   ) => {
     e.persist();
 
-    AxiosInstance.get("/userProfileswithUserID/" + index, {
-      headers: {
-        Authorization: "Token " + localStorage.getItem("authToken"),
-      },
-    })
+    AxiosInstance.get("/userProfileswithUserID/" + index,)
       .then((response) => {
         setProfileInfo(response.data);
       })
@@ -421,11 +409,7 @@ function Tickets({
         console.error("Error fetching user profile:", error);
       });
 
-    AxiosInstance.get("/reputationwithUserID/" + index, {
-      headers: {
-        Authorization: "Token " + localStorage.getItem("authToken"),
-      },
-    }).then((response) => {
+    AxiosInstance.get("/reputationwithUserID/" + index).then((response) => {
       setReputation(response.data.score);
     });
     setOpenUserInfo(true);
@@ -510,10 +494,6 @@ function Tickets({
     AxiosInstance.put("/claimTicket/" + reportInfo.ticket.ticketID, {
       userID: userID,
       securityAnswer: securityAnswer,
-    }, {
-      headers: {
-        Authorization: "Token " + localStorage.getItem("authToken"),
-      },
     }).then((response) => {
       if (response.data === 404) {
         setErrorAlert(true);

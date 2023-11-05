@@ -35,11 +35,7 @@ function EditProfile() {
     }).then((response) => {
       setID(response.data.id)
       setUserProfile(response.data.profile[0])
-      AxiosInstance.get("/userProfiles/"+ response.data.profile[0], {
-        headers: {
-          Authorization: "Token " + localStorage.getItem("authToken"),
-        },
-      }).
+      AxiosInstance.get("/userProfiles/"+ response.data.profile[0]).
       then((response)=>{
         setPhoneNumber(response.data.userPhoneNumber)
         setTelegramHandle(response.data.userTelegramID)
@@ -97,8 +93,7 @@ function EditProfile() {
 
         AxiosInstance.put("/userProfiles/"+userprofile,formData,{
           headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: "Token " + localStorage.getItem("authToken")
+            "Content-Type": "multipart/form-data"
           }}).then((response)=>{
             window.location.reload()
         })

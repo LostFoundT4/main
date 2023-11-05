@@ -2,7 +2,7 @@ from django.test import TestCase
 from rest_framework.test import APIClient
 from rest_framework import status
 from django.contrib.auth.models import User
-from base_functions.models import Ticket, Item, Reputation, Blacklist
+from base_functions.models import Ticket, Item, Reputation, Blacklist, UserAdditionalProfile
 from reporting.models import Status, Location
 
 
@@ -27,6 +27,8 @@ def create_mock_location(building, room):
 def  create_mock_blacklist(user):
     return Blacklist.objects.create(user=user)
 
+def create_mock_userprofile(user):
+    return UserAdditionalProfile.objects.create(user=user)
 
 class APITestCase(TestCase):
     def setUp(self):
@@ -240,6 +242,7 @@ class FoundTicketTestCase(TestCase):
     # User with good reputation score able to send claim request successfully
     def test_goodReputationUser_claimTicket_sucess(self):
         self.user = create_mock_user("user", "password", "user@email.com")
+        self.userprofile = create_mock_userprofile(self.user)
         self.reputation = create_mock_reputation(self.user, 0, 5)
         data = {
             "userID": self.user.id, 
@@ -255,6 +258,7 @@ class FoundTicketTestCase(TestCase):
     def test_badReputationUser_claimTicket_fail(self):
         self.user = create_mock_user("user", "password", "user@email.com")
         self.reputation = create_mock_reputation(self.user, 0, 2)
+        self.userprofile = create_mock_userprofile(self.user)
         data = {
             "userID": self.user.id, 
             "securityAnswer": "The colour is black"
@@ -279,6 +283,7 @@ class FoundTicketTestCase(TestCase):
         self.status5 = create_mock_status(self.ticket5, "Unclaimed", 0)
 
         self.user = create_mock_user("user", "password", "user@email.com")
+        self.userprofile = create_mock_userprofile(self.user)
         self.reputation = create_mock_reputation(self.user, 0, 5)
         data = {
             "userID": self.user.id, 
@@ -301,6 +306,7 @@ class FoundTicketTestCase(TestCase):
     def test_userClaimSameTicket_fail(self):
         self.user = create_mock_user("user", "password", "user@email.com")
         self.reputation = create_mock_reputation(self.user, 0, 5)
+        self.userprofile = create_mock_userprofile(self.user)
 
         data = {
             "userID": self.user.id, 
@@ -317,6 +323,7 @@ class FoundTicketTestCase(TestCase):
     def test_blaclistedUser_claimTicket_fail(self):
         self.user = create_mock_user("user", "password", "user@email.com")
         self.reputation = create_mock_reputation(self.user, 0, 5)
+        self.userprofile = create_mock_userprofile(self.user)
         create_mock_blacklist(self.user)
 
         data = {
@@ -331,6 +338,7 @@ class FoundTicketTestCase(TestCase):
     def test_endorseTicket_sucess(self):
         # User claim the item is his and send claim request with the security answer
         self.user = create_mock_user("user", "password", "user@email.com")
+        self.userprofile = create_mock_userprofile(self.user)
         self.reputation = create_mock_reputation(self.user, 0, 5)
         data = {
             "userID": self.user.id, 

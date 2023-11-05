@@ -14,7 +14,6 @@ from django.utils import timezone
 
 # CRUD for Location
 @api_view(['GET', 'POST'])
-@permission_classes([permissions.IsAuthenticated])
 def location_list(request):
 
     if request.method == 'GET':
@@ -29,7 +28,6 @@ def location_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([permissions.IsAuthenticated])
 def location_detail(request, id, format=None):
 
     try:
@@ -52,7 +50,6 @@ def location_detail(request, id, format=None):
 
 # CRUD for ReportInfo
 @api_view(['GET', 'POST'])
-@permission_classes([permissions.IsAuthenticated])
 def reportInfo_list(request):
 
     if request.method == 'GET':
@@ -67,7 +64,6 @@ def reportInfo_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([permissions.IsAuthenticated])
 def reportInfo_detail(request, id, format=None):
 
     try:
@@ -90,7 +86,6 @@ def reportInfo_detail(request, id, format=None):
 
 # CRUD for Status
 @api_view(['GET', 'POST'])
-@permission_classes([permissions.IsAuthenticated])
 def status_list(request):
 
     if request.method == 'GET':
@@ -105,7 +100,6 @@ def status_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([permissions.IsAuthenticated])
 def status_detail(request, id, format=None):
 
     try:
@@ -128,7 +122,6 @@ def status_detail(request, id, format=None):
 
 # CRUD for PendingUsers
 @api_view(['GET', 'POST'])
-@permission_classes([permissions.IsAuthenticated])
 def pendingUsers_list(request):
 
     if request.method == 'GET':
@@ -143,7 +136,6 @@ def pendingUsers_list(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['GET', 'PUT', 'DELETE'])
-@permission_classes([permissions.IsAuthenticated])
 def pendingUsers_detail(request, id, format=None):
 
     try:
@@ -167,7 +159,6 @@ def pendingUsers_detail(request, id, format=None):
 
 # Close the "Lost" ticket that is found
 @api_view(['PUT'])
-@permission_classes([permissions.IsAuthenticated])
 def close_ticket(request, id, format=None):
     try:
         statusObj = Status.objects.get(pk=id)
@@ -183,7 +174,6 @@ def close_ticket(request, id, format=None):
 
 # Send claim request together with the security answer
 @api_view(['PUT'])
-@permission_classes([permissions.IsAuthenticated])
 def claim_foundItem(request, id, format=None):
     userID = request.data['userID']
     givenAnswer = request.data['securityAnswer']
@@ -277,7 +267,6 @@ def claim_foundItem(request, id, format=None):
 
 # Ticket creator endorse the ticket to the original owner of the item
 @api_view(['PUT'])
-@permission_classes([permissions.IsAuthenticated])
 def endorsed_foundItem(request, id, format=None):
     endorsedUserID = request.data['endorsedUserID']
 
