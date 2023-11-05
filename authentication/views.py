@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.utils.encoding import force_bytes, force_str
 
 from authentication.tokens import account_activation_token
+from base_functions.models import UserAdditionalProfile
 
 # Create your views here.
 def activate(request, uidb64, token):
@@ -61,7 +62,7 @@ def activate(request, uidb64, token):
     <body>
         <div class="email-confirmation">
             <h1>Thank you for your email confirmation.</h1>
-            <p><a href="/frontend/sign-in" class="login-button">Log in to your account</a></p>
+            <p><a href="/sign-in" class="login-button">Log in to your account</a></p>
         </div>
     </body>
     </html>
@@ -108,7 +109,7 @@ def activate(request, uidb64, token):
     <body>
         <div class="email-confirmation">
             <h1>Sorry, your verification link has expired.</h1>
-            <p>Please <a href="/frontend/sign-up">sign up</a> again.</p>
+            <p>Please <a href="/sign-up">sign up</a> again.</p>
         </div>
     </body>
     </html>
@@ -117,6 +118,9 @@ def activate(request, uidb64, token):
     try:
         uid = force_str(urlsafe_base64_decode(uidb64))
         user = User.objects.get(pk=uid)
+        userAdditionalProfile = UserAdditionalProfile.objects.get(userProfileNumber=uid)
+        userAdditionalProfile.userVerifiedStatus = True
+        userAdditionalProfile.save()
     except(TypeError, ValueError, OverflowError, User.DoesNotExist):
         user = None
     if user is not None and account_activation_token.check_token(user, token):

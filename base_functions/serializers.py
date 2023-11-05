@@ -60,6 +60,7 @@ class UserAdditionalDataSerializer(serializers.ModelSerializer):
         # Query to check if the email verification field is true or false for a given user ID
         try:
             user_additional_data = UserAdditionalProfile.objects.get(user__id=user_id)
+            print(user_additional_data.userVerifiedStatus)
             return user_additional_data.userVerifiedStatus
         except UserAdditionalProfile.DoesNotExist:
             raise serializers.ValidationError("User ID doesn't exist")

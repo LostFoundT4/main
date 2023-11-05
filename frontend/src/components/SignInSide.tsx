@@ -50,23 +50,27 @@ export default function SignInSide() {
         })
             .then(async (response) => {
                 const token = response.data.token;
-                await AxiosInstance.get(`/verifyStatus/${token}`)
-                    .then(response => {
-                    // Handle response here
-                        if (response.data.email_verified ==true){
+                const userid = 0;
+                await AxiosInstance.get("/api/auth/get-user",{
+                    headers: {
+                        "Authorization": "Token " + response.data.token
+                    }
+                }).then(async(response)=>{
+                    console.log(response.data.id)
+                    const userid = response.data.id
+                    await AxiosInstance.get(`/verifyStatus/${userid}`,{
+                    }).then(async(response)=>{
+                        console.log(response.data.email_verified)
+                        if (response.data.email_verified == true){
                             localStorage.clear();
                             localStorage.setItem("authToken", response.data.token);
                             navigate("/home");
                         }else{
-                            console.log("User not verified");
-                            setisCorrectCred(false);
+                            !window.confirm("Please verify your email before logging in")
+                            navigate("/sign-in");
                         }
+                    })
                 })
-                    .catch(error => {
-                        // Handle error here
-                        console.error(error);
-                    });
-
             })
             .catch((error) => {
                 setisCorrectCred(false);

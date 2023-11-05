@@ -215,11 +215,11 @@ def blacklist_detail(request, id, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 @api_view(['GET'])
-def checkUserVerificationStatus(request, user_id):
+def checkUserVerificationStatus(request, userid):
 
     if request.method == "GET":
         serializer = UserAdditionalDataSerializer()
-        is_verified = serializer.validate_user_id(user_id)
+        is_verified = serializer.validate_user_id(userid)
         return Response({'email_verified': is_verified}, status=status.HTTP_200_OK)
 
 def index(request):
