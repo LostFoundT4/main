@@ -101,21 +101,13 @@ export default function SignUpComplete() {
                         "user": response.data.id,
                         "flagged": 0,
                         "score": 5 
-                    }, {
-                        headers: {
-                          Authorization: "Token " + token,
-                        },
-                      })
+                    })
                     // Update the additional infomation of the user
                     await AxiosInstance.post('/userProfiles/',{
                         "user": response.data.id,
                         "userTelegramID": tele,
                         "userPhoneNumber": phoneNo
-                    }, {
-                        headers: {
-                          Authorization: "Token " + token,
-                        },
-                      }).then((response)=>{
+                    }).then((response)=>{
                         navigate("/frontend/sign-in")
                     })
                 })

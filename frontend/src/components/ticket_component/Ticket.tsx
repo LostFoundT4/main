@@ -279,10 +279,6 @@ export default function Tickets({
     if (selectedPendingUserId) {
       AxiosInstance.put("/endorseTicket/" + ticketID, {
         endorsedUserID: selectedPendingUserId,
-      },{
-        headers: {
-          Authorization: "Token " + localStorage.getItem("authToken"),
-        },
       }) .then((response) => {
           if (response.data === 404) {
             setErrorAlert(true);
