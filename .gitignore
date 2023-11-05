@@ -18,3 +18,7 @@ frontend/static/frontend/bundle.js
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 authentication/ignore.py
+celerybeat-schedule.bak
+celerybeat-schedule.dat
+celerybeat-schedule.dir
+dump.rdb

@@ -32,20 +32,21 @@
     ```
 
 9) Navigate into the `frontend` folder and run the command. This ensure frontend dependencies are installed.
-  ```bash
-  npm install
-  ```
+    ```bash
+    npm install
+    ```
 
 10) In a separate command line, in the same folder, run the command to update `bundle.js` which will run webpack with babel. You do not need to be in (.venv).
-  ```bash
-  npm run dev
-  ```
+    ```bash
+    npm run dev
+    ```
 
 **Database setup**
 1) Type the following commands to activate the models and create the models tables in database (sqlite3).
-  ```bash
-  python manage.py migrate
-  ```
+    ```bash
+    python manage.py migrate
+    ```
+    If you run into any errors, delete the database and run the command again. Ensure that you have done the previous installation steps (especially steps 8 - 10) to install any required dependencies.
 
 **Running The Application**
 1) Type the following commands to run the server as needed:
@@ -54,3 +55,19 @@
     <img width="1217" alt="image" src="https://github.com/LostFoundT4/main/assets/116057891/fce55caf-ba34-42d5-a56d-20beaf54f256">
 2) Navigating to the website at 127.0.0.1:8080 and you should see the following:
     <img width="1047" alt="image" src="https://github.com/LostFoundT4/main/assets/116057891/d6f83cf2-9046-49f4-a8c2-fa75841ffebf">
+
+
+**Celery(Periodic Task) setup**
+1) Ensure [redis](https://redis.io/docs/getting-started/installation/) has been installed on your local system
+2) In the command line to run the redis sever
+  ```bash
+  redis-server
+  ```
+3) Navigate into the `main` folder and run the command.
+  ```bash
+  celery -A Application_Main worker -l info
+  ```
+4)  In a separate command line, in the same folder, run the command.
+  ```bash
+  celery -A Application_Main beat -l info
+  ```

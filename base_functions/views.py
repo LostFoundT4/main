@@ -1,12 +1,12 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
-from .models import Ticket, Item, UserAdditionalProfile
-from .serializers import TicketSerializer, ItemSerializer , AlterTicketSerializer, CurrentUserProfileSerializer
-from rest_framework.decorators import api_view
+from .models import Ticket, Item, UserAdditionalProfile, Reputation, Blacklist
+from .serializers import ReputationSerializer, TicketSerializer, ItemSerializer , AlterTicketSerializer, CurrentUserProfileSerializer, BlacklistSerializer, AlterCurrentUserProfileSerializer
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 
-
+# CRUD for Ticket
 @api_view(['GET', 'POST'])
 def ticket_list(request):
 
@@ -45,6 +45,7 @@ def ticket_detail(request, id, format=None):
         ticket.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# CRUD for Item
 @api_view(['GET', 'POST'])
 def item_list(request):
 
@@ -80,6 +81,7 @@ def item_detail(request, id, format=None):
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# CRUD for UserProfile
 @api_view(['GET', 'POST'])
 def userprofile_list(request):
 
@@ -89,7 +91,7 @@ def userprofile_list(request):
         return Response(serializer.data)
 
     if request.method == 'POST':
-        serializer = CurrentUserProfileSerializer(data = request.data)
+        serializer = AlterCurrentUserProfileSerializer(data = request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -99,14 +101,14 @@ def userprofile_detail(request, id, format=None):
 
     try:
         userProfile = UserAdditionalProfile.objects.get(pk=id)
-    except Item.DoesNotExist:
+    except UserAdditionalProfile.DoesNotExist:
         return Response(status.HTTP_404_NOT_FOUND)
 
     if request.method == 'GET':
         serializer = CurrentUserProfileSerializer(userProfile)
         return Response(serializer.data)
     elif request.method == 'PUT':
-        serializer = CurrentUserProfileSerializer(userProfile, data=request.data)
+        serializer = AlterCurrentUserProfileSerializer(userProfile, data=request.data)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -114,6 +116,107 @@ def userprofile_detail(request, id, format=None):
     elif request.method == 'DELETE':
         userProfile.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def userprofile_detail_withUserID(request, id, format=None):
+
+    try:
+        userProfile = UserAdditionalProfile.objects.get(user=id)
+    except UserAdditionalProfile.DoesNotExist:
+        return Response(status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CurrentUserProfileSerializer(userProfile)
+        return Response(serializer.data)
+    else:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+        
+# CRUD for Reputation
+@api_view(['GET', 'POST'])
+def reputation_list(request):
+
+    if request.method == 'GET':
+        reputation = Reputation.objects.all()
+        serializer = ReputationSerializer(reputation, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        serializer = ReputationSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def reputation_detail(request, id, format=None):
+
+    try:
+        reputation = Reputation.objects.get(pk=id)
+    except Reputation.DoesNotExist:
+        return Response(status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = ReputationSerializer(reputation)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = ReputationSerializer(reputation, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        reputation.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def reputation_detail_withUserID(request, id, format=None):
+
+    try:
+        reputation = Reputation.objects.get(user=id)
+    except Reputation.DoesNotExist:
+        return Response(status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = ReputationSerializer(reputation)
+        return Response(serializer.data)
+    else:
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+# CRUD for Blacklist
+@api_view(['GET', 'POST'])
+def blacklist_list(request):
+
+    if request.method == 'GET':
+        blacklist = Blacklist.objects.all()
+        serializer = BlacklistSerializer(blacklist, many=True)
+        return Response(serializer.data)
+
+    if request.method == 'POST':
+        serializer = BlacklistSerializer(data = request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def blacklist_detail(request, id, format=None):
+
+    try:
+        blacklist = Blacklist.objects.get(pk=id)
+    except Blacklist.DoesNotExist:
+        return Response(status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = BlacklistSerializer(blacklist)
+        return Response(serializer.data)
+    elif request.method == 'PUT':
+        serializer = BlacklistSerializer(blacklist, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        blacklist.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 def index(request):
     print("Called")
