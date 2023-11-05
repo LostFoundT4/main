@@ -25,9 +25,9 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import AppDrawer from "../AppDrawer";
-import CreateTicketButton from "../../ticket_component/CreateTicketButton";
-import Tickets from "../../ticket_component/Ticket";
+import AppDrawer from "./AppDrawer";
+import CreateTicketButton from "./ticket_component/CreateTicketButton";
+import Tickets from "./ticket_component/Ticket";
 
 
 // MyListings: Page where users can only see, add, edit, and delete their OWN items, not others

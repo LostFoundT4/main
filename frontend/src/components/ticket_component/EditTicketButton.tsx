@@ -122,11 +122,7 @@ export default function EditTicketButton({
 
   useEffect(() => {
     fetchLocation();
-    AxiosInstance.get("/reportInfos/", {
-      headers: {
-        Authorization: "Token " + localStorage.getItem("authToken"),
-      },
-    }).then((response) => {
+    AxiosInstance.get("/reportInfos/").then((response) => {
       const filtered = response.data.filter(
         (ReportInfo: ReportInfo) =>
           ReportInfo.item.itemID === myItemID &&
@@ -181,11 +177,7 @@ export default function EditTicketButton({
   };
 
   const fetchLocation = async () => {
-    await AxiosInstance.get("/locations/", {
-      headers: {
-        Authorization: "Token " + localStorage.getItem("authToken"),
-      },
-    }).then((response) => {
+    await AxiosInstance.get("/locations/").then((response) => {
       setLocation(response.data);
     });
   };
@@ -219,11 +211,8 @@ export default function EditTicketButton({
       ticket: filteredReport?.ticket.ticketID,
       status: filteredReport?.status.statusID,
       securityQuestion: securityQuestion,
-    }, {
-      headers: {
-        Authorization: "Token " + localStorage.getItem("authToken"),
-      },
-    }).then(async (response) => {
+    })
+      .then(async (response) => {
         // Create and fill up formData
         const formData = new FormData();
         formData.append("itemName", itemName);
@@ -240,7 +229,6 @@ export default function EditTicketButton({
         await AxiosInstance.put("/items/" + myItemID, formData, {
           headers: {
             "Content-Type": "multipart/form-myTicket",
-            Authorizaton : "Token " + localStorage.getItem("authToken"),
           },
         })
           .then(async (response) => {
@@ -248,10 +236,6 @@ export default function EditTicketButton({
             await AxiosInstance.put("/tickets/" + myTicket.ticketID, {
               ticketType: type,
               user: contextID,
-            }, {
-              headers: {
-                Authorization: "Token " + localStorage.getItem("authToken"),
-              },
             });
           })
           .then(async (response) => {

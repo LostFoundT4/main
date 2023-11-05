@@ -1,10 +1,10 @@
 import React, { useState , useEffect} from "react";
-import AppDrawer from "../AppDrawer";
+import AppDrawer from "./AppDrawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-import AxiosInstance from "../../../utils/axiosInstance";
+import AxiosInstance from "../utils/axiosInstance";
 import {
   Typography,
   TextField,
@@ -35,11 +35,7 @@ function EditProfile() {
     }).then((response) => {
       setID(response.data.id)
       setUserProfile(response.data.profile[0])
-      AxiosInstance.get("/userProfiles/"+ response.data.profile[0], {
-        headers: {
-          Authorization: "Token " + localStorage.getItem("authToken"),
-        },
-      }).
+      AxiosInstance.get("/userProfiles/"+ response.data.profile[0]).
       then((response)=>{
         setPhoneNumber(response.data.userPhoneNumber)
         setTelegramHandle(response.data.userTelegramID)
@@ -98,7 +94,6 @@ function EditProfile() {
         AxiosInstance.put("/userProfiles/"+userprofile,formData,{
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: "Token " + localStorage.getItem("authToken")
           }}).then((response)=>{
             window.location.reload()
         })
