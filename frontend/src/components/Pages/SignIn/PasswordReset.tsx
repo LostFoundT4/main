@@ -59,7 +59,7 @@ export default function PasswordReset() {
 
             !window.confirm("Password Successfully Reset! You can sign in.");
 
-            navigate("/frontend/sign-in");
+            navigate("/sign-in");
         } else {
             // Passwords do not meet the criteria
             if (pwdNew.length < 8) {

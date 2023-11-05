@@ -61,7 +61,7 @@ def activate(request, uidb64, token):
     <body>
         <div class="email-confirmation">
             <h1>Thank you for your email confirmation.</h1>
-            <p><a href="/frontend/sign-in" class="login-button">Log in to your account</a></p>
+            <p><a href="/sign-in" class="login-button">Log in to your account</a></p>
         </div>
     </body>
     </html>
@@ -108,7 +108,7 @@ def activate(request, uidb64, token):
     <body>
         <div class="email-confirmation">
             <h1>Sorry, your verification link has expired.</h1>
-            <p>Please <a href="/frontend/sign-up">sign up</a> again.</p>
+            <p>Please <a href="/sign-up">sign up</a> again.</p>
         </div>
     </body>
     </html>
@@ -247,7 +247,7 @@ def password_reset(request, uidb64, token):
         <div class="password-reset-success">
             <h1>Password Reset Success</h1>
             <p>Your password has been successfully reset.</p>
-            <a href="/frontend/sign-in" class="submit-button">Log in to your account</a>
+            <a href="/sign-in" class="submit-button">Log in to your account</a>
         </div>
     </body>
     </html>
@@ -305,7 +305,7 @@ def password_reset(request, uidb64, token):
         <div class="password-reset-failure">
             <h1>Failed to Reset Password</h1>
             <p>Your password reset request has failed.</p>
-            <a href="/frontend/sign-in" class="submit-button">Try again here</a>
+            <a href="/sign-in" class="submit-button">Try again here</a>
         </div>
     </body>
     </html>

@@ -56,6 +56,8 @@ export default function ForgotPassword() {
             },
             ).then(async(response)=> {
                 !window.confirm("Please check your email for the password reset link!")
+            }).then(()=>{
+                navigate("/signin")
             })
     }
 
