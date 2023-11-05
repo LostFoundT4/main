@@ -1,13 +1,8 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import Ticket, Item, UserAdditionalProfile, Reputation, Blacklist
-<<<<<<< HEAD
 from .serializers import ReputationSerializer, TicketSerializer, ItemSerializer , AlterTicketSerializer, CurrentUserProfileSerializer, BlacklistSerializer, AlterCurrentUserProfileSerializer
 from rest_framework.decorators import api_view, permission_classes
-=======
-from .serializers import ReputationSerializer, TicketSerializer, ItemSerializer, AlterTicketSerializer, CurrentUserProfileSerializer, BlacklistSerializer, AlterCurrentUserProfileSerializer, UserAdditionalDataSerializer
-from rest_framework.decorators import api_view
->>>>>>> development-A
 from rest_framework.response import Response
 from rest_framework import status, permissions
 
