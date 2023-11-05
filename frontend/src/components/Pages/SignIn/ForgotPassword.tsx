@@ -20,7 +20,7 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
-import AxiosInstance from "../utils/axiosInstance";
+import AxiosInstance from "../../../utils/axiosInstance";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();

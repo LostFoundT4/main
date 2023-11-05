@@ -20,7 +20,7 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import AxiosInstance from "../utils/axiosInstance";
+import AxiosInstance from "../../../utils/axiosInstance";
 import axios from "axios";
 
 // TODO remove, this demo shouldn't need to reset the theme.

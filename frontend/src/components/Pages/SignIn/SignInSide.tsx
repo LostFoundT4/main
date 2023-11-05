@@ -21,7 +21,7 @@ import Stack from "@mui/material/Stack";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
-import AxiosInstance from "../utils/axiosInstance";
+import AxiosInstance from "../../../utils/axiosInstance";
 
 const defaultTheme = createTheme();
 

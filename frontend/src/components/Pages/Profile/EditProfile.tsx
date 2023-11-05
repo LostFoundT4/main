@@ -1,10 +1,10 @@
 import React, { useState , useEffect} from "react";
-import AppDrawer from "./AppDrawer";
+import AppDrawer from "../AppDrawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-import AxiosInstance from "../utils/axiosInstance";
+import AxiosInstance from "../../../utils/axiosInstance";
 import {
   Typography,
   TextField,

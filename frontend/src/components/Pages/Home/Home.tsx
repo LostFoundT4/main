@@ -25,14 +25,14 @@ import {
   Rating,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import AxiosInstance from "../utils/axiosInstance";
-import AppDrawer from "./AppDrawer";
-import { UserIDContext, UserNameContext } from "../utils/contextConfig";
+import AxiosInstance from "../../../utils/axiosInstance";
+import AppDrawer from "../AppDrawer";
+import { UserIDContext, UserNameContext } from "../../../utils/contextConfig";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { WindowSharp } from "@mui/icons-material";
-import { ErrorAlert } from "./effect_components/errorAlert";
-import { SuccessAlert } from "./effect_components/successAlert";
+import { ErrorAlert } from "../../effect_components/errorAlert";
+import { SuccessAlert } from "../../effect_components/successAlert";
 
 interface TabPanelProps {
   children?: React.ReactNode;

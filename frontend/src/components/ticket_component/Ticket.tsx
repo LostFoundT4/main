@@ -25,7 +25,7 @@ import {
 } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import SearchIcon from "@mui/icons-material/Search";
-import AppDrawer from "../AppDrawer";
+import AppDrawer from "../Pages/AppDrawer";
 import CreateTicketButton from "./CreateTicketButton";
 import EditTicketButton from "./EditTicketButton";
 import { UserIDContext, UserNameContext } from "../../utils/contextConfig";

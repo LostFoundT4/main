@@ -1,35 +1,39 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-    Avatar,
-    Button,
-    CssBaseline,
-    TextField,
-    Link,
-    Paper,
-    Box,
-    Grid,
-    Typography,
-    Container,
-    IconButton,
-    InputAdornment,
-    Stack,
-} from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Grid from "@mui/material/Grid";
+import PersonAddAltOutlinedIcon from '@mui/icons-material/PersonAddAltOutlined';
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
+import Stack from "@mui/material/Stack";
+import Container from "@mui/material/Container";
+import IconButton from "@mui/material/IconButton";
+import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import AxiosInstance from "../utils/axiosInstance";
+import AxiosInstance from "../../../utils/axiosInstance";
 
+// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function SignUpSide() {
-    // Define states for variables and error flags
+export default function SignUpVerification() {
+
+    let navigate = useNavigate();
+
     const [email, setEmail] = useState("");
-    const [pwd, setPwd] = useState("");
-    const [usr, setUsr] = useState("");
-    const [phoneNo, setPhoneNo] = useState("");
-    const [tele, setTele] = useState("");
+    const [pwd,setPwd] = useState("");
+    const [usr,setUsr] = useState("");
+    const [phoneNo,setPhoneNo] = useState("");
+    const [tele,setTele] = useState("");
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -39,36 +43,33 @@ export default function SignUpSide() {
 
     const emailRegex = /^[A-Za-z0-9._%+-]+@[^@]*smu\.edu\.sg$/;
 
-    const navigate = useNavigate();
+    useEffect(()=>{
+        setEmailError(false)
+    },[email])
 
-    useEffect(() => {
-        setEmailError(false);
-    }, [email]);
+    useEffect(()=>{
+        setPasswordError(false)
+    },[pwd])
 
-    useEffect(() => {
-        setPasswordError(false);
-    }, [pwd]);
-
-    useEffect(() => {
-        setPhoneError(false);
-    }, [phoneNo]);
+    useEffect(()=>{
+        setPhoneError(false)
+    },[phoneNo])
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         // Check if the email ends with "@smu.edu.sg"
         if (!emailRegex.test(email)) {
             setEmailError(true);
-            return;
+            return; // Do not proceed with form submission
         }
         if (pwd.length < 8) {
             setPasswordError(true);
-            return;
+            return; // Do not proceed with form submission
         }
         if (phoneNo.length > 8) {
             setPhoneError(true);
-            return;
+            return; // Do not proceed with form submission
         }
-
         // If email is valid, proceed with form submission
         setEmailError(false);
         setPasswordError(false);
@@ -105,13 +106,7 @@ export default function SignUpSide() {
                           Authorization: "Token " + token,
                         },
                       }).then((response)=>{
-                        setEmail("");
-                        setPwd("");
-                        setUsr("");
-                        setPhoneNo("");
-                        setTele("");
-                        setEmailError(false);
-                        !window.confirm("Please check your email for the verification link!")
+                        navigate("/frontend/sign-in")
                     })
                 })
             }
@@ -119,6 +114,7 @@ export default function SignUpSide() {
                 console.log("Account cannot be created");
             })
     }
+
 
     const handleTogglePasswordVisibility = () => {
         setShowPassword((prevShowPassword) => !prevShowPassword);
@@ -142,31 +138,26 @@ export default function SignUpSide() {
                 >
                     <Container maxWidth="sm">
                         <Typography
-                            className="sign-in-h1"
+                            className = "sign-in-h1"
                             component="h1"
                             variant="h3"
                             align="left"
                             color="text.primary"
                             gutterBottom
                         >
-                            WELCOME !
-                        </Typography>
-                        <div className="sign-in-logo-container">
-                            <img
-                                className="sign-in-logo"
-                                src="https://res.cloudinary.com/dcaux54kw/image/upload/v1694597637/glogo.png"
-                            ></img>
+                        WELCOME !
+                    </Typography>
+                    <div className="sign-in-logo-container">
+                    <img className="sign-in-logo" src="https://res.cloudinary.com/dcaux54kw/image/upload/v1694597637/glogo.png"></img>
                         </div>
                         <Typography
-                            className="sign-in-h2"
+                            className = "sign-in-h2"
                             variant="h5"
                             align="center"
                             color="#fff"
                             paragraph
                         >
-                            Lost something? Found something?
-                            <br />
-                            Let us know and we'll look around.
+                            Lost something? Found something?<br/>Let us know and we'll look around.
                         </Typography>
                         <Stack
                             sx={{ pt: 1 }}
@@ -196,15 +187,9 @@ export default function SignUpSide() {
                         }}
                     >
                         <Avatar sx={{ m: 1, bgcolor: "#21222c" }}>
-                            <PersonAddAltOutlinedIcon
-                                sx={{ color: "#ffffff" }}
-                            />
+                            <PersonAddAltOutlinedIcon sx={{color: '#ffffff'}}/>
                         </Avatar>
-                        <Typography
-                            className="sign-in-h3"
-                            component="h1"
-                            variant="h5"
-                        >
+                        <Typography className="sign-in-h3" component="h1" variant="h5">
                             Sign up
                         </Typography>
                         <Box
@@ -225,15 +210,14 @@ export default function SignUpSide() {
                                         id="school-email"
                                         autoComplete="school-email"
                                         value={email}
-                                        onChange={(e) =>
-                                            setEmail(e.target.value)
-                                        }
+                                        onChange={(e) => setEmail(e.target.value)}
                                         error={emailError} // Set error prop based on validation
                                         helperText={
                                             emailError
                                                 ? 'Does not end with "@smu.edu.sg"'
                                                 : ""
                                         }
+                                        
                                     />
                                 </Grid>
                                 <Grid item xs={12}>
@@ -271,7 +255,7 @@ export default function SignUpSide() {
                                         error={passwordError} // Set error prop based on validation
                                         helperText={
                                             passwordError
-                                                ? "Your password must contain at least 8 characters."
+                                                ? 'Your password must contain at least 8 characters.'
                                                 : ""
                                         }
                                     />
@@ -297,14 +281,12 @@ export default function SignUpSide() {
                                         type="phone-number"
                                         id="phone-number"
                                         autoComplete="phone-number"
-                                        onChange={(e) =>
-                                            setPhoneNo(e.target.value)
-                                        }
+                                        onChange={(e) => setPhoneNo(e.target.value)}
                                         value={phoneNo}
                                         error={phoneError} // Set error prop based on validation
                                         helperText={
                                             phoneError
-                                                ? "Your Phone Number must contain less than 8 digit."
+                                                ? 'Your Phone Number must contain less than 8 digit.'
                                                 : ""
                                         }
                                     />
@@ -317,9 +299,7 @@ export default function SignUpSide() {
                                         type="telegram-handle"
                                         id="telegram-handle"
                                         autoComplete="telegram-handle"
-                                        onChange={(e) =>
-                                            setTele(e.target.value)
-                                        }
+                                        onChange={(e) => setTele(e.target.value)}
                                         value={tele}
                                     />
                                 </Grid>
@@ -335,11 +315,7 @@ export default function SignUpSide() {
                             </Button>
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
-                                    <Link
-                                        href="sign-in"
-                                        variant="body2"
-                                        className="sign-in-link"
-                                    >
+                                    <Link href="sign-in" variant="body2" className="sign-in-link">
                                         Already have an account? Log in
                                     </Link>
                                 </Grid>
@@ -351,3 +327,4 @@ export default function SignUpSide() {
         </ThemeProvider>
     );
 }
+

@@ -17,14 +17,14 @@ import {
 import {
   mainListItems,
   secondaryListItems,
-} from "./profile_components/ListItems";
-import { UserIDContext, UserNameContext } from "../utils/contextConfig";
+} from "./Profile/ListItems";
+import { UserIDContext, UserNameContext } from "../../utils/contextConfig";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import AxiosInstance from "../utils/axiosInstance";
+import AxiosInstance from "../../utils/axiosInstance";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 const drawerWidth: number = 240;
