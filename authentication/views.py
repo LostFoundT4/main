@@ -251,7 +251,7 @@ def password_reset(request, uidb64, token):
         <div class="password-reset-success">
             <h1>Password Reset Success</h1>
             <p>Your password has been successfully reset.</p>
-            <a href="/frontend/sign-in" class="submit-button">Log in to your account</a>
+            <a href="/sign-in" class="submit-button">Log in to your account</a>
         </div>
     </body>
     </html>
@@ -309,7 +309,7 @@ def password_reset(request, uidb64, token):
         <div class="password-reset-failure">
             <h1>Failed to Reset Password</h1>
             <p>Your password reset request has failed.</p>
-            <a href="/frontend/sign-in" class="submit-button">Try again here</a>
+            <a href="/sign-in" class="submit-button">Try again here</a>
         </div>
     </body>
     </html>

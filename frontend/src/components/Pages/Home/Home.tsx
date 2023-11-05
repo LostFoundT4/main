@@ -25,14 +25,14 @@ import {
   Rating,
 } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
-import AxiosInstance from "../utils/axiosInstance";
-import AppDrawer from "./AppDrawer";
-import { UserIDContext, UserNameContext } from "../utils/contextConfig";
+import AxiosInstance from "../../../utils/axiosInstance";
+import AppDrawer from "../AppDrawer";
+import { UserIDContext, UserNameContext } from "../../../utils/contextConfig";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 import { WindowSharp } from "@mui/icons-material";
-import { ErrorAlert } from "./effect_components/errorAlert";
-import { SuccessAlert } from "./effect_components/successAlert";
+import { ErrorAlert } from "../../effect_components/errorAlert";
+import { SuccessAlert } from "../../effect_components/successAlert";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -81,6 +81,7 @@ interface ReportInfo {
     };
     status: string;
     endorsedUserID: number;
+    endorsedUsername: string;
   };
 }
 
@@ -197,8 +198,11 @@ function Tickets({
   };
 
   useEffect(() => {
-    AxiosInstance.get("/reportInfos")
-      .then((response) => {
+    AxiosInstance.get("/reportInfos/", {
+      headers: {
+        Authorization: "Token " + localStorage.getItem("authToken"),
+      },
+    }).then((response) => {
         // Filter items based on the provided ticketTypeFilter
         const filteredItems = response.data.filter(
           (reportInfo: ReportInfo) =>
@@ -264,6 +268,7 @@ function Tickets({
       },
       status: "",
       endorsedUserID: 0,
+      endorsedUsername: "",
     },
   });
 
@@ -281,11 +286,17 @@ function Tickets({
     const time = reportDetail.item.found_dateTime.substring(11, 16);
     const [reputation, setReputation] = useState("");
 
-    AxiosInstance.get("/reputationwithUserID/" + reportDetail.ticket.user).then(
-      (response) => {
-        setReputation(response.data.score);
-      }
-    );
+    if (reportDetail.ticket.user !== 0){
+      AxiosInstance.get("/reputationwithUserID/" + reportDetail.ticket.user, {
+        headers: {
+          Authorization: "Token " + localStorage.getItem("authToken"),
+        },
+      }).then(
+        (response) => {
+          setReputation(response.data.score);
+        }
+      );
+    }
 
     return (
       <div>
@@ -306,7 +317,7 @@ function Tickets({
               image={reportDetail.item.image}
             />
             <div className="popup-content-container">
-              <Typography
+              <Typography 
                 gutterBottom
                 variant="h5"
                 component="h3"
@@ -314,22 +325,23 @@ function Tickets({
               >
                 {reportDetail.item.itemName}
               </Typography>
-              <Typography className="item-category">
+              <Typography component={'span'} className="item-category">
                 {reportDetail.item.category}
               </Typography>
-              <Typography className="item-description">
+              <Typography component={'span'} className="item-description">
                 {reportDetail.description}
               </Typography>
-              <Typography className="item-category">
+              <Typography component={'span'} className="item-category">
                 Last seen/found at: {reportDetail.location.building}{" "}
                 {reportDetail.location.room} on {date} {time} hrs
               </Typography>
-              <Typography className="item-description">
+              <Typography component={'span'} className="item-description">
                 Reported by: {reportDetail.ticket.username}
               </Typography>
               <Typography
                 className="item-rating"
                 sx={{ display: "inline-flex" }}
+                component={'span'}
               >
                 User's Reputation:
                 <Rating
@@ -349,6 +361,11 @@ function Tickets({
                   sx={{ marginRight: "10px", color: "#21222c", fontSize:"16px"}}
                 />
               </Typography>
+              {reportDetail.status.status === "Claimed" ? (
+                <Typography className="item-description" component={'span'}>
+                  Claimed by: {reportDetail.status.endorsedUsername}
+                </Typography>
+              ) : null}
             </div>
           </Box>
         </Modal>
@@ -392,7 +409,11 @@ function Tickets({
   ) => {
     e.persist();
 
-    AxiosInstance.get("/userProfileswithUserID/" + index)
+    AxiosInstance.get("/userProfileswithUserID/" + index, {
+      headers: {
+        Authorization: "Token " + localStorage.getItem("authToken"),
+      },
+    })
       .then((response) => {
         setProfileInfo(response.data);
       })
@@ -400,7 +421,11 @@ function Tickets({
         console.error("Error fetching user profile:", error);
       });
 
-    AxiosInstance.get("/reputationwithUserID/" + index).then((response) => {
+    AxiosInstance.get("/reputationwithUserID/" + index, {
+      headers: {
+        Authorization: "Token " + localStorage.getItem("authToken"),
+      },
+    }).then((response) => {
       setReputation(response.data.score);
     });
     setOpenUserInfo(true);
@@ -436,17 +461,18 @@ function Tickets({
               >
                 {userProfileInfo.username}
               </Typography>
-              <Typography className="item-description">
+              <Typography component={'span'} className="item-description">
                 Phone number: +65
                 {userProfileInfo.userPhoneNumber}
               </Typography>
-              <Typography className="item-category">
+              <Typography component={'span'}className="item-category">
                 Telegram handle: @{userProfileInfo.userTelegramID}
               </Typography>
               <Typography
                 className="item-description"
                 sx={{ display: "inline-flex",
                 alignItems: "center", }}
+                component={'span'}
               >
                 Reputation:
                 <Rating
@@ -484,6 +510,10 @@ function Tickets({
     AxiosInstance.put("/claimTicket/" + reportInfo.ticket.ticketID, {
       userID: userID,
       securityAnswer: securityAnswer,
+    }, {
+      headers: {
+        Authorization: "Token " + localStorage.getItem("authToken"),
+      },
     }).then((response) => {
       if (response.data === 404) {
         setErrorAlert(true);
@@ -544,12 +574,14 @@ function Tickets({
                 reportInfo.status.status === "Claimed" ? (
                   <Typography
                     className="item-status"
+                    component={'span'}
                     sx={{ backgroundColor: "#21222c", color:"#6cf3c3 !important" }}
                   >
                     {reportInfo.status.status}
                   </Typography>
                 ) : reportInfo.status.status === "Pending" ? (
                   <Typography
+                    component={'span'}
                     className="item-status"
                     sx={{ backgroundColor: "#f9f97d" }}
                   >
@@ -558,6 +590,7 @@ function Tickets({
                 ) : reportInfo.status.status === "Lost" ||
                 reportInfo.status.status === "Unclaimed"? (
                   <Typography
+                    component={'span'}
                     className="item-status"
                     sx={{ backgroundColor: "#2dd197", color:"##21222c !important" }}
                   >
@@ -573,10 +606,10 @@ function Tickets({
                   >
                     {reportInfo.item.itemName}
                   </Typography>
-                  <Typography className="item-category">
+                  <Typography component={'span'} className="item-category">
                     {reportInfo.item.category}
                   </Typography>
-                  <Typography className="item-description">
+                  <Typography component={'span'} className="item-description">
                     {reportInfo.description}
                   </Typography>
                 </CardContent>
@@ -637,6 +670,7 @@ function Tickets({
               variant="body1"
               color="textSecondary"
               style={{ color: "white" }}
+              component={'span'}
             >
               No matching items found.
             </Typography>

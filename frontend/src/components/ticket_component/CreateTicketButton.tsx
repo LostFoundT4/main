@@ -119,7 +119,11 @@ export default function CreateTicketButton() {
   };
 
   const fetchLocation = async () => {
-    await AxiosInstance.get("/locations/").then((response) => {
+    await AxiosInstance.get("/locations/", {
+      headers: {
+        Authorization: "Token " + localStorage.getItem("authToken"),
+      },
+    }).then((response) => {
       setLocation(response.data);
     });
   };
@@ -130,7 +134,9 @@ export default function CreateTicketButton() {
       ticketType: type,
       user: contextID,
       isValuable: isValuableChecked,
-    })
+    }, { headers: {
+      Authorization: "Token " + localStorage.getItem("authToken"),
+    }})
       .then(async (response) => {
         // Create and fill up formData
         const formData = new FormData();
@@ -149,6 +155,7 @@ export default function CreateTicketButton() {
         await AxiosInstance.post("/items/", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
+            Authorization: "Token " + localStorage.getItem("authToken"),
           },
         }).then(async (response) => {
           const itemID = response.data.itemID;
@@ -164,7 +171,9 @@ export default function CreateTicketButton() {
             endorsedUserID: null,
             counter: 0,
             previous_counter: 0,
-          }).then(async (response) => {
+          }, { headers: {
+            Authorization: "Token " + localStorage.getItem("authToken"),
+          }}).then(async (response) => {
             // Create a report info associated with the item
             const statusID = response.data.statusID;
             await AxiosInstance.post("/reportInfos/", {
@@ -174,7 +183,9 @@ export default function CreateTicketButton() {
               description: (description === null || description === "" ? "Nil" : description),
               status: statusID,
               securityQuestion: (securityQuestion === null || securityQuestion === "" ? "No Security Question Given" : securityQuestion),
-            }).then(async (response) => {
+            } , { headers: {
+              Authorization: "Token " + localStorage.getItem("authToken"),
+            }}).then(async (response) => {
               // Log success and close the form
               if (response.data === 404) {
                 console.log("Failed to create a report info");

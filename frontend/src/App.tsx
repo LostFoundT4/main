@@ -3,18 +3,18 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
-import SignInSide from "./components/SignInSide";
-import SignUpSide from "./components/SignUpSide";
-import Home from "./components/Home";
-import EditProfile from "./components/EditProfile";
+import SignInSide from "./components/Pages/SignIn/SignInSide";
+import SignUpSide from "./components/Pages/SignUp/SignUpSide";
+import Home from "./components/Pages/Home/Home";
+import EditProfile from "./components/Pages/Profile/EditProfile";
 import ProtectedRoute from "./components/protectedRoute/protectedRoute";
 import { useState } from "react";
-import MyListings from "./components/MyListings";
+import MyListings from "./components/Pages/MyListing/MyListings";
 import {UserIDContext,UserNameContext} from "./utils/contextConfig"
-import SignUpComplete from "./components/SignUpComplete";
-import SignUpVerification from "./components/SignUpVerification";
-import ForgotPassword from "./components/ForgotPassword";
-import PasswordReset from "./components/PasswordReset";
+import SignUpComplete from "./components/Pages/SignUp/SignUpComplete";
+import SignUpVerification from "./components/Pages/SignUp/SignUpVerification";
+import ForgotPassword from "./components/Pages/SignIn/ForgotPassword";
+import PasswordReset from "./components/Pages/SignIn/PasswordReset";
 
 export const App = () => {
 

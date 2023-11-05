@@ -17,14 +17,14 @@ import {
 import {
   mainListItems,
   secondaryListItems,
-} from "./profile_components/ListItems";
-import { UserIDContext, UserNameContext } from "../utils/contextConfig";
+} from "./Profile/ListItems";
+import { UserIDContext, UserNameContext } from "../../utils/contextConfig";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import MenuIcon from "@mui/icons-material/Menu";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import PermIdentityIcon from "@mui/icons-material/PermIdentity";
-import AxiosInstance from "../utils/axiosInstance";
+import AxiosInstance from "../../utils/axiosInstance";
 import StarBorderIcon from "@mui/icons-material/StarBorder";
 
 const drawerWidth: number = 240;
@@ -99,12 +99,20 @@ export default function AppDrawer() {
       },
     }).then((response) => {
       setUserProfile(response.data.profile[0]);
-      AxiosInstance.get("/userProfiles/" + response.data.profile[0]).then(
+      AxiosInstance.get("/userProfiles/" + response.data.profile[0], {
+        headers: {
+          Authorization: "Token " + localStorage.getItem("authToken"),
+        },
+      }).then(
         (response) => {
           setProfilePicture(response.data.userProfilePicture);
         }
       );
-      AxiosInstance.get("/reputationwithUserID/" + response.data.id).then(
+      AxiosInstance.get("/reputationwithUserID/" + response.data.id, {
+        headers: {
+          Authorization: "Token " + localStorage.getItem("authToken"),
+        },
+      }).then(
         (response) => {
           setReputation(response.data.score);
         }
