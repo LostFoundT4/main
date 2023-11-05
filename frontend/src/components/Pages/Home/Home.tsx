@@ -108,7 +108,7 @@ function CustomTabPanel(props: TabPanelProps) {
     >
       {value === index && (
         <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
+          <Typography component={'div'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -325,23 +325,23 @@ function Tickets({
               >
                 {reportDetail.item.itemName}
               </Typography>
-              <Typography component={'span'} className="item-category">
+              <Typography  className="item-category">
                 {reportDetail.item.category}
               </Typography>
-              <Typography component={'span'} className="item-description">
+              <Typography  className="item-description">
                 {reportDetail.description}
               </Typography>
-              <Typography component={'span'} className="item-category">
+              <Typography className="item-category">
                 Last seen/found at: {reportDetail.location.building}{" "}
                 {reportDetail.location.room} on {date} {time} hrs
               </Typography>
-              <Typography component={'span'} className="item-description">
+              <Typography className="item-description">
                 Reported by: {reportDetail.ticket.username}
               </Typography>
               <Typography
                 className="item-rating"
                 sx={{ display: "inline-flex" }}
-                component={'span'}
+                component={'div'}
               >
                 User's Reputation:
                 <Rating
@@ -362,7 +362,7 @@ function Tickets({
                 />
               </Typography>
               {reportDetail.status.status === "Claimed" ? (
-                <Typography className="item-description" component={'span'}>
+                <Typography className="item-description" >
                   Claimed by: {reportDetail.status.endorsedUsername}
                 </Typography>
               ) : null}
@@ -461,18 +461,17 @@ function Tickets({
               >
                 {userProfileInfo.username}
               </Typography>
-              <Typography component={'span'} className="item-description">
+              <Typography  className="item-description">
                 Phone number: +65
                 {userProfileInfo.userPhoneNumber}
               </Typography>
-              <Typography component={'span'}className="item-category">
+              <Typography className="item-category">
                 Telegram handle: @{userProfileInfo.userTelegramID}
               </Typography>
               <Typography
                 className="item-description"
                 sx={{ display: "inline-flex",
                 alignItems: "center", }}
-                component={'span'}
               >
                 Reputation:
                 <Rating
@@ -574,14 +573,12 @@ function Tickets({
                 reportInfo.status.status === "Claimed" ? (
                   <Typography
                     className="item-status"
-                    component={'span'}
                     sx={{ backgroundColor: "#21222c", color:"#6cf3c3 !important" }}
                   >
                     {reportInfo.status.status}
                   </Typography>
                 ) : reportInfo.status.status === "Pending" ? (
                   <Typography
-                    component={'span'}
                     className="item-status"
                     sx={{ backgroundColor: "#f9f97d" }}
                   >
@@ -590,7 +587,6 @@ function Tickets({
                 ) : reportInfo.status.status === "Lost" ||
                 reportInfo.status.status === "Unclaimed"? (
                   <Typography
-                    component={'span'}
                     className="item-status"
                     sx={{ backgroundColor: "#2dd197", color:"##21222c !important" }}
                   >
@@ -606,10 +602,10 @@ function Tickets({
                   >
                     {reportInfo.item.itemName}
                   </Typography>
-                  <Typography component={'span'} className="item-category">
+                  <Typography className="item-category">
                     {reportInfo.item.category}
                   </Typography>
-                  <Typography component={'span'} className="item-description">
+                  <Typography className="item-description">
                     {reportInfo.description}
                   </Typography>
                 </CardContent>
@@ -670,7 +666,6 @@ function Tickets({
               variant="body1"
               color="textSecondary"
               style={{ color: "white" }}
-              component={'span'}
             >
               No matching items found.
             </Typography>
