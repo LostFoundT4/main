@@ -117,7 +117,6 @@ export default function SignUpSide() {
             }
             ).catch((error) => {
                 console.log("Account cannot be created");
-                console.log(error);
             })
     }
 

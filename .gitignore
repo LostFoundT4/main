@@ -22,4 +22,3 @@ celerybeat-schedule.bak
 celerybeat-schedule.dat
 celerybeat-schedule.dir
 dump.rdb
-package-lock.json

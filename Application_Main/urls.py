@@ -42,7 +42,6 @@ urlpatterns = [
     path('reputationwithUserID/<int:id>', base_views.reputation_detail_withUserID),
     path('blacklist/', base_views.blacklist_list),
     path('blacklist/<int:id>', base_views.blacklist_detail),
-    path('verifyStatus/<int:id>', base_views.checkUserVerificationStatus),
 
     # API for reporting
     path('locations/', reporting_views.location_list),
