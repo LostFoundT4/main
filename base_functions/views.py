@@ -1,8 +1,13 @@
 from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import Ticket, Item, UserAdditionalProfile, Reputation, Blacklist
+<<<<<<< HEAD
 from .serializers import ReputationSerializer, TicketSerializer, ItemSerializer , AlterTicketSerializer, CurrentUserProfileSerializer, BlacklistSerializer, AlterCurrentUserProfileSerializer
 from rest_framework.decorators import api_view, permission_classes
+=======
+from .serializers import ReputationSerializer, TicketSerializer, ItemSerializer, AlterTicketSerializer, CurrentUserProfileSerializer, BlacklistSerializer, AlterCurrentUserProfileSerializer, UserAdditionalDataSerializer
+from rest_framework.decorators import api_view
+>>>>>>> development-A
 from rest_framework.response import Response
 from rest_framework import status, permissions
 
@@ -229,6 +234,13 @@ def blacklist_detail(request, id, format=None):
         blacklist.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+@api_view(['GET'])
+def checkUserVerificationStatus(request, user_id):
+
+    if request.method == "GET":
+        serializer = UserAdditionalDataSerializer()
+        is_verified = serializer.validate_user_id(user_id)
+        return Response({'email_verified': is_verified}, status=status.HTTP_200_OK)
 
 def index(request):
     print("Called")

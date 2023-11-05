@@ -49,10 +49,24 @@ export default function SignInSide() {
             password: data.get("password"),
         })
             .then(async (response) => {
-                localStorage.clear();
-                localStorage.setItem("authToken", response.data.token);
+                const token = response.data.token;
+                await AxiosInstance.get(`/verifyStatus/${token}`)
+                    .then(response => {
+                    // Handle response here
+                        if (response.data.email_verified ==true){
+                            localStorage.clear();
+                            localStorage.setItem("authToken", response.data.token);
+                            navigate("/home");
+                        }else{
+                            console.log("User not verified");
+                            setisCorrectCred(false);
+                        }
+                })
+                    .catch(error => {
+                        // Handle error here
+                        console.error(error);
+                    });
 
-                navigate("/home");
             })
             .catch((error) => {
                 setisCorrectCred(false);
