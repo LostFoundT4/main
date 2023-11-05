@@ -99,12 +99,20 @@ export default function AppDrawer() {
       },
     }).then((response) => {
       setUserProfile(response.data.profile[0]);
-      AxiosInstance.get("/userProfiles/" + response.data.profile[0]).then(
+      AxiosInstance.get("/userProfiles/" + response.data.profile[0], {
+        headers: {
+          Authorization: "Token " + localStorage.getItem("authToken"),
+        },
+      }).then(
         (response) => {
           setProfilePicture(response.data.userProfilePicture);
         }
       );
-      AxiosInstance.get("/reputationwithUserID/" + response.data.id).then(
+      AxiosInstance.get("/reputationwithUserID/" + response.data.id, {
+        headers: {
+          Authorization: "Token " + localStorage.getItem("authToken"),
+        },
+      }).then(
         (response) => {
           setReputation(response.data.score);
         }

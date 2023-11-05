@@ -81,6 +81,7 @@ interface ReportInfo {
     };
     status: string;
     endorsedUserID: number;
+    endorsedUsername: string;
   };
 }
 
@@ -197,8 +198,11 @@ function Tickets({
   };
 
   useEffect(() => {
-    AxiosInstance.get("/reportInfos")
-      .then((response) => {
+    AxiosInstance.get("/reportInfos/", {
+      headers: {
+        Authorization: "Token " + localStorage.getItem("authToken"),
+      },
+    }).then((response) => {
         // Filter items based on the provided ticketTypeFilter
         const filteredItems = response.data.filter(
           (reportInfo: ReportInfo) =>
@@ -264,6 +268,7 @@ function Tickets({
       },
       status: "",
       endorsedUserID: 0,
+      endorsedUsername: "",
     },
   });
 
@@ -281,11 +286,17 @@ function Tickets({
     const time = reportDetail.item.found_dateTime.substring(11, 16);
     const [reputation, setReputation] = useState("");
 
-    AxiosInstance.get("/reputationwithUserID/" + reportDetail.ticket.user).then(
-      (response) => {
-        setReputation(response.data.score);
-      }
-    );
+    if (reportDetail.ticket.user !== 0){
+      AxiosInstance.get("/reputationwithUserID/" + reportDetail.ticket.user, {
+        headers: {
+          Authorization: "Token " + localStorage.getItem("authToken"),
+        },
+      }).then(
+        (response) => {
+          setReputation(response.data.score);
+        }
+      );
+    }
 
     return (
       <div>
@@ -349,6 +360,11 @@ function Tickets({
                   sx={{ marginRight: "10px", color: "#21222c", fontSize:"16px"}}
                 />
               </Typography>
+              {reportDetail.status.status === "Claimed" ? (
+                <Typography className="item-description">
+                  Claimed by: {reportDetail.status.endorsedUsername}
+                </Typography>
+              ) : null}
             </div>
           </Box>
         </Modal>
@@ -392,7 +408,11 @@ function Tickets({
   ) => {
     e.persist();
 
-    AxiosInstance.get("/userProfileswithUserID/" + index)
+    AxiosInstance.get("/userProfileswithUserID/" + index, {
+      headers: {
+        Authorization: "Token " + localStorage.getItem("authToken"),
+      },
+    })
       .then((response) => {
         setProfileInfo(response.data);
       })
@@ -400,7 +420,11 @@ function Tickets({
         console.error("Error fetching user profile:", error);
       });
 
-    AxiosInstance.get("/reputationwithUserID/" + index).then((response) => {
+    AxiosInstance.get("/reputationwithUserID/" + index, {
+      headers: {
+        Authorization: "Token " + localStorage.getItem("authToken"),
+      },
+    }).then((response) => {
       setReputation(response.data.score);
     });
     setOpenUserInfo(true);
@@ -484,6 +508,10 @@ function Tickets({
     AxiosInstance.put("/claimTicket/" + reportInfo.ticket.ticketID, {
       userID: userID,
       securityAnswer: securityAnswer,
+    }, {
+      headers: {
+        Authorization: "Token " + localStorage.getItem("authToken"),
+      },
     }).then((response) => {
       if (response.data === 404) {
         setErrorAlert(true);

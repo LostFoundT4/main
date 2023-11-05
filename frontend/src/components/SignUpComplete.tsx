@@ -90,10 +90,10 @@ export default function SignUpComplete() {
             "email":email
             },
             ).then(async(response)=> {
-                
+                const token = response.data.token;
                 await AxiosInstance.get("/api/auth/get-user",{
                     headers: {
-                      "Authorization": "Token " + response.data.token
+                      "Authorization": "Token " + token
                     }
                 }).then(async(response)=>{
                     // Initialize the reputation of the user with clean flagged status, and 5 out of 5 score.
@@ -101,13 +101,21 @@ export default function SignUpComplete() {
                         "user": response.data.id,
                         "flagged": 0,
                         "score": 5 
-                    })
+                    }, {
+                        headers: {
+                          Authorization: "Token " + token,
+                        },
+                      })
                     // Update the additional infomation of the user
                     await AxiosInstance.post('/userProfiles/',{
                         "user": response.data.id,
                         "userTelegramID": tele,
                         "userPhoneNumber": phoneNo
-                    }).then((response)=>{
+                    }, {
+                        headers: {
+                          Authorization: "Token " + token,
+                        },
+                      }).then((response)=>{
                         navigate("/frontend/sign-in")
                     })
                 })
