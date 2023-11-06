@@ -26,7 +26,7 @@ class RegisterAPI(generics.GenericAPIView):
         mail_subject = 'Verify your Lost And Found account email.'
         message = render_to_string('acc_active_email.html', {
         'user': user,
-        'domain': 'https://www.findmyitem.app',
+        'domain': 'www.findmyitem.app',
         'uid':urlsafe_base64_encode(force_bytes(user.pk)),
         'token':account_activation_token.make_token(user),
         })
