@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from "react"
 import {
   Button,
   styled,
@@ -16,10 +16,8 @@ import {
   FormHelperText,
   Snackbar,
   Alert,
-  FormControlLabel,
-  Checkbox,
 } from "@mui/material";
-import { Close as CloseIcon, Add as AddIcon } from "@mui/icons-material";
+import CloseIcon from "@mui/icons-material/Close";
 import dayjs, { Dayjs } from "dayjs";
 import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
@@ -27,7 +25,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import AxiosInstance from "../../utils/axiosInstance";
 import { UserIDContext, UserNameContext } from "../../utils/contextConfig";
-import { useContext, useEffect, useState } from "react";
+import { useContext ,useEffect, useState } from "react";
 import { ErrorAlert } from "../effect_components/errorAlert";
 import { SuccessAlert } from "../effect_components/successAlert";
 
@@ -43,12 +41,59 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 interface Location {
   locationID: number;
   building: string;
-  room: number;
+  room: string;
 }
 
-export default function CreateTicketButton() {
+interface ReportInfo {
+  reportInfoID: number;
+  description: string;
+  securityQuestion: string;
+  securityAnswer: string;
+  ticket: {
+    ticketID: number;
+    ticketType: string;
+    created_dateTime: string;
+    user: number;
+    username: string;
+  };
+  location: {
+    locationID: number;
+    building: string;
+    room: string;
+  };
+  item: {
+    itemID: number;
+    itemName: string;
+    category: string;
+    image: string;
+    ticketID: number;
+    found_dateTime: string;
+  };
+  status: {
+    statusID: number;
+    ticket: {
+      ticketID: number;
+      ticketType: string;
+      created_dateTime: string;
+    };
+    status: string;
+    endorsedUserID: number;
+    counter: number;
+    previous_counter: number;
+    timer: string;
+  };
+}
+
+export default function EditTicketButton({
+  myTicket,
+  myItemID,
+}: {
+  myTicket: any;
+  myItemID: any;
+}) {
   // Context for user data
   const { contextID, setContextID } = useContext(UserIDContext);
+  const { contextName, setContextName } = useContext(UserNameContext);
 
   // Define states for form fields
   const [open, setOpen] = useState(false);
@@ -60,8 +105,10 @@ export default function CreateTicketButton() {
   const [description, setDescription] = useState("");
   const [selectedLocation, setSelectedLocation] = useState("");
   const [securityQuestion, setSecurityQuestion] = useState("");
-  const [isValuableChecked, setIsValuableChecked] = useState(false);
-  const [file, setFile] = useState<File>();
+  const [securityAnswer, setSecurityAnswer] = useState("");
+  const [file, SetFile] = useState<File>();
+
+  const [filteredReport, setFilteredReport] = useState<ReportInfo>();
 
   // Define states for form field validations
   const [checktype, setCheckType] = useState(false);
@@ -75,26 +122,38 @@ export default function CreateTicketButton() {
 
   useEffect(() => {
     fetchLocation();
+    AxiosInstance.get("/reportInfos/").then((response) => {
+      const filtered = response.data.filter(
+        (ReportInfo: ReportInfo) =>
+          ReportInfo.item.itemID === myItemID &&
+          ReportInfo.ticket.ticketID === myTicket.ticketID
+      );
+      setFilteredReport(filtered[0]);
+      setType(filtered[0]!.ticket.ticketType);
+      setItemName(filtered[0]!.item.itemName);
+      setCategory(filtered[0]!.item.category);
+      setDescription(filtered[0]!.description);
+      setSelectedLocation(filtered[0]!.location.locationID);
+      setDateTime(dayjs(filtered[0]!.item.found_dateTime));
+      SetFile(filtered[0]!.item.image);
+      setSecurityQuestion(filtered[0]!.securityQuestion);
+    });
   }, []);
 
   useEffect(() => {
     setCheckItemName(false);
-    setErrorAlert(false);
   }, [itemName]);
 
   useEffect(() => {
     setCheckCategory(false);
-    setErrorAlert(false);
   }, [category]);
 
   useEffect(() => {
     setCheckType(false);
-    setErrorAlert(false);
   }, [type]);
 
   useEffect(() => {
     setCheckLocation(false);
-    setErrorAlert(false);
   }, [location]);
 
   useEffect(() => {
@@ -103,13 +162,12 @@ export default function CreateTicketButton() {
   }, [securityQuestion]);
 
   function handleimage(e: any) {
-    setFile(e.target.files[0]);
+    SetFile(e.target.files[0]);
   }
 
   const handleClickOpen = () => {
     setOpen(true);
   };
-
   const handleClose = () => {
     setOpen(false);
   };
@@ -124,17 +182,34 @@ export default function CreateTicketButton() {
     });
   };
 
-  const handleProceed = async () => {
-    // Create a ticket
-    await AxiosInstance.post("/tickets/", {
-      ticketType: type,
-      user: contextID,
-      isValuable: isValuableChecked,
-    })
+  const handleDelete = async () => {
+    // User cancelled the delete operation
+    if (!window.confirm("Are you sure you want to delete this ticket?")) {
+      return;
+    }
+
+    // Make an API request to delete the ticket using its ID
+    await AxiosInstance.delete("/tickets/" + myTicket.ticketID, )
       .then(async (response) => {
+        window.location.reload();
+      })
+      .catch((error) => {
+        setErrorAlert(true);
+      });
+  };
+
+  const handleEdit = async () => {
+    //Need to edit bad request
+    await AxiosInstance.put("/reportInfos/" + filteredReport!.reportInfoID, {
+      description: description,
+      location: filteredReport?.location.locationID,
+      item: filteredReport?.item.itemID,
+      ticket: filteredReport?.ticket.ticketID,
+      status: filteredReport?.status.statusID,
+      securityQuestion: securityQuestion,
+    }).then(async (response) => {
         // Create and fill up formData
         const formData = new FormData();
-        formData.append("ticketID", response.data.ticketID);
         formData.append("itemName", itemName);
         formData.append("category", category);
         if (file?.type !== undefined) {
@@ -145,67 +220,26 @@ export default function CreateTicketButton() {
           datetime?.format("YYYY-MM-DDTHH:mm:ss[Z]")!
         );
 
-        // Create an item associated with the ticket
-        await AxiosInstance.post("/items/", formData, {
+        // Update the item in its /items ID using the filled formData
+        await AxiosInstance.put("/items/" + myItemID, formData, {
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-myTicket",
           },
-        }).then(async (response) => {
-          const itemID = response.data.itemID;
-          let ticketType = "Unclaimed";
-          if (type === "Lost") {
-            ticketType = "Lost";
-          }
-          // Step 7: Create a status entry for the item
-          await AxiosInstance.post("/status/", {
-            user: contextID,
-            ticket: response.data.ticketID,
-            status: ticketType,
-            endorsedUserID: null,
-            counter: 0,
-            previous_counter: 0,
-          }).then(async (response) => {
-            // Create a report info associated with the item
-            const statusID = response.data.statusID;
-            await AxiosInstance.post("/reportInfos/", {
-              ticket: response.data.ticket,
-              item: parseInt(itemID),
-              location: parseInt(selectedLocation),
-              description: (description === null || description === "" ? "Nil" : description),
-              status: statusID,
-              securityQuestion: (securityQuestion === null || securityQuestion === "" ? "No Security Question Given" : securityQuestion),
-            } , { headers: {
-              Authorization: "Token " + localStorage.getItem("authToken"),
-            }}).then(async (response) => {
-              // Log success and close the form
-              if (response.data === 404) {
-                console.log("Failed to create a report info");
-                setErrorAlert(true)
-              } else {
-                setSuccessAlert(true)
-                console.log("here");
-                if (isValuableChecked && type === "Found") {
-                  alert(
-                    "Please pass the item to the nearest security counter."
-                  );
-                }
-                setTimeout(() => {
-                  window.location.reload();
-                }, 1000);
-              }
+        })
+          .then(async (response) => {
+            // Update the item in its /tickets ID using the filled formData
+            await AxiosInstance.put("/tickets/" + myTicket.ticketID, {
+              ticketType: type,
+              user: contextID,
             });
+          })
+          .then(async (response) => {
+            setOpen(false);
+            window.location.reload();
           });
-        });
       })
       .catch((error) => {
-        // Log failure and set flags for validation checks
-        console.log("Failed to create a ticket");
-        setErrorAlert(true)
-        setCheckItemName(true);
-        setCheckCategory(true);
-        setCheckLocation(true);
-        setCheckType(true);
-        setCheckSecurityQuestion(true);
+        setErrorAlert(true);
       });
   };
 
@@ -223,7 +257,7 @@ export default function CreateTicketButton() {
         }}
         onClick={handleClickOpen}
       >
-        <AddIcon />
+        EDIT
       </Button>
       <BootstrapDialog
         onClose={handleClose}
@@ -232,7 +266,7 @@ export default function CreateTicketButton() {
         className="add-item-container"
       >
         <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-          CREATE NEW TICKET
+          EDIT TICKET
         </DialogTitle>
         <IconButton
           aria-label="close"
@@ -358,15 +392,6 @@ export default function CreateTicketButton() {
             </>
           )}
 
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={isValuableChecked}
-                onChange={(e) => setIsValuableChecked(e.target.checked)}
-              />
-            }
-            label="Is the item valuable?"
-          />
           <Typography gutterBottom>
             <Button
               variant="contained"
@@ -379,8 +404,11 @@ export default function CreateTicketButton() {
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button autoFocus onClick={handleProceed} className="upload-file-btn">
-            Proceed
+          <Button autoFocus onClick={handleDelete} className="upload-file-btn">
+            Delete
+          </Button>
+          <Button autoFocus onClick={handleEdit} className="upload-file-btn">
+            Edit
           </Button>
         </DialogActions>
       </BootstrapDialog>

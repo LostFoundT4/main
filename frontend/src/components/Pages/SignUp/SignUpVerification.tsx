@@ -20,12 +20,12 @@ import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import AxiosInstance from "../axios/axiosInstance";
+import AxiosInstance from "../../../utils/axiosInstance";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function SignUpSide() {
+export default function SignUpVerification() {
 
     let navigate = useNavigate();
 
@@ -80,12 +80,19 @@ export default function SignUpSide() {
             "email":email
             },
             ).then(async(response)=> {
-                
+                const token = response.data.token;
                 await AxiosInstance.get("/api/auth/get-user",{
                     headers: {
-                      "Authorization": "Token " + response.data.token
+                      "Authorization": "Token " + token
                     }
                 }).then(async(response)=>{
+                    // Initialize the reputation of the user with clean flagged status, and 5 out of 5 score.
+                    await AxiosInstance.post('/reputation/',{                    
+                        "user": response.data.id,
+                        "flagged": 0,
+                        "score": 5 
+                    })
+                    // Update the additional infomation of the user
                     await AxiosInstance.post('/userProfiles/',{
                         "user": response.data.id,
                         "userTelegramID": tele,
@@ -98,23 +105,7 @@ export default function SignUpSide() {
             ).catch((error) => {
                 console.log("Account cannot be created");
             })
-        // console.log(usr + pwd + email + phoneNo + tele);
     }
-    
-    
-    // Handle changes to the email input field
-    // const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     const newEmail = event.target.value;
-    //     setEmail(newEmail);
-    //     setEmailError(!emailRegex.test(email)); // Validate as the user types
-    // };
-
-    // const handlePassword = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //     const newPassword = event.target.value;
-    //     setPwd(newPassword);
-    //     setPasswordError(pwd.length < 8); // Validate for 8 character length password
-    // };
-
 
 
     const handleTogglePasswordVisibility = () => {

@@ -26,13 +26,12 @@ class BlacklistSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class TicketSerializer(serializers.ModelSerializer):
-    # items = ItemSerializer(many=True)
     user = CurrentUserSerializer
     username = serializers.CharField(source="user.username")
 
     class Meta:
         model = Ticket
-        fields = ['ticketID', 'ticketType', 'created_dateTime', 'user', 'username']
+        fields = ['ticketID', 'ticketType', 'created_dateTime', 'user', 'username', 'isValuable']
 
 class AlterTicketSerializer(serializers.ModelSerializer):
     class Meta:

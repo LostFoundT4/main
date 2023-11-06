@@ -1,10 +1,10 @@
 import React, { useState , useEffect} from "react";
-import AppDrawer from "./AppDrawer";
+import AppDrawer from "../AppDrawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
 import { styled, createTheme, ThemeProvider } from "@mui/material/styles";
-import AxiosInstance from "../axios/axiosInstance";
+import AxiosInstance from "../../../utils/axiosInstance";
 import {
   Typography,
   TextField,
@@ -37,12 +37,9 @@ function EditProfile() {
       setUserProfile(response.data.profile[0])
       AxiosInstance.get("/userProfiles/"+ response.data.profile[0]).
       then((response)=>{
-        // console.log(response)
         setPhoneNumber(response.data.userPhoneNumber)
         setTelegramHandle(response.data.userTelegramID)
         setProfilePicture(response.data.userProfilePicture)
-      }).then(()=>{
-        //Somehow preload image
       })
       setUsername(response.data.username)
       setEmail(response.data.email)
@@ -74,12 +71,6 @@ function EditProfile() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    console.log(username)
-    console.log(email)
-    console.log(telegramHandle)
-    console.log(phoneNumber)
-    console.log(profilePicture)
-
     AxiosInstance.put("/api/auth/updateProfile/"+id+"/",{ 
     "username":username,
     "email":email
@@ -102,7 +93,7 @@ function EditProfile() {
 
         AxiosInstance.put("/userProfiles/"+userprofile,formData,{
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "multipart/form-data"
           }}).then((response)=>{
             window.location.reload()
         })

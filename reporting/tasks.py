@@ -11,14 +11,13 @@ def send_email(email):
 
 
 @shared_task
+# Check for unusual claim request (if the ticket is claimed by many user at the same time)
 def check_status_counter():
     statuses = Status.objects.filter()
     for status in statuses:
         if status.previous_counter is not None and status.counter - status.previous_counter >= 5:
                 # Delete the ticket if too many claim requests were made
-                # print(f'{status.ticket.ticketID}')
                 ticket = Ticket.objects.get(pk=status.ticket.ticketID)
-                # print(f'{status.ticket.ticketType}')
                 ticket.delete()
                 print(f'Delete ticket') 
                 pass

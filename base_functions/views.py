@@ -2,11 +2,11 @@ from django.http import HttpResponse
 from django.http import JsonResponse
 from .models import Ticket, Item, UserAdditionalProfile, Reputation, Blacklist
 from .serializers import ReputationSerializer, TicketSerializer, ItemSerializer , AlterTicketSerializer, CurrentUserProfileSerializer, BlacklistSerializer, AlterCurrentUserProfileSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 
-
+# CRUD for Ticket
 @api_view(['GET', 'POST'])
 def ticket_list(request):
 
@@ -45,6 +45,7 @@ def ticket_detail(request, id, format=None):
         ticket.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# CRUD for Item
 @api_view(['GET', 'POST'])
 def item_list(request):
 
@@ -80,6 +81,7 @@ def item_detail(request, id, format=None):
         item.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# CRUD for UserProfile
 @api_view(['GET', 'POST'])
 def userprofile_list(request):
 
@@ -129,7 +131,7 @@ def userprofile_detail_withUserID(request, id, format=None):
     else:
         return Response(status=status.HTTP_204_NO_CONTENT)
         
-
+# CRUD for Reputation
 @api_view(['GET', 'POST'])
 def reputation_list(request):
 
@@ -179,6 +181,7 @@ def reputation_detail_withUserID(request, id, format=None):
     else:
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# CRUD for Blacklist
 @api_view(['GET', 'POST'])
 def blacklist_list(request):
 

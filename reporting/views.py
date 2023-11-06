@@ -7,11 +7,10 @@ from base_functions.models import Ticket, Item, Reputation, Blacklist
 from base_functions.serializers import ReputationSerializer
 from django.contrib.auth.models import User
 from .serializers import LocationSerializer, ReportSerializer, StatusSerializer, AlterReportSerializer, AlterStatusSerializer, PendingUsersSerializer, AlterPendingUsersSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework import status, permissions
 from django.utils import timezone
-
 
 # CRUD for Location
 @api_view(['GET', 'POST'])
@@ -27,7 +26,6 @@ def location_list(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def location_detail(request, id, format=None):
@@ -50,7 +48,6 @@ def location_detail(request, id, format=None):
         location.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
 # CRUD for ReportInfo
 @api_view(['GET', 'POST'])
 def reportInfo_list(request):
@@ -65,7 +62,6 @@ def reportInfo_list(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def reportInfo_detail(request, id, format=None):
@@ -89,8 +85,6 @@ def reportInfo_detail(request, id, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 # CRUD for Status
-
-
 @api_view(['GET', 'POST'])
 def status_list(request):
 
@@ -104,7 +98,6 @@ def status_list(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def status_detail(request, id, format=None):
@@ -128,8 +121,6 @@ def status_detail(request, id, format=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 # CRUD for PendingUsers
-
-
 @api_view(['GET', 'POST'])
 def pendingUsers_list(request):
 
@@ -143,7 +134,6 @@ def pendingUsers_list(request):
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
 
 @api_view(['GET', 'PUT', 'DELETE'])
 def pendingUsers_detail(request, id, format=None):
@@ -167,6 +157,7 @@ def pendingUsers_detail(request, id, format=None):
         pendingUsers.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
+# Close the "Lost" ticket that is found
 @api_view(['PUT'])
 def close_ticket(request, id, format=None):
     try:
@@ -181,9 +172,11 @@ def close_ticket(request, id, format=None):
 
     return Response(status.HTTP_400_BAD_REQUEST)
 
+# Send claim request together with the security answer
 @api_view(['PUT'])
 def claim_foundItem(request, id, format=None):
     userID = request.data['userID']
+    givenAnswer = request.data['securityAnswer']
 
     try:
         ticket = Ticket.objects.get(pk=id)
@@ -191,7 +184,6 @@ def claim_foundItem(request, id, format=None):
         return Response(status.HTTP_404_NOT_FOUND)
 
     if request.method == 'PUT':
-        # userID = ticket.user_id
         user = User.objects.get(pk=userID)
 
         reputationObj = Reputation.objects.get(user=userID)
@@ -217,7 +209,7 @@ def claim_foundItem(request, id, format=None):
         except Blacklist.DoesNotExist:
             isBlacklisted = False
 
-        # # Check if the user is in the pending list already (no double-claim)
+        # Check if the user is in the pending list already (no double-claim)
         isPending = False
         try:
             pendingObj = PendingUsers.objects.get(user=userID, status=statusID)
@@ -233,7 +225,7 @@ def claim_foundItem(request, id, format=None):
 
             # User will be flagged
             pendingUser = PendingUsers.objects.create(
-                user=user, status=statusObj)
+                user=user, status=statusObj, securityAnswer=givenAnswer)
             reputationObj.flagged += 1
             reputationObj.save()
 
@@ -254,7 +246,7 @@ def claim_foundItem(request, id, format=None):
             Blacklist.objects.create(user=user, timestamp=datetime.now())
             falseClaimList = PendingUsers.objects.filter(user=user)
             
-            # # (not done)Change the status of the pending items back to unclaimed if no other pending users and reduce the counter
+            # Change the status of the pending items back to unclaimed if no other pending users and reduce the counter
             for claimer in falseClaimList:
                 statusID = claimer.status_id
                 statusObj = Status.objects.get(pk=statusID)
@@ -273,9 +265,9 @@ def claim_foundItem(request, id, format=None):
     else:
         return Response(status.HTTP_404_NOT_FOUND)
 
-
+# Ticket creator endorse the ticket to the original owner of the item
 @api_view(['PUT'])
-def confirm_claimedFoundItem(request, id, format=None):
+def endorsed_foundItem(request, id, format=None):
     endorsedUserID = request.data['endorsedUserID']
 
     try:

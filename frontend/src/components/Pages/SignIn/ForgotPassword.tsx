@@ -10,7 +10,7 @@ import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import PasswordIcon from '@mui/icons-material/Password';
 import Typography from "@mui/material/Typography";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Stack from "@mui/material/Stack";
@@ -20,44 +20,46 @@ import InputAdornment from "@mui/material/InputAdornment";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { useNavigate } from "react-router-dom";
-import AxiosInstance from "../axios/axiosInstance";
+import AxiosInstance from "../../../utils/axiosInstance";
 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function SignInSide() {
+export default function ForgotPassword() {
     let navigate = useNavigate()
 
     const [usr,setUsr] = useState("")
-    const [pwd,setPwd] = useState("")
-    const [isCorrectCred,setisCorrectCred] = useState(true)
-    const [showPassword, setShowPassword] = useState(false);
+    const [email, setEmail] = useState("");
 
-    useEffect(() =>{
-        setisCorrectCred(true)
-    },[usr,pwd])
+    const [emailError, setEmailError] = useState(false);
+
+    const emailRegex = /^[A-Za-z0-9._%+-]+@[^@]*smu\.edu\.sg$/;
     
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        // Check if the email ends with "@smu.edu.sg"
+        if (!emailRegex.test(email)) {
+            setEmailError(true);
+            return; // Do not proceed with form submission
+        }
+        // If email is valid, proceed with form submission
 
-        const data = new FormData(event.currentTarget);
-        await AxiosInstance.post('/api/auth/login',{
-            "username":data.get("username"),
-            "password":data.get("password")},
-            )
-            .then(async (response)=> {
-                localStorage.clear()
-                localStorage.setItem('authToken', response.data.token);
-                navigate("/frontend/home")
-            }
-            ).catch((error) => {
-                setisCorrectCred(false)
+        // Need backend implementation??
+
+        setUsr("");
+        setEmail("");
+        setEmailError(false);
+
+        await AxiosInstance.post('/api/auth/password_reset',{
+            "username": usr,
+            "email":email
+            },
+            ).then(async(response)=> {
+                !window.confirm("Please check your email for the password reset link!")
+            }).then(()=>{
+                navigate("/signin")
             })
     }
-
-    const handleTogglePasswordVisibility = () => {
-        setShowPassword((prevShowPassword) => !prevShowPassword);
-    };
 
     return (
         <ThemeProvider theme={defaultTheme}>
@@ -127,10 +129,10 @@ export default function SignInSide() {
                         }}
                     >
                         <Avatar sx={{ m: 1, bgcolor: "#21222c" }}>
-                            <LoginOutlinedIcon sx={{color: '#ffffff'}}/>
+                            <PasswordIcon sx={{color: '#ffffff'}}/>
                         </Avatar>
                         <Typography className="sign-in-h3" component="h1" variant="h5">
-                            Log In
+                            Reset your Password
                         </Typography>
                         <Box
                             component="form"
@@ -147,55 +149,26 @@ export default function SignInSide() {
                                 name="username"
                                 autoComplete="username"
                                 autoFocus
-                                error = {isCorrectCred ? false : true }
                                 onChange={(e) => setUsr(e.target.value)}
                                 value={usr}
-                                helperText= {isCorrectCred ? "" : "Incorrect Username/Password"}
                             />
                             <TextField
-                                margin="normal"
-                                required
-                                fullWidth
-                                name="password"
-                                label="Password"
-                                type={
-                                    showPassword ? "text" : "password"
+                                    required
+                                    fullWidth
+                                    name="school-email"
+                                    label="School Email"
+                                    type="email" // Use "email" type for email input
+                                    id="school-email"
+                                    autoComplete="school-email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    error={emailError} // Set error prop based on validation
+                                    helperText={
+                                        emailError
+                                            ? 'Does not end with "@smu.edu.sg"'
+                                            : ""
                                     }
-                                id="password"
-                                autoComplete="current-password"
-                                error = {isCorrectCred ? false : true }
-                                onChange={(e) => setPwd(e.target.value)}
-                                value={pwd}
-                                helperText= {isCorrectCred ? "" : "Incorrect Username/Password"}
-                                InputProps={{
-                                    endAdornment: (
-                                        <InputAdornment position="end">
-                                            <IconButton
-                                                aria-label="toggle password visibility"
-                                                onClick={
-                                                    handleTogglePasswordVisibility
-                                                }
-                                                edge="end"
-                                            >
-                                                {showPassword ? (
-                                                    <VisibilityOff />
-                                                ) : (
-                                                    <Visibility />
-                                                )}
-                                            </IconButton>
-                                        </InputAdornment>
-                                    ),
-                                }}
-                            />
-                            <FormControlLabel
-                                control={
-                                    <Checkbox
-                                        value="remember"
-                                        color="primary"
-                                    />
-                                }
-                                label="Remember me"
-                            />
+                        />
                             <Button
                                 type="submit"
                                 fullWidth
@@ -203,12 +176,12 @@ export default function SignInSide() {
                                 sx={{ mt: 3, mb: 2 }}
                                 className="sign-in-button"
                             >
-                                Log In Now
+                                Request Password Reset
                             </Button>
                             <Grid container>
                                 <Grid item xs>
-                                    <Link href="#" variant="body2" className="sign-in-link">
-                                        Forgot password?
+                                    <Link href="sign-in" variant="body2" className="sign-in-link">
+                                        Return to sign in
                                     </Link>
                                 </Grid>
                                 <Grid item>
