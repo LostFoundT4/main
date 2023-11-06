@@ -4,7 +4,7 @@ services:
     image: "${WEB_IMAGE}:${GITHUB_SHA}"
     command: bash -c "gunicorn "Application_Main".wsgi:application --bind 0.0.0.0:8000 &&
         celery -A Application_Main worker &&
-        celery -A Application_Main beat &&
+        celery -A Application_Main beat -l info &&
         python manage.py migrate"
     volumes:
       - static:/usr/src/app/static
