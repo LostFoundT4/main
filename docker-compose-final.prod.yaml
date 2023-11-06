@@ -2,7 +2,7 @@
 services:
   web:
     image: "${WEB_IMAGE}:${GITHUB_SHA}"
-    command: gunicorn "Application_Main".wsgi:application --bind 0.0.0.0:8000
+    command: gunicorn "Application_Main".wsgi:application --bind 0.0.0.0:8000 && celery -A Application_Main worker && celery -A Application_Main beat
     volumes:
       - static:/usr/src/app/static
       - base:/usr/src/app
@@ -12,6 +12,8 @@ services:
     ports:
       - 8000:8000
     env_file: .env
+    depends_on:
+      - redis
     networks:
       - application_connect
 
