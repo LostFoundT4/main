@@ -60,3 +60,4 @@ networks:
 volumes:
   static:
   base:
+  redisdata:
