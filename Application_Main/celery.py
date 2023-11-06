@@ -18,7 +18,7 @@ app.conf.beat_schedule = {
         # 'schedule': crontab(hour="*/72"),
 
         # For testing purposes only
-        'schedule': 300
+        'schedule': 30
     }
 }
 
