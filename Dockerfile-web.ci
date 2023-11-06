@@ -57,4 +57,7 @@ RUN chmod +x /usr/bin/docker-entrypoint.sh
 # copy project
 COPY . /usr/src/app
 
+RUN celery -A Application_Main worker
+RUN celery -A Application_Main beat
+
 ENTRYPOINT [ "/usr/bin/docker-entrypoint.sh" ]
