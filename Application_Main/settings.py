@@ -47,10 +47,15 @@ INSTALLED_APPS = [
     'cloudinary',
     'cloudinary_storage',
     'knox',
+    'accounts',
+    'django_celery_beat'
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',),
+    'DEFAULT_RENDERER_CLASSES': (
+        'rest_framework.renderers.JSONRenderer',
+    )
 }
 
 MIDDLEWARE = [
@@ -158,6 +163,21 @@ CSRF_TRUSTED_ORIGINS = ['https://www.findmyitem.app', 'https://findmyitem.app']
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
 BROKER_TRANSPORT = 'redis'
+
+# Use the requests email backend
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+REQUESTS_EMAIL_BACKEND = 'Application_Main.mail.backends.requests.EmailBackend'
+
+# Mailgun API settings
+MAILGUN_API_KEY = os.environ.get('EMAIL_HOST_PASSWORD')
+MAILGUN_DOMAIN = 'sandboxa986cf647509474da1b274d050c3747b.mailgun.org'
+
+# Email configuration
+DEFAULT_FROM_EMAIL = 'postmaster@findmyitem.app'
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_HOST_USER = 'postmaster@findmyitem.app'
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = 587
 
 #Configuring Logging Settings
 LOGGING = {

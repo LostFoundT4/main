@@ -26,6 +26,8 @@ jobs:
           echo SQL_HOST=${{ secrets.PSQL_HOST }} >> .env
           echo SQL_PORT=${{ secrets.PSQL_PORT }} >> .env
           echo PERSONAL_ACCESS_TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} >> .env
+          echo EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }} >> .env
+          echo MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }} >> .env
       - name: Set environment variables
         run: |
           echo "WEB_IMAGE=$(echo ${{env.WEB_IMAGE}} )" >> $GITHUB_ENV
@@ -94,6 +96,8 @@ jobs:
           echo PERSONAL_ACCESS_TOKEN=${{ secrets.PERSONAL_ACCESS_TOKEN }} >> .env
           echo NAMESPACE=${{ secrets.NAMSESPACE }} >> .env
           echo GITHUB_SHA=${{ github.SHA }} >>.env
+          echo EMAIL_HOST_PASSWORD=${{ secrets.EMAIL_HOST_PASSWORD }} >> .env
+          echo MAILGUN_API_KEY=${{ secrets.MAILGUN_API_KEY }} >> .env
       - name: Add the private SSH key to the ssh-agent
         env:
           SSH_AUTH_SOCK: /tmp/ssh_agent.sock

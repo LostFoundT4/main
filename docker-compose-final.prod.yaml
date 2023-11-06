@@ -35,6 +35,24 @@ services:
     networks:
       - application_connect
 
+  redis:
+    restart: always
+    image: redis:latest
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  celery:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+    command: "celery -A Application_Main worker && celery -A Application_Main beat"
+    depends_on:
+      - web
+      - redis
+    restart: on-failure
+
 networks:
   application_connect:
     external: true
